@@ -20,10 +20,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #8B2635 0%, #FF6B6B 50%, #17BEBB 100%);
+  background: linear-gradient(135deg, #8b2635 0%, #ff6b6b 50%, #17bebb 100%);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -36,9 +36,15 @@
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 // Contenido del login
@@ -67,34 +73,33 @@
   text-align: center;
   margin-bottom: 30px;
   color: white;
-  
+
   .logo-container {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 20px;
+    width: 120px;
+    height: 120px;
     background: white;
-    border-radius: 50%;
+    border-radius: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    animation: pulse 2s infinite;
-    
-    .logo-icon {
-      font-size: 40px;
-      width: 40px;
-      height: 40px;
-      color: var(--color-primary);
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 8px 32px rgba(139, 38, 53, 0.3);
+    padding: 20px;
+
+    .logo-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
   }
-  
+
   .app-title {
     font-size: 2.5rem;
     font-weight: 700;
     margin: 0 0 5px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   }
-  
+
   .app-tagline {
     font-size: 1.2rem;
     opacity: 0.95;
@@ -104,7 +109,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
@@ -119,10 +125,14 @@
   border-radius: 16px !important;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
-  
+
   // Forzar centrado del header con más especificidad
   ::ng-deep mat-card-header {
-    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    background: linear-gradient(
+      135deg,
+      var(--color-primary),
+      var(--color-accent)
+    );
     color: white;
     padding: 36px 28px !important;
     margin: -16px -16px 24px -16px;
@@ -131,13 +141,13 @@
     align-items: center !important;
     justify-content: center !important;
     text-align: center !important;
-    
+
     .mat-mdc-card-header-text {
       margin: 0 !important;
       width: 100% !important;
       text-align: center !important;
     }
-    
+
     mat-card-title,
     .mat-mdc-card-title {
       font-size: 1.75rem !important;
@@ -147,7 +157,7 @@
       display: block !important;
       width: 100% !important;
     }
-    
+
     mat-card-subtitle,
     .mat-mdc-card-subtitle {
       color: rgba(255, 255, 255, 0.95) !important;
@@ -158,43 +168,43 @@
       width: 100% !important;
     }
   }
-  
+
   mat-card-content {
     padding: 24px 32px 32px !important;
-    
+
     form {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
-    
+
     .full-width {
       width: 100%;
     }
-    
+
     mat-form-field {
       margin-bottom: 12px;
     }
-    
+
     .remember-forgot {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 20px 0 28px;
-      
+
       .forgot-link {
         color: var(--color-primary);
         text-decoration: none;
         font-size: 0.9rem;
         transition: all 0.3s;
-        
+
         &:hover {
           color: var(--color-accent);
           text-decoration: underline;
         }
       }
     }
-    
+
     .submit-button {
       height: 52px;
       font-size: 1.1rem;
@@ -207,27 +217,27 @@
       justify-content: center;
       gap: 8px;
       margin-top: 8px;
-      
+
       &:not(:disabled):hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(139, 38, 53, 0.4);
       }
-      
+
       &:disabled {
         opacity: 0.7;
       }
-      
+
       .button-spinner {
         display: inline-block;
         margin-right: 8px;
       }
-      
+
       mat-icon {
         margin-right: 4px;
       }
     }
   }
-  
+
   // Forzar centrado del footer con más especificidad
   ::ng-deep mat-card-footer {
     background: #f9f9f9 !important;
@@ -237,7 +247,7 @@
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    
+
     .footer-text {
       text-align: center !important;
       color: #666 !important;
@@ -253,7 +263,7 @@
   .mat-mdc-card-header {
     padding: 0 !important; // Reset padding de Material
   }
-  
+
   .mat-mdc-card-footer {
     padding: 0 !important; // Reset padding de Material
   }
@@ -264,13 +274,13 @@
   margin-top: 30px;
   text-align: center;
   color: rgba(255, 255, 255, 0.9);
-  
+
   p {
     margin: 5px 0;
     font-size: 0.9rem;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   }
-  
+
   .version {
     font-size: 0.8rem;
     opacity: 0.8;
@@ -284,94 +294,94 @@
     min-height: 100vh;
     height: auto;
   }
-  
+
   .login-content {
     max-width: 100%;
     padding: 10px;
     margin: 20px 0;
   }
-  
+
   .login-header {
     margin-bottom: 20px;
-    
+
     .logo-container {
       width: 70px;
       height: 70px;
       margin-bottom: 15px;
-      
+
       .logo-icon {
         font-size: 35px;
         width: 35px;
         height: 35px;
       }
     }
-    
+
     .app-title {
       font-size: 2rem;
     }
-    
+
     .app-tagline {
       font-size: 1rem;
     }
   }
-  
+
   .login-card {
     margin: 0 5px;
-    
+
     ::ng-deep mat-card-header {
       padding: 28px 20px !important;
       margin: -16px -16px 16px -16px !important;
-      
+
       mat-card-title,
       .mat-mdc-card-title {
         font-size: 1.4rem !important;
       }
-      
+
       mat-card-subtitle,
       .mat-mdc-card-subtitle {
         font-size: 0.9rem !important;
       }
     }
-    
+
     mat-card-content {
       padding: 20px 16px !important;
-      
+
       .remember-forgot {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
         margin: 16px 0 20px;
-        
+
         .forgot-link {
           align-self: flex-end;
         }
       }
-      
+
       .submit-button {
         height: 48px;
         font-size: 1rem;
       }
     }
-    
+
     ::ng-deep mat-card-footer {
       padding: 20px 16px !important;
       margin: 24px -16px -16px -16px !important;
-      
+
       .footer-text {
         font-size: 0.85rem !important;
         padding: 0 8px !important;
       }
     }
   }
-  
+
   .login-footer {
     margin-top: 20px;
     padding-bottom: 20px;
-    
+
     p {
       font-size: 0.85rem;
     }
-    
+
     .version {
       font-size: 0.75rem;
     }
@@ -385,7 +395,7 @@
       font-size: 1.75rem;
     }
   }
-  
+
   .login-card {
     mat-card-header {
       mat-card-title {
@@ -399,23 +409,23 @@
 @media (max-height: 700px) and (orientation: landscape) {
   .login-header {
     margin-bottom: 15px;
-    
+
     .logo-container {
       width: 60px;
       height: 60px;
       margin-bottom: 10px;
     }
-    
+
     .app-title {
       font-size: 1.8rem;
     }
   }
-  
+
   .login-card {
     mat-card-header {
       padding: 16px !important;
     }
-    
+
     mat-card-content {
       padding: 16px 20px !important;
     }
@@ -427,20 +437,20 @@
   .success-snackbar {
     background: var(--color-success) !important;
     color: white !important;
-    
+
     .mat-mdc-snack-bar-label {
       color: white !important;
     }
   }
-  
+
   .error-snackbar {
     background: var(--color-danger) !important;
     color: white !important;
-    
+
     .mat-mdc-snack-bar-label {
       color: white !important;
     }
-    
+
     button {
       color: white !important;
     }

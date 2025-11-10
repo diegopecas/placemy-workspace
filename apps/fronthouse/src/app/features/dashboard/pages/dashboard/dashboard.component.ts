@@ -1,14 +1,32 @@
-// src/app/features/dashboard/pages/dashboard/dashboard.component.ts
+// apps/fronthouse/src/app/features/dashboard/pages/dashboard/dashboard.component.ts
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
 import Swal from 'sweetalert2';
 
+// Angular Material imports
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatChipsModule,
+    MatDividerModule,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -25,25 +43,31 @@ export class DashboardComponent implements OnInit {
     {
       title: 'Pedidos',
       description: 'Gestionar pedidos del restaurante',
-      icon: 'clipboard-list',
+      icon: 'receipt_long',
       route: '/pedidos',
-      gradient: 'from-primary-500 to-primary-600',
+      color: 'primary',
+      colorLight: '#8B2635',
+      colorDark: '#6e1721',
       stats: { label: 'Pendientes', value: 0 }
     },
     {
       title: 'Mesas',
       description: 'Ver estado de las mesas',
-      icon: 'home',
+      icon: 'table_restaurant',
       route: '/mesas',
-      gradient: 'from-secondary-400 to-secondary-500',
+      color: 'secondary',
+      colorLight: '#17BEBB',
+      colorDark: '#0e8f8c',
       stats: { label: 'Disponibles', value: 0 }
     },
     {
       title: 'Productos',
       description: 'Catálogo de productos',
-      icon: 'box',
+      icon: 'restaurant_menu',
       route: '/productos',
-      gradient: 'from-accent to-red-500',
+      color: 'accent',
+      colorLight: '#FF6B6B',
+      colorDark: '#cc3d3d',
       stats: { label: 'En menú', value: 0 }
     }
   ];
