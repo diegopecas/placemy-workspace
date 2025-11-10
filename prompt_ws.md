@@ -1,4 +1,4 @@
-# 📋 PROMPT DE CONTINUACIÓN - PROYECTO PLACEMY-WORKSPACE
+# 📋 PROMPT DE CONTINUACIÓN - PROYECTO PLACEMY-WORKSPACE v2
 
 ## 🏗️ CONTEXTO DEL PROYECTO
 
@@ -12,6 +12,16 @@
 C:\Proyectos\Placemy\placemy-workspace\
 ├── apps/
 │   └── fronthouse/                    # App principal (HOST)
+│       ├── public/                    # Archivos estáticos
+│       │   ├── favicon.ico
+│       │   ├── favicon-16x16.png
+│       │   ├── favicon-32x32.png
+│       │   ├── favicon-96x96.png
+│       │   ├── apple-touch-icon.png
+│       │   ├── favicon.svg
+│       │   ├── web-app-manifest-*.png
+│       │   └── site.webmanifest
+│       │
 │       ├── src/
 │       │   ├── app/
 │       │   │   ├── core/              # Servicios singleton, guards, interceptors
@@ -22,6 +32,10 @@ C:\Proyectos\Placemy\placemy-workspace\
 │       │   │   │
 │       │   │   ├── shared/            # Componentes reutilizables
 │       │   │   │   └── components/
+│       │   │   │       └── header/    # ✨ Header reutilizable
+│       │   │   │           ├── header.component.ts
+│       │   │   │           ├── header.component.html
+│       │   │   │           └── header.component.scss
 │       │   │   │
 │       │   │   ├── features/          # Módulos de funcionalidad
 │       │   │   │   ├── auth/
@@ -40,7 +54,7 @@ C:\Proyectos\Placemy\placemy-workspace\
 │       │   │   └── environment.prod.ts     # Producción
 │       │   │
 │       │   ├── styles.scss                 # Tema Material personalizado
-│       │   ├── index.html
+│       │   ├── index.html                  # Con favicons configurados
 │       │   └── main.ts
 │       │
 │       └── project.json                    # Configuración Nx del proyecto
@@ -69,6 +83,7 @@ C:\Proyectos\Placemy\placemy-workspace\
 - **Estado**: Signals de Angular
 - **Forms**: Reactive Forms
 - **Bundler**: esbuild (rápido)
+- **Alertas**: SweetAlert2
 
 ---
 
@@ -85,6 +100,7 @@ C:\Proyectos\Placemy\placemy-workspace\
 7. **Material Design** con tema personalizado
 8. **Signals** para estado reactivo
 9. **Module Federation** para apps remotas
+10. **Componentes reutilizables** en `shared/components/`
 
 ---
 
@@ -109,7 +125,29 @@ C:\Proyectos\Placemy\placemy-workspace\
   --warning: #ff9800;        // Naranja
   --danger: #f44336;         // Rojo
 }
+
+// Color del branding (logo)
+--brand-gold: #C9975B;       // Dorado PlaceMy
 ```
+
+---
+
+## 🎨 DISEÑO Y BRANDING
+
+### **Logo y Favicons:**
+- Logo principal: Letra "P" con copa martini y pin de ubicación
+- Colores: Rojo vino (#8B2635) con detalles dorados (#C9975B)
+- Favicons generados con https://favicon.io/
+- Logo visible en:
+  - Pestaña del navegador (favicon)
+  - Header del dashboard
+  - Pantalla de login
+  - PWA cuando se agrega a inicio
+
+### **Tipografía:**
+- Nombre de la app: "PlaceMy" en color dorado (#C9975B)
+- Tagline: "Front House" en itálica, mismo color con opacidad
+- Fuente: Roboto (Google Fonts)
 
 ---
 
@@ -127,19 +165,36 @@ API Dev: http://127.0.0.1:8000/api
 
 ### **1. Login** ✓
 - Material Design con tema personalizado
+- Logo PlaceMy en el header
 - Validación de formularios reactivos
 - Conexión con backend Laravel
 - Manejo de errores con SnackBar
 - Signals para estado (isLoading, hidePassword)
+- Diseño responsive
 
 ### **2. Dashboard** ✓
-- Layout con header y navegación
-- Tarjetas de menú principales (Pedidos, Mesas, Productos)
-- Información del usuario
+- Header reutilizable con logo PlaceMy
+- Layout moderno con animaciones fadeInUp
+- Tarjetas de menú principales con efectos hover:
+  - **Pedidos** (Rojo vino)
+  - **Mesas** (Turquesa)
+  - **Productos** (Coral)
+- Información del usuario con avatar gradiente
+- Panel de información del sistema y perfil
 - Integración con SweetAlert2 para confirmaciones
-- Diseño responsivo con Tailwind utility classes
+- Diseño premium con glassmorphism
+- Totalmente responsive
 
-### **3. Auth Service** ✓
+### **3. Header Reutilizable** ✓
+- Componente standalone en `shared/components/header/`
+- Logo PlaceMy con nombre en dorado
+- Información del usuario (nombre, rol, avatar)
+- Botón de logout con confirmación SweetAlert2
+- Sticky positioning
+- Responsive (oculta detalles en móvil)
+- **Reutilizable en todos los módulos futuros**
+
+### **4. Auth Service** ✓
 - Login/Logout
 - Manejo de tokens en localStorage
 - Refresh token
@@ -155,17 +210,20 @@ API Dev: http://127.0.0.1:8000/api
 **HOST (fronthouse):**
 - App principal que carga y orquesta los módulos remotos
 - Contiene el login, dashboard y menú principal
+- Header reutilizable compartido
 - Comparte la autenticación con todos los remotos
 
 **REMOTES (mesas, productos, pedidos):**
 - Apps Angular independientes
 - Se desarrollan y despliegan por separado
 - Se cargan dinámicamente cuando el usuario las necesita
+- Usan el mismo Header componente
 - Comparten código a través de librerías
 
 **SHARED LIBRARIES:**
 - Código compartido entre HOST y REMOTES
 - Ejemplo: `@placemy/shared/auth` (AuthService, Guards, Interceptors)
+- Componentes UI compartidos (Header, Footer, etc.)
 
 ---
 
@@ -181,7 +239,7 @@ npx nx serve fronthouse
 npx nx serve mesas
 # http://localhost:4201
 
-# Limpiar cache de Nx
+# Limpiar cache de Nx (usar después de cambios grandes)
 npx nx reset
 
 # Ver estructura del workspace
@@ -210,8 +268,150 @@ npx nx g @nx/angular:library [nombre-lib] --directory=libs/shared
 
 # Crear componente standalone
 npx nx g @nx/angular:component [nombre] --project=[app] --standalone
+
+# Crear componente en shared
+New-Item -Path "apps\fronthouse\src\app\shared\components\[nombre]" -ItemType Directory -Force
 ```
 
+---
+
+## 📋 PRÓXIMOS MÓDULOS SUGERIDOS
+
+### **1. Módulo de Mesas** (`apps/mesas/`)
+**Backend disponible:** `/api/restaurante/mesas`
+- Lista de mesas con estado (disponible, ocupada, reservada)
+- Filtros por zona/estado
+- Asignar mesa a pedido
+- Cambiar estado de mesa
+- **Usar Header reutilizable**: `<app-header></app-header>`
+
+### **2. Módulo de Productos** (`apps/productos/`)
+**Backend disponible:** `/api/restaurante/productos`, `/api/restaurante/platos`
+- Catálogo de productos/platos
+- Filtros por categoría
+- Búsqueda
+- Gestión de inventario
+- **Usar Header reutilizable**: `<app-header></app-header>`
+
+### **3. Módulo de Pedidos** (`apps/pedidos/`)
+**Backend disponible:** (por crear - dominio Pedido)
+- Crear nuevo pedido
+- Lista de pedidos activos
+- Detalle del pedido
+- Cambiar estado del pedido
+- Agregar productos al pedido
+- **Usar Header reutilizable**: `<app-header></app-header>`
+
+---
+
+## 🎨 PATRÓN DE DISEÑO ESTABLECIDO
+
+### **Dashboard y páginas principales:**
+
+**Estructura HTML:**
+```html
+<div class="[modulo]-container">
+  <!-- Header reutilizable -->
+  <app-header></app-header>
+
+  <!-- Contenido principal -->
+  <div class="[modulo]-content">
+    <!-- Welcome section -->
+    <div class="welcome-section">
+      <h2>Título principal</h2>
+      <p>Descripción</p>
+    </div>
+
+    <!-- Grid de tarjetas o contenido -->
+    <div class="content-grid">
+      <!-- Contenido específico del módulo -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="[modulo]-footer">
+      <p>© {{ year }} PlaceMy. Todos los derechos reservados.</p>
+    </footer>
+  </div>
+</div>
+```
+
+**Estructura SCSS:**
+```scss
+.[modulo]-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+}
+
+.[modulo]-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.welcome-section {
+  margin-bottom: 2.5rem;
+  animation: fadeInUp 0.6s ease-out;
+  
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gray-900);
+  }
+  
+  p {
+    color: var(--gray-600);
+  }
+}
+
+// Animación fadeInUp
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+```
+
+### **Tarjetas con Material:**
+```html
+<mat-card class="feature-card">
+  <div class="card-header" [style.background]="gradient">
+    <mat-icon class="card-icon">icon_name</mat-icon>
+  </div>
+  
+  <mat-card-content>
+    <h3>Título</h3>
+    <p>Descripción</p>
+    
+    <div class="card-stats">
+      <span class="stats-label">Label</span>
+      <span class="stats-value">Value</span>
+    </div>
+  </mat-card-content>
+</mat-card>
+```
+
+**Con efectos hover:**
+```scss
+.feature-card {
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 16px !important;
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+    
+    .card-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+  }
+}
+```
 
 ---
 
@@ -245,7 +445,38 @@ remotes: [
 ]
 ```
 
-### **Paso 3: Crear rutas del módulo**
+### **Paso 3: Usar Header reutilizable**
+
+**En el componente principal del módulo:**
+```typescript
+// apps/[modulo]/src/app/pages/principal/principal.component.ts
+import { HeaderComponent } from '../../../../fronthouse/src/app/shared/components/header/header.component';
+
+@Component({
+  selector: 'app-principal',
+  standalone: true,
+  imports: [
+    CommonModule,
+    HeaderComponent, // ← Importar Header
+    // ... otros imports
+  ],
+  templateUrl: './principal.component.html',
+  styleUrl: './principal.component.scss'
+})
+```
+
+**En el HTML:**
+```html
+<div class="modulo-container">
+  <app-header></app-header>
+  
+  <div class="modulo-content">
+    <!-- Tu contenido aquí -->
+  </div>
+</div>
+```
+
+### **Paso 4: Crear rutas del módulo**
 
 **`apps/[modulo]/src/app/remote-entry/entry.routes.ts`:**
 ```typescript
@@ -255,12 +486,12 @@ export const remoteRoutes: Route[] = [
   {
     path: '',
     loadComponent: () => 
-      import('./pages/lista/lista.component').then(m => m.ListaComponent)
+      import('./pages/principal/principal.component').then(m => m.PrincipalComponent)
   }
 ];
 ```
 
-### **Paso 4: Registrar en fronthouse**
+### **Paso 5: Registrar en fronthouse**
 
 **`apps/fronthouse/src/app/app.routes.ts`:**
 ```typescript
@@ -271,7 +502,7 @@ export const remoteRoutes: Route[] = [
 }
 ```
 
-### **Paso 5: Crear estructura de archivos**
+### **Paso 6: Crear estructura de archivos**
 ```
 apps/[modulo]/
 ├── src/
@@ -279,10 +510,10 @@ apps/[modulo]/
 │   │   ├── remote-entry/
 │   │   │   └── entry.routes.ts
 │   │   ├── pages/
-│   │   │   └── lista/
-│   │   │       ├── lista.component.ts
-│   │   │       ├── lista.component.html
-│   │   │       └── lista.component.scss
+│   │   │   └── principal/
+│   │   │       ├── principal.component.ts
+│   │   │       ├── principal.component.html
+│   │   │       └── principal.component.scss
 │   │   ├── services/
 │   │   │   └── [modulo].service.ts
 │   │   └── models/
@@ -294,7 +525,7 @@ apps/[modulo]/
 
 ## 🔒 COMPARTIR AUTENTICACIÓN ENTRE MÓDULOS
 
-### **Opción 1: Importar directamente desde fronthouse (simple)**
+### **Opción 1: Importar directamente desde fronthouse (simple - usar por ahora)**
 ```typescript
 // En apps/mesas/src/app/pages/lista.component.ts
 import { AuthService } from '../../../../fronthouse/src/app/core/services/auth.service';
@@ -318,22 +549,25 @@ import { AuthService } from '@placemy/shared/shared-auth';
 ### **Separación de responsabilidades:**
 1. **fronthouse (HOST):**
    - Login/Logout
-   - Menú principal
-   - Layout/Header compartido
+   - Menú principal (Dashboard)
+   - Header compartido
    - Orquestación de módulos remotos
 
 2. **Apps remotas (REMOTES):**
    - Funcionalidad específica del dominio
+   - Usan Header de fronthouse
    - Independientes entre sí
    - NO se comunican directamente entre ellas
 
-3. **Librerías compartidas:**
-   - Código común (Auth, UI, Utilities)
+3. **Shared components:**
+   - Header (ya creado)
+   - Footer (por crear)
+   - Componentes UI comunes
    - Exportan API pública clara
-   - Sin lógica de negocio
 
 ### **Imports permitidos:**
 ```typescript
+✅ apps/mesas/ → puede importar → apps/fronthouse/shared/components/
 ✅ apps/mesas/ → puede importar → libs/shared/
 ✅ apps/mesas/ → puede importar → apps/fronthouse/core/ (temporalmente)
 ❌ apps/mesas/ → NO puede importar → apps/productos/
@@ -378,7 +612,7 @@ npx nx serve mesas
 npx nx serve productos
 ```
 
-### **Producción (GoDaddy):**
+### **Producción (GoDaddy - Hosting estático):**
 ```bash
 # Build todas las apps
 npx nx build fronthouse --configuration=production
@@ -390,6 +624,8 @@ public_html/
 ├── index.html                    # fronthouse
 ├── main.*.js
 ├── styles.*.css
+├── favicon.ico
+├── favicon-*.png
 └── remotes/
     ├── mesas/
     │   └── remoteEntry.mjs
@@ -414,15 +650,25 @@ public_html/
    - Crear la app con Nx generator
    - Configurar Module Federation
    - Crear estructura de carpetas (pages, services, models)
+   - **Importar y usar HeaderComponent**
    - Conectar con fronthouse
    - Compartir autenticación
 
 3. **SI ES FEATURE DE FRONTHOUSE:**
    - Crear carpeta en `features/`
+   - **Usar HeaderComponent**
    - Agregar lazy route
    - Seguir estructura establecida
 
-4. **CREAR ESTRUCTURA:**
+4. **SIEMPRE INCLUIR:**
+   - Header reutilizable: `<app-header></app-header>`
+   - Tema de colores establecido
+   - Animaciones fadeInUp
+   - Material Design components
+   - Manejo de errores con MatSnackBar o SweetAlert2
+   - Diseño responsive
+
+5. **CREAR ESTRUCTURA:**
    ```
    [modulo]/
    ├── pages/
@@ -436,10 +682,10 @@ public_html/
        └── [modulo].model.ts
    ```
 
-5. **USAR ANGULAR MATERIAL** siempre
-6. **INCLUIR manejo de errores** con MatSnackBar
-7. **RESPETAR el tema de colores** establecido
-8. **NO ASUMIR estructura existente**, siempre verificar
+6. **USAR ANGULAR MATERIAL** siempre
+7. **INCLUIR manejo de errores** con MatSnackBar o SweetAlert2
+8. **RESPETAR el tema de colores** establecido
+9. **NO ASUMIR estructura existente**, siempre verificar
 
 ---
 
@@ -449,22 +695,38 @@ public_html/
 - Usar `npx nx` en lugar de `nx` (si no está instalado globalmente)
 - Siempre usar `npx nx reset` después de cambios grandes
 - Los archivos se cachean, a veces hay que reiniciar el servidor
+- Si un componente no se detecta, detener servidor, hacer `nx reset`, y reiniciar
 
 ### **2. Module Federation:**
 - El HOST (fronthouse) debe estar corriendo para que los remotos funcionen
 - Los remotos se sirven en puertos diferentes (4201, 4202, etc.)
 - Las rutas se cargan dinámicamente, no hay recarga de página
+- Header puede ser compartido entre HOST y REMOTES
 
 ### **3. Angular 19:**
 - Usar componentes standalone (no NgModules)
 - Guards funcionales (`CanActivateFn`) en lugar de clases
 - `provideAnimationsAsync()` está deprecated pero funciona (ignorar warning)
+- Imports relativos en lugar de absolutos para componentes compartidos
 
 ### **4. Estructura de carpetas:**
 - `core/` → Servicios globales (singleton)
-- `shared/` → Componentes reutilizables
+- `shared/` → Componentes reutilizables (Header, Footer, etc.)
 - `features/` → Módulos de funcionalidad
 - `libs/` → Código compartido entre apps
+- `public/` → Archivos estáticos (favicons, imágenes)
+
+### **5. Componentes compartidos:**
+- Crear en `shared/components/`
+- Usar imports relativos: `'../../../shared/components/[nombre]/[nombre].component'`
+- Hacer standalone y exportar claramente
+- Documentar su uso para otros módulos
+
+### **6. Favicons y branding:**
+- Generar con https://favicon.io/
+- Colocar todos los archivos en `apps/fronthouse/public/`
+- Configurar en `index.html`
+- Usar en componentes: `src="/favicon-96x96.png"`
 
 ---
 
@@ -476,6 +738,7 @@ public_html/
    ```
    Quiero crear el módulo remoto MESAS con Module Federation.
    Debe conectarse al endpoint /api/restaurante/mesas.
+   Debe usar el Header reutilizable.
    Sigue el patrón establecido en el workspace.
    ```
 
@@ -483,19 +746,27 @@ public_html/
    ```
    Quiero agregar la funcionalidad de PERFIL DE USUARIO en fronthouse.
    Como una feature más, no como módulo remoto.
+   Debe usar el Header reutilizable.
    ```
 
-3. **Si quieres crear una librería compartida:**
+3. **Si quieres crear un componente compartido:**
+   ```
+   Quiero crear un componente Footer reutilizable en shared/components/
+   para usarlo en todas las páginas.
+   ```
+
+4. **Si quieres crear una librería compartida:**
    ```
    Quiero crear la librería @placemy/shared/auth para compartir
    la autenticación entre todas las apps.
    ```
 
-4. **Recuerda SIEMPRE indicar:**
+5. **Recuerda SIEMPRE indicar:**
    - Que respete las preferencias de desarrollo (no asumir, preguntar antes de codificar)
    - Que siga la arquitectura Nx con Module Federation establecida
    - Que use Angular Material con el tema personalizado
-   - Que incluya manejo de errores con MatSnackBar
+   - Que incluya manejo de errores con MatSnackBar o SweetAlert2
+   - Que use el Header reutilizable cuando aplique
    - Que verifique los archivos existentes antes de crear nuevos
 
 ---
@@ -506,13 +777,15 @@ public_html/
 1. ✅ Monorepo Nx con múltiples apps
 2. ✅ Module Federation para microfrontends
 3. ✅ Código compartido a través de librerías
-4. ✅ Lazy loading de módulos remotos
-5. ✅ Autenticación compartida entre apps
-6. ✅ Standalone components (Angular 19)
-7. ✅ Material Design con tema personalizado
-8. ✅ Deploy independiente de cada app
-9. ✅ Desarrollo en paralelo de múltiples módulos
-10. ✅ Escalabilidad horizontal (agregar apps sin afectar las existentes)
+4. ✅ Componentes reutilizables (Header, futuros: Footer, Sidebar)
+5. ✅ Lazy loading de módulos remotos
+6. ✅ Autenticación compartida entre apps
+7. ✅ Standalone components (Angular 19)
+8. ✅ Material Design con tema personalizado
+9. ✅ Branding consistente (logo PlaceMy en dorado)
+10. ✅ Deploy independiente de cada app
+11. ✅ Desarrollo en paralelo de múltiples módulos
+12. ✅ Escalabilidad horizontal (agregar apps sin afectar las existentes)
 
 ---
 
@@ -522,6 +795,7 @@ public_html/
 - **Documentación Nx:** https://nx.dev
 - **Module Federation:** https://module-federation.io/
 - **Angular Material:** https://material.angular.io/
+- **Favicon Generator:** https://favicon.io/
 
 ---
 
@@ -531,21 +805,26 @@ public_html/
 ✅ Workspace Nx configurado  
 ✅ App fronthouse (HOST) funcionando  
 ✅ Login con autenticación Laravel Sanctum  
-✅ Dashboard con menú principal  
+✅ Dashboard con diseño premium  
+✅ Header reutilizable creado y funcionando  
+✅ Logo y favicons implementados  
 ✅ AuthService con manejo de tokens  
 ✅ Guards funcionales (authGuard, noAuthGuard)  
 ✅ Interceptor para agregar token automáticamente  
 ✅ Tema Material personalizado  
+✅ Branding PlaceMy establecido (colores, tipografía, logo)  
 ✅ Estructura de carpetas establecida  
+✅ Componentes con animaciones y efectos premium  
 
 ### **Por hacer:**
 ⏭️ Configurar Module Federation en fronthouse  
 ⏭️ Crear app remota "mesas"  
 ⏭️ Conectar fronthouse con mesas  
 ⏭️ Crear librería @placemy/shared/auth  
+⏭️ Crear componente Footer reutilizable  
 ⏭️ Crear app remota "productos"  
 ⏭️ Crear app remota "pedidos"  
 
 ---
 
-**FIN DEL PROMPT DE CONTINUACIÓN**
+**FIN DEL PROMPT DE CONTINUACIÓN - v2**
