@@ -3,29 +3,29 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
-import Swal from 'sweetalert2';
 
-// Angular Material imports
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+// Angular Material imports (solo los que necesitas ahora)
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { HeaderComponent } from 'apps/fronthouse/src/app/shared/components/header/header.component';
+
+
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
     CommonModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
+    HeaderComponent,
     MatCardModule,
     MatChipsModule,
     MatDividerModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatIconModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -75,7 +75,6 @@ export class DashboardComponent implements OnInit {
   // Información de la aplicación
   appInfo = {
     name: 'PlaceMy',
-    tagline: 'Front House',
     version: '1.0.0',
     year: new Date().getFullYear()
   };
@@ -103,23 +102,6 @@ export class DashboardComponent implements OnInit {
     this.router.navigate([route]);
   }
 
-  logout(): void {
-    Swal.fire({
-      title: '¿Cerrar sesión?',
-      text: '¿Estás seguro de que deseas cerrar sesión?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#8B2635',
-      cancelButtonColor: '#6b7280',
-      confirmButtonText: 'Sí, cerrar sesión',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.authService.logout().subscribe();
-      }
-    });
-  }
-
   getUserDisplayName(): string {
     const user = this.currentUser();
     if (!user) return 'Usuario';
@@ -136,18 +118,5 @@ export class DashboardComponent implements OnInit {
       return user.roles[0].nombre;
     }
     return 'Sin rol asignado';
-  }
-
-  getUserInitials(): string {
-    const user = this.currentUser();
-    if (!user) return 'U';
-    
-    if (user.persona_natural?.nombres && user.persona_natural?.apellidos) {
-      const firstNameInitial = user.persona_natural.nombres.charAt(0);
-      const lastNameInitial = user.persona_natural.apellidos.charAt(0);
-      return `${firstNameInitial}${lastNameInitial}`.toUpperCase();
-    }
-    
-    return user.username ? user.username.charAt(0).toUpperCase() : 'U';
   }
 }

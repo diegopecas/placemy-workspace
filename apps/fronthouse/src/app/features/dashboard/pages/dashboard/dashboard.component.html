@@ -1,50 +1,7 @@
 <!-- apps/fronthouse/src/app/features/dashboard/pages/dashboard/dashboard.component.html -->
 <div class="dashboard-container">
   <!-- Header / Toolbar -->
-  <mat-toolbar class="dashboard-toolbar">
-    <div class="toolbar-content">
-      <!-- Logo y nombre -->
-      <div class="logo-section">
-        <div class="logo-icon">
-          <img src="/favicon-96x96.png" alt="PlaceMy" />
-        </div>
-        <div class="app-info">
-          <h1>
-            {{ appInfo.name }}
-            <span class="tagline">{{ appInfo.tagline }}</span>
-          </h1>
-        </div>
-      </div>
-
-      <!-- Espaciador -->
-      <span class="spacer"></span>
-
-      <!-- Usuario y acciones -->
-      <div class="user-section">
-        <!-- Info del usuario -->
-        <div class="user-info">
-          <div class="user-details">
-            <p class="user-name">{{ getUserDisplayName() }}</p>
-            <span class="user-role">{{ getUserRole() }}</span>
-          </div>
-          <div class="user-avatar">
-            {{ getUserInitials() }}
-          </div>
-        </div>
-
-        <!-- Botón logout -->
-        <button
-          mat-raised-button
-          color="warn"
-          (click)="logout()"
-          class="logout-btn"
-        >
-          <mat-icon>logout</mat-icon>
-          <span class="logout-text">Cerrar Sesión</span>
-        </button>
-      </div>
-    </div>
-  </mat-toolbar>
+  <app-header></app-header>
 
   <!-- Contenido principal -->
   <div class="dashboard-content">
