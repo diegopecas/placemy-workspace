@@ -51,20 +51,22 @@
     .app-info {
       h1 {
         margin: 0;
-        font-size: 1.6rem;
-        font-weight: 800;
-        color: #c9975b; // Color dorado del logo
-        line-height: 1.1;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #c9975b;
+        line-height: 1.2;
         letter-spacing: -0.5px;
-        font-family: 'Roboto', sans-serif;
-      }
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
 
-      .tagline {
-        font-size: 0.8rem;
-        color: #d4a76a; // Dorado más claro
-        font-weight: 400;
-        font-style: italic;
-        margin-top: 2px;
+        .tagline {
+          font-size: 0.875rem;
+          color: #c9975b;
+          font-weight: 500;
+          font-style: italic;
+          opacity: 0.8;
+        }
       }
     }
   }
