@@ -1,0 +1,448 @@
+// src/app/features/auth/pages/login/login.component.scss
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.login-container {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+// Fondo con gradiente animado - COLORES VIBRANTES
+.login-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #8B2635 0%, #FF6B6B 50%, #17BEBB 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+// Contenido del login
+.login-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 450px;
+  padding: 20px;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Header con logo
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+  color: white;
+  
+  .logo-container {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: pulse 2s infinite;
+    
+    .logo-icon {
+      font-size: 40px;
+      width: 40px;
+      height: 40px;
+      color: var(--color-primary);
+    }
+  }
+  
+  .app-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .app-tagline {
+    font-size: 1.2rem;
+    opacity: 0.95;
+    margin: 0;
+    font-weight: 300;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// Card del login - MEJORADO ESPACIADO Y CENTRADO
+.login-card {
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+  
+  // Forzar centrado del header con más especificidad
+  ::ng-deep mat-card-header {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    color: white;
+    padding: 36px 28px !important;
+    margin: -16px -16px 24px -16px;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    
+    .mat-mdc-card-header-text {
+      margin: 0 !important;
+      width: 100% !important;
+      text-align: center !important;
+    }
+    
+    mat-card-title,
+    .mat-mdc-card-title {
+      font-size: 1.75rem !important;
+      margin-bottom: 8px !important;
+      font-weight: 500 !important;
+      text-align: center !important;
+      display: block !important;
+      width: 100% !important;
+    }
+    
+    mat-card-subtitle,
+    .mat-mdc-card-subtitle {
+      color: rgba(255, 255, 255, 0.95) !important;
+      margin-top: 4px !important;
+      font-size: 1rem !important;
+      text-align: center !important;
+      display: block !important;
+      width: 100% !important;
+    }
+  }
+  
+  mat-card-content {
+    padding: 24px 32px 32px !important;
+    
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .full-width {
+      width: 100%;
+    }
+    
+    mat-form-field {
+      margin-bottom: 12px;
+    }
+    
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0 28px;
+      
+      .forgot-link {
+        color: var(--color-primary);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+        
+        &:hover {
+          color: var(--color-accent);
+          text-decoration: underline;
+        }
+      }
+    }
+    
+    .submit-button {
+      height: 52px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 8px rgba(139, 38, 53, 0.3);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+      
+      &:not(:disabled):hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(139, 38, 53, 0.4);
+      }
+      
+      &:disabled {
+        opacity: 0.7;
+      }
+      
+      .button-spinner {
+        display: inline-block;
+        margin-right: 8px;
+      }
+      
+      mat-icon {
+        margin-right: 4px;
+      }
+    }
+  }
+  
+  // Forzar centrado del footer con más especificidad
+  ::ng-deep mat-card-footer {
+    background: #f9f9f9 !important;
+    padding: 24px 28px !important;
+    margin: 32px -16px -16px -16px !important;
+    border-top: 1px solid #e0e0e0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    
+    .footer-text {
+      text-align: center !important;
+      color: #666 !important;
+      font-size: 0.9rem !important;
+      line-height: 1.4 !important;
+      width: 100% !important;
+    }
+  }
+}
+
+// Estilos globales para Material Card
+::ng-deep {
+  .mat-mdc-card-header {
+    padding: 0 !important; // Reset padding de Material
+  }
+  
+  .mat-mdc-card-footer {
+    padding: 0 !important; // Reset padding de Material
+  }
+}
+
+// Footer del login
+.login-footer {
+  margin-top: 30px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  
+  p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .version {
+    font-size: 0.8rem;
+    opacity: 0.8;
+  }
+}
+
+// Responsivo - MEJORADO PARA MÓVILES
+@media (max-width: 480px) {
+  .login-container {
+    padding: 10px;
+    min-height: 100vh;
+    height: auto;
+  }
+  
+  .login-content {
+    max-width: 100%;
+    padding: 10px;
+    margin: 20px 0;
+  }
+  
+  .login-header {
+    margin-bottom: 20px;
+    
+    .logo-container {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 15px;
+      
+      .logo-icon {
+        font-size: 35px;
+        width: 35px;
+        height: 35px;
+      }
+    }
+    
+    .app-title {
+      font-size: 2rem;
+    }
+    
+    .app-tagline {
+      font-size: 1rem;
+    }
+  }
+  
+  .login-card {
+    margin: 0 5px;
+    
+    ::ng-deep mat-card-header {
+      padding: 28px 20px !important;
+      margin: -16px -16px 16px -16px !important;
+      
+      mat-card-title,
+      .mat-mdc-card-title {
+        font-size: 1.4rem !important;
+      }
+      
+      mat-card-subtitle,
+      .mat-mdc-card-subtitle {
+        font-size: 0.9rem !important;
+      }
+    }
+    
+    mat-card-content {
+      padding: 20px 16px !important;
+      
+      .remember-forgot {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 16px 0 20px;
+        
+        .forgot-link {
+          align-self: flex-end;
+        }
+      }
+      
+      .submit-button {
+        height: 48px;
+        font-size: 1rem;
+      }
+    }
+    
+    ::ng-deep mat-card-footer {
+      padding: 20px 16px !important;
+      margin: 24px -16px -16px -16px !important;
+      
+      .footer-text {
+        font-size: 0.85rem !important;
+        padding: 0 8px !important;
+      }
+    }
+  }
+  
+  .login-footer {
+    margin-top: 20px;
+    padding-bottom: 20px;
+    
+    p {
+      font-size: 0.85rem;
+    }
+    
+    .version {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+// Para pantallas muy pequeñas (menos de 380px)
+@media (max-width: 380px) {
+  .login-header {
+    .app-title {
+      font-size: 1.75rem;
+    }
+  }
+  
+  .login-card {
+    mat-card-header {
+      mat-card-title {
+        font-size: 1.25rem;
+      }
+    }
+  }
+}
+
+// Para pantallas en landscape muy bajas
+@media (max-height: 700px) and (orientation: landscape) {
+  .login-header {
+    margin-bottom: 15px;
+    
+    .logo-container {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 10px;
+    }
+    
+    .app-title {
+      font-size: 1.8rem;
+    }
+  }
+  
+  .login-card {
+    mat-card-header {
+      padding: 16px !important;
+    }
+    
+    mat-card-content {
+      padding: 16px 20px !important;
+    }
+  }
+}
+
+// Estilos para los snackbars personalizados
+::ng-deep {
+  .success-snackbar {
+    background: var(--color-success) !important;
+    color: white !important;
+    
+    .mat-mdc-snack-bar-label {
+      color: white !important;
+    }
+  }
+  
+  .error-snackbar {
+    background: var(--color-danger) !important;
+    color: white !important;
+    
+    .mat-mdc-snack-bar-label {
+      color: white !important;
+    }
+    
+    button {
+      color: white !important;
+    }
+  }
+}
