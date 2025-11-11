@@ -1,4 +1,4 @@
-// libs/shared/shared-auth/src/lib/services/permission.service.ts
+// libs/shared/auth/src/lib/services/permission.service.ts
 import { Injectable, inject, computed, Signal } from '@angular/core';
 import { User } from '../models/user.model';
 import { PermissionName } from '../models/permission.model';

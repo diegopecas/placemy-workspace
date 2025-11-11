@@ -1,4 +1,4 @@
-// libs/shared/shared-auth/src/lib/guards/permission.guard.ts
+// libs/shared/auth/src/lib/guards/permission.guard.ts
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { PermissionService } from '../services/permission.service';

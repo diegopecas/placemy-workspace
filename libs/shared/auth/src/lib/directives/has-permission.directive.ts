@@ -1,4 +1,4 @@
-// libs/shared/shared-auth/src/lib/directives/has-permission.directive.ts
+// libs/shared/auth/src/lib/directives/has-permission.directive.ts
 import { 
   Directive, 
   Input, 

@@ -1,23 +1,23 @@
 {
-  "name": "shared-auth",
+  "name": "auth",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/shared-auth/src",
+  "sourceRoot": "libs/shared/auth/src",
   "prefix": "app",
   "projectType": "library",
   "tags": ["type:shared", "scope:auth"],
   "targets": {
     "build": {
       "executor": "@nx/angular:ng-packagr-lite",
-      "outputs": ["{workspaceRoot}/dist/libs/shared/shared-auth"],
+      "outputs": ["{workspaceRoot}/dist/libs/shared/auth"],
       "options": {
-        "project": "libs/shared/shared-auth/ng-package.json"
+        "project": "libs/shared/auth/ng-package.json"
       },
       "configurations": {
         "production": {
-          "tsConfig": "libs/shared/shared-auth/tsconfig.lib.prod.json"
+          "tsConfig": "libs/shared/auth/tsconfig.lib.prod.json"
         },
         "development": {
-          "tsConfig": "libs/shared/shared-auth/tsconfig.lib.json"
+          "tsConfig": "libs/shared/auth/tsconfig.lib.json"
         }
       },
       "defaultConfiguration": "production"
@@ -26,7 +26,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/shared/shared-auth/jest.config.ts"
+        "jestConfig": "libs/shared/auth/jest.config.ts"
       }
     },
     "lint": {

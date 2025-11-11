@@ -1,4 +1,4 @@
-// libs/shared/shared-auth/src/lib/models/permission.model.ts
+// libs/shared/auth/src/lib/models/permission.model.ts
 
 /**
  * Modelo de Permiso

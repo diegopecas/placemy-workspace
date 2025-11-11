@@ -1,4 +1,4 @@
-// libs/shared/shared-auth/src/lib/models/role.model.ts
+// libs/shared/auth/src/lib/models/role.model.ts
 import { Permission } from './permission.model';
 
 /**

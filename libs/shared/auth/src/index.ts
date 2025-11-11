@@ -1,4 +1,4 @@
-// libs/shared/shared-auth/src/index.ts
+// libs/shared/auth/src/index.ts
 
 /**
  * @placemy/shared/auth

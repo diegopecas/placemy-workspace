@@ -1,4 +1,4 @@
-// libs/shared/shared-auth/src/lib/models/user.model.ts
+// libs/shared/auth/src/lib/models/user.model.ts
 import { Role } from './role.model';
 
 /**
