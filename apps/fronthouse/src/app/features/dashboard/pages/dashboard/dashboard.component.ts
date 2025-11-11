@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 // Imports de las librerías compartidas
 import { PermissionService } from '@placemy/shared/auth';
-import { HeaderComponent } from '@placemy/shared/ui-components'; // ← NUEVO IMPORT
+import { HeaderComponent, ThemeService } from '@placemy/shared/ui-components';
 
 /**
  * Interfaz para las tarjetas del menú
@@ -35,7 +35,7 @@ interface MenuCard {
   standalone: true,
   imports: [
     CommonModule,
-    HeaderComponent, // ← AHORA DESDE LA LIBRERÍA
+    HeaderComponent,
     MatCardModule,
     MatChipsModule,
     MatDividerModule,
@@ -51,10 +51,32 @@ export class DashboardComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private permissionService = inject(PermissionService);
-  
+  private themeService = inject(ThemeService);
+
   // Signals para estado reactivo
   currentUser = this.authService.currentUser;
   isLoading = signal(false);
+  currentTheme = this.themeService.currentTheme;
+
+  // ✨ Partículas flotantes basadas en el tema actual
+  floatingParticles = computed(() => {
+    const theme = this.currentTheme();
+    return Array.from({ length: 20 }, () => ({
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      delay: Math.random() * 10,
+      duration: 15 + Math.random() * 10,
+      icon: theme.decorativeElements[Math.floor(Math.random() * theme.decorativeElements.length)]
+    }));
+  });
+
+  // ✨ Estrellas de fondo
+  stars = Array.from({ length: 80 }, () => ({
+    top: Math.random() * 100,
+    left: Math.random() * 100,
+    size: Math.random() * 2 + 1,
+    duration: Math.random() * 3 + 2
+  }));
   
   // Todas las tarjetas del menú (con permisos requeridos)
   private allMenuCards: MenuCard[] = [
@@ -158,6 +180,13 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserData();
+    
+    // 🎄 Forzar tema de navidad para testing
+    this.themeService.setTheme('christmas');
+    
+    // Debug del tema
+    console.log('🎨 Tema actual:', this.currentTheme().name);
+    console.log('🎨 Título:', this.currentTheme().title);
   }
 
   private loadUserData(): void {

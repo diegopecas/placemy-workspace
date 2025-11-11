@@ -1,6 +1,6 @@
 // src/styles.scss
 @use '@angular/material' as mat;
-
+@use '../../../libs/shared/ui-components/src/styles' as placemy;
 // Incluir las tipografías de Material
 @include mat.core();
 

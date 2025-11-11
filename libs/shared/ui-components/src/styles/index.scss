@@ -1,0 +1,200 @@
+// libs/shared/ui-components/src/styles/index.scss
+
+// ============================================
+// PLACEMY - THEMING SYSTEM
+// Sistema de temas automático por mes
+// ============================================
+
+// Importar animaciones (usando @use en lugar de @import deprecado)
+@use './animations';
+
+// Importar partículas
+@use './particles';
+
+// Importar SOLO los temas que existen
+@use './themes/base';
+@use './themes/halloween';
+@use './themes/christmas';
+
+// ============================================
+// ESTILOS BASE COMPARTIDOS
+// ============================================
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  transition: background 0.8s ease;
+  overflow-x: hidden;
+}
+
+// ============================================
+// SCROLLBAR PERSONALIZADO
+// ============================================
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary, #8B2635);
+  border-radius: 5px;
+
+  &:hover {
+    background: var(--accent, #FF6B6B);
+  }
+}
+
+// ============================================
+// CLASES ÚTILES
+// ============================================
+
+// Fade in up (ya definida en _animations.scss pero por compatibilidad)
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+// Pulse
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+// Glassmorphism effect
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+}
+
+// Texto con gradiente
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Float animation
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+// Glow effect
+.glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+// Rotate animation
+.rotate {
+  animation: rotate 10s linear infinite;
+}
+
+// ============================================
+// ANIMACIONES INLINE (por si acaso)
+// ============================================
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 10px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 30px currentColor;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ============================================
+// RESPONSIVE UTILITIES
+// ============================================
+
+// Media queries helpers
+@mixin mobile {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 769px) and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 1025px) {
+    @content;
+  }
+}
+
+// ============================================
+// THEME TRANSITIONS
+// ============================================
+
+// Transiciones suaves al cambiar de tema
+[data-theme] {
+  transition: background 0.8s ease, color 0.3s ease;
+}
+
+// ============================================
+// NOTAS PARA DESARROLLO
+// ============================================
+
+// TODO: Crear estos temas cuando se necesiten:
+// - mothers-day (Mayo)
+// - fathers-day (Junio)
+// - colombia-independence (Julio)
+// - kites (Agosto)
+// - love-friendship (Septiembre)
+//
+// Para crear un nuevo tema:
+// 1. Crear archivo en themes/_nombre-tema.scss
+// 2. Definir [data-theme="nombre-tema"] con variables CSS
+// 3. Agregar @use './themes/nombre-tema'; aquí arriba
+// 4. Agregar tema al ThemeService en TypeScript

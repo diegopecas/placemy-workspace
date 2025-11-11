@@ -1,0 +1,268 @@
+// libs/shared/ui-components/src/styles/_animations.scss
+
+// ============================================
+// ANIMACIONES COMPARTIDAS PLACEMY
+// ============================================
+
+// Fade in up (usada en dashboard)
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Float up (partículas subiendo)
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+// Twinkle (estrellas parpadeando)
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+// Pulse (efecto de pulso)
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+// Drift (nubes derivando)
+@keyframes drift {
+  from {
+    transform: translateX(-10%);
+  }
+  to {
+    transform: translateX(calc(100vw + 10%));
+  }
+}
+
+// Rotate (rotación continua)
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Bounce (rebote suave)
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+// Swing (balanceo)
+@keyframes swing {
+  0%, 100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
+// Float (flotación suave)
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+// Glow (brillo pulsante)
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 10px currentColor;
+  }
+  50% {
+    box-shadow: 0 0 30px currentColor;
+  }
+}
+
+// Snow fall (caída de nieve)
+@keyframes snowFall {
+  0% {
+    transform: translateY(-100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(100px);
+    opacity: 0;
+  }
+}
+
+// Hearts rise (corazones subiendo)
+@keyframes heartsRise {
+  0% {
+    transform: translateY(100vh) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(180deg) scale(1);
+    opacity: 0;
+  }
+}
+
+// Kite flight (cometas volando)
+@keyframes kiteFlight {
+  0% {
+    transform: translate(0, 100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  50% {
+    transform: translate(30vw, 50vh) rotate(15deg);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(60vw, -100vh) rotate(30deg);
+    opacity: 0;
+  }
+}
+
+// Sparkle (destellos)
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+// Pumpkin bounce (calabazas rebotando)
+@keyframes pumpkinBounce {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-30px) rotate(-10deg);
+  }
+  50% {
+    transform: translateY(0) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-15px) rotate(10deg);
+  }
+}
+
+// Fade in scale (aparecer con escala)
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Slide in right (deslizar desde derecha)
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// Slide in left (deslizar desde izquierda)
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// ============================================
+// CLASES ÚTILES
+// ============================================
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.fade-in-scale {
+  animation: fadeInScale 0.3s ease-out;
+}
+
+.pulse-animation {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.rotate-animation {
+  animation: rotate 10s linear infinite;
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.glow-animation {
+  animation: glow 2s ease-in-out infinite;
+}

@@ -1,0 +1,338 @@
+// libs/shared/ui-components/src/styles/_particles.scss
+
+// ============================================
+// PARTÍCULAS FLOTANTES COMPARTIDAS
+// ============================================
+
+// Contenedor de partículas flotantes
+.floating-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+
+  .theme-particle {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0;
+    animation: floatUp linear infinite;
+    filter: drop-shadow(0 0 10px currentColor);
+    will-change: transform, opacity;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+// ============================================
+// ESTRELLAS DE FONDO
+// ============================================
+
+.stars-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: twinkle ease-in-out infinite;
+    will-change: opacity, transform;
+  }
+}
+
+// ============================================
+// NUBES FLOTANTES
+// ============================================
+
+.floating-clouds {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+
+  .cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 100px;
+    opacity: 0.5;
+    animation: drift linear infinite;
+    will-change: transform;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 100px;
+    }
+
+    &.cloud-1 {
+      width: 100px;
+      height: 50px;
+      top: 10%;
+      left: -10%;
+      animation-duration: 40s;
+
+      &::before {
+        width: 50px;
+        height: 50px;
+        top: -25px;
+        left: 10px;
+      }
+
+      &::after {
+        width: 60px;
+        height: 40px;
+        top: -15px;
+        right: 10px;
+      }
+    }
+
+    &.cloud-2 {
+      width: 150px;
+      height: 70px;
+      top: 30%;
+      left: -15%;
+      animation-duration: 50s;
+      animation-delay: 5s;
+
+      &::before {
+        width: 70px;
+        height: 70px;
+        top: -35px;
+        left: 15px;
+      }
+
+      &::after {
+        width: 80px;
+        height: 60px;
+        top: -25px;
+        right: 15px;
+      }
+    }
+
+    &.cloud-3 {
+      width: 120px;
+      height: 60px;
+      top: 60%;
+      left: -12%;
+      animation-duration: 45s;
+      animation-delay: 10s;
+
+      &::before {
+        width: 60px;
+        height: 60px;
+        top: -30px;
+        left: 12px;
+      }
+
+      &::after {
+        width: 70px;
+        height: 50px;
+        top: -20px;
+        right: 12px;
+      }
+    }
+
+    &.cloud-4 {
+      width: 90px;
+      height: 45px;
+      top: 45%;
+      left: -9%;
+      animation-duration: 38s;
+      animation-delay: 15s;
+
+      &::before {
+        width: 45px;
+        height: 45px;
+        top: -22px;
+        left: 9px;
+      }
+
+      &::after {
+        width: 50px;
+        height: 35px;
+        top: -12px;
+        right: 9px;
+      }
+    }
+
+    &.cloud-5 {
+      width: 110px;
+      height: 55px;
+      top: 75%;
+      left: -11%;
+      animation-duration: 42s;
+      animation-delay: 20s;
+
+      &::before {
+        width: 55px;
+        height: 55px;
+        top: -27px;
+        left: 11px;
+      }
+
+      &::after {
+        width: 60px;
+        height: 45px;
+        top: -17px;
+        right: 11px;
+      }
+    }
+  }
+}
+
+// ============================================
+// EFECTOS ESPECIALES POR TEMA
+// ============================================
+
+// Efecto de nieve (Navidad)
+.special-effect-snow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+
+  .snowflake {
+    position: absolute;
+    color: white;
+    font-size: 1.5rem;
+    opacity: 0;
+    animation: snowFall linear infinite;
+    will-change: transform, opacity;
+
+    &:nth-child(odd) {
+      animation-duration: 10s;
+    }
+
+    &:nth-child(even) {
+      animation-duration: 15s;
+    }
+  }
+}
+
+// Efecto de corazones (Amor y Amistad, Día de la Madre)
+.special-effect-hearts {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+
+  .heart {
+    position: absolute;
+    color: var(--accent);
+    font-size: 2rem;
+    opacity: 0;
+    animation: heartsRise linear infinite;
+    will-change: transform, opacity;
+    filter: drop-shadow(0 0 10px var(--accent));
+  }
+}
+
+// Efecto de cometas (Festival de Cometas)
+.special-effect-kites {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+
+  .kite {
+    position: absolute;
+    font-size: 3rem;
+    opacity: 0;
+    animation: kiteFlight linear infinite;
+    will-change: transform, opacity;
+    filter: drop-shadow(0 0 15px currentColor);
+  }
+}
+
+// Efecto de destellos (Colombia)
+.special-effect-sparkles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+
+  .sparkle {
+    position: absolute;
+    font-size: 1.5rem;
+    color: var(--primary);
+    animation: sparkle ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+}
+
+// Efecto de calabazas (Halloween)
+.special-effect-pumpkins {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+
+  .pumpkin {
+    position: absolute;
+    font-size: 2.5rem;
+    animation: pumpkinBounce ease-in-out infinite;
+    will-change: transform;
+    filter: drop-shadow(0 0 20px var(--accent));
+  }
+}
+
+// ============================================
+// RESPONSIVE
+// ============================================
+
+@media (max-width: 768px) {
+  .floating-particles .theme-particle {
+    font-size: 1.5rem;
+  }
+
+  .floating-clouds .cloud {
+    transform: scale(0.7);
+  }
+
+  .special-effect-snow .snowflake,
+  .special-effect-hearts .heart,
+  .special-effect-kites .kite,
+  .special-effect-sparkles .sparkle,
+  .special-effect-pumpkins .pumpkin {
+    font-size: 1.2rem;
+  }
+}

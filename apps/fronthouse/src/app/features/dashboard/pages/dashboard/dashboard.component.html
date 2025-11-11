@@ -1,14 +1,39 @@
 <!-- apps/fronthouse/src/app/features/dashboard/pages/dashboard/dashboard.component.html -->
-<div class="dashboard-container">
+<div class="dashboard-container" [attr.data-theme]="currentTheme().name">
   <!-- Header / Toolbar -->
   <app-header></app-header>
+
+  <!-- ✨ Partículas flotantes temáticas ✨ -->
+  <div class="floating-particles">
+    <div *ngFor="let p of floatingParticles()" 
+         class="theme-particle"
+         [style.left.%]="p.x"
+         [style.top.%]="p.y"
+         [style.animation-delay.s]="p.delay"
+         [style.animation-duration.s]="p.duration">
+      {{ p.icon }}
+    </div>
+  </div>
+
+  <!-- ✨ Estrellas de fondo ✨ -->
+  <div class="stars-background">
+    <div *ngFor="let star of stars" 
+         class="star" 
+         [style.top.%]="star.top" 
+         [style.left.%]="star.left"
+         [style.width.px]="star.size" 
+         [style.height.px]="star.size"
+         [style.animation-duration.s]="star.duration">
+    </div>
+  </div>
 
   <!-- Contenido principal -->
   <div class="dashboard-content">
     <!-- Header de bienvenida -->
-    <div class="welcome-section">
+    <div class="welcome-section fade-in-up">
       <h2>Bienvenido, {{ getUserDisplayName() }}</h2>
       <p>Selecciona una opción para comenzar a gestionar tu restaurante</p>
+      <p class="theme-indicator">🎨 Tema activo: {{ currentTheme().title }}</p>
     </div>
 
     <!-- Loading spinner -->
@@ -23,7 +48,7 @@
       <div class="menu-grid">
         @for (card of menuCards(); track card.title) {
         <mat-card
-          class="menu-card"
+          class="menu-card fade-in-up"
           (click)="navigateTo(card.route)"
           [class]="'card-' + card.color"
         >

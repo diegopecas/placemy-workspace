@@ -1,5 +1,45 @@
 // libs/shared/ui-components/src/lib/header/header.component.scss
 
+// ============================================
+// VARIABLES CSS DE PLACEMY
+// ============================================
+// NOTA: Estas variables están duplicadas aquí porque el componente está en una librería
+// y no tiene acceso automático a las variables globales de las apps.
+// Para una solución más limpia, crear libs/shared/ui-components/src/styles/theme.scss
+:host {
+  --primary: #8B2635;
+  --primary-light: #aa4759;
+  --primary-dark: #6e1721;
+  
+  --accent: #FF6B6B;
+  --accent-light: #ff7f7f;
+  --accent-dark: #cc3d3d;
+  
+  --secondary: #17BEBB;
+  --secondary-light: #4dd8d5;
+  --secondary-dark: #0e8f8c;
+  
+  --success: #4caf50;
+  --warning: #ff9800;
+  --danger: #f44336;
+  
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  
+  --brand-gold: #C9975B;
+}
+
+// ============================================
+// ESTILOS DEL HEADER
+// ============================================
 .header-toolbar {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
