@@ -1,9 +1,9 @@
 // apps/fronthouse/src/app/features/dashboard/pages/dashboard/dashboard.component.ts
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
-import { User } from '@placemy/shared/auth';
+
 // Angular Material imports
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -11,11 +11,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 
-// Imports de la librería compartida
+// Imports de las librerías compartidas
 import { PermissionService } from '@placemy/shared/auth';
-
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import { HeaderComponent } from 'apps/fronthouse/src/app/shared/components/header/header.component';
+import { HeaderComponent } from '@placemy/shared/ui-components'; // ← NUEVO IMPORT
 
 /**
  * Interfaz para las tarjetas del menú
@@ -29,7 +27,7 @@ interface MenuCard {
   colorLight: string;
   colorDark: string;
   stats: { label: string; value: number };
-  requiredPermission: string; // ← Nuevo campo
+  requiredPermission: string;
 }
 
 @Component({
@@ -37,7 +35,7 @@ interface MenuCard {
   standalone: true,
   imports: [
     CommonModule,
-    HeaderComponent,
+    HeaderComponent, // ← AHORA DESDE LA LIBRERÍA
     MatCardModule,
     MatChipsModule,
     MatDividerModule,
@@ -48,6 +46,8 @@ interface MenuCard {
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild(HeaderComponent) header!: HeaderComponent;
+  
   private authService = inject(AuthService);
   private router = inject(Router);
   private permissionService = inject(PermissionService);
@@ -67,7 +67,7 @@ export class DashboardComponent implements OnInit {
       colorLight: '#8B2635',
       colorDark: '#6e1721',
       stats: { label: 'Pendientes', value: 0 },
-      requiredPermission: 'pedidos.ver' // Permiso requerido
+      requiredPermission: 'pedidos.ver'
     },
     {
       title: 'Mesas',
@@ -78,7 +78,7 @@ export class DashboardComponent implements OnInit {
       colorLight: '#17BEBB',
       colorDark: '#0e8f8c',
       stats: { label: 'Disponibles', value: 0 },
-      requiredPermission: 'mesas.ver' // Permiso requerido
+      requiredPermission: 'mesas.ver'
     },
     {
       title: 'Productos',
@@ -89,7 +89,7 @@ export class DashboardComponent implements OnInit {
       colorLight: '#FF6B6B',
       colorDark: '#cc3d3d',
       stats: { label: 'En menú', value: 0 },
-      requiredPermission: 'productos.ver' // Permiso requerido
+      requiredPermission: 'productos.ver'
     },
     {
       title: 'Platos',
@@ -100,7 +100,7 @@ export class DashboardComponent implements OnInit {
       colorLight: '#8B2635',
       colorDark: '#6e1721',
       stats: { label: 'Activos', value: 0 },
-      requiredPermission: 'platos.ver' // Permiso requerido
+      requiredPermission: 'platos.ver'
     },
     {
       title: 'Staff',
@@ -111,7 +111,7 @@ export class DashboardComponent implements OnInit {
       colorLight: '#17BEBB',
       colorDark: '#0e8f8c',
       stats: { label: 'Empleados', value: 0 },
-      requiredPermission: 'staff.ver' // Permiso requerido
+      requiredPermission: 'staff.ver'
     },
     {
       title: 'Configuración',
@@ -122,13 +122,12 @@ export class DashboardComponent implements OnInit {
       colorLight: '#FF6B6B',
       colorDark: '#cc3d3d',
       stats: { label: 'Sistema', value: 1 },
-      requiredPermission: 'core.configuraciones.ver' // Permiso requerido
+      requiredPermission: 'core.configuraciones.ver'
     }
   ];
 
   /**
    * Signal computado que filtra las tarjetas según los permisos del usuario
-   * Solo muestra las tarjetas para las que el usuario tiene permiso
    */
   menuCards = computed(() => {
     return this.allMenuCards.filter(card => 
@@ -143,13 +142,22 @@ export class DashboardComponent implements OnInit {
     year: new Date().getFullYear()
   };
 
+  constructor() {
+    // Configurar el usuario en el header reactivamente
+    effect(() => {
+      if (this.header) {
+        this.header.setCurrentUser(this.currentUser());
+      }
+    });
+
+    // Escuchar el evento de logout del header
+    window.addEventListener('header-logout', () => {
+      this.authService.logout().subscribe();
+    });
+  }
+
   ngOnInit(): void {
     this.loadUserData();
-    
-    // Debug: Ver permisos del usuario (solo en desarrollo)
-    if (!this.appInfo) {
-      this.permissionService.debugPermissions();
-    }
   }
 
   private loadUserData(): void {

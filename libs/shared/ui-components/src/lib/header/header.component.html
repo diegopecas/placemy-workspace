@@ -1,0 +1,65 @@
+<!-- libs/shared/ui-components/src/lib/header/header.component.html -->
+<mat-toolbar class="header-toolbar">
+  <!-- Logo y nombre de la app -->
+  <div class="header-logo" (click)="goToDashboard()">
+    <img src="/favicon-96x96.png" alt="PlaceMy Logo" class="logo-img" />
+    <div class="header-brand">
+      <span class="brand-name">PlaceMy</span>
+      <span class="brand-tagline">Front House</span>
+    </div>
+  </div>
+
+  <!-- Spacer -->
+  <span class="header-spacer"></span>
+
+  <!-- User info y menú -->
+  <div class="header-user">
+    <!-- Información del usuario (oculto en móvil) -->
+    <div class="user-info">
+      <span class="user-name">{{ getUserDisplayName() }}</span>
+      <span class="user-role">{{ getUserRole() }}</span>
+    </div>
+
+    <!-- Avatar con menú -->
+    <button 
+      mat-icon-button 
+      [matMenuTriggerFor]="userMenu"
+      class="user-avatar">
+      <div class="avatar-circle">
+        {{ getUserInitials() }}
+      </div>
+    </button>
+
+    <!-- Menú del usuario -->
+    <mat-menu #userMenu="matMenu" class="user-menu">
+      <!-- Info del usuario en el menú (visible en móvil) -->
+      <div class="menu-user-info">
+        <div class="menu-avatar">{{ getUserInitials() }}</div>
+        <div class="menu-user-details">
+          <p class="menu-user-name">{{ getUserDisplayName() }}</p>
+          <p class="menu-user-role">{{ getUserRole() }}</p>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Opciones del menú -->
+      <button mat-menu-item (click)="goToProfile()">
+        <mat-icon>person</mat-icon>
+        <span>Mi Perfil</span>
+      </button>
+
+      <button mat-menu-item (click)="goToDashboard()">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </button>
+
+      <mat-divider></mat-divider>
+
+      <button mat-menu-item (click)="onLogout()" class="logout-button">
+        <mat-icon>logout</mat-icon>
+        <span>Cerrar Sesión</span>
+      </button>
+    </mat-menu>
+  </div>
+</mat-toolbar>

@@ -15,7 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@placemy/shared/auth": ["libs/shared/shared-auth/src/index.ts"]
+      "@placemy/shared/auth": ["libs/shared/shared-auth/src/index.ts"],
+      "@placemy/shared/ui-components": [
+        "libs/shared/ui-components/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
