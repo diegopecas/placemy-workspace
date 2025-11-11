@@ -100,5 +100,8 @@ And join the Nx community:
 - [Our Youtube channel](https://www.youtube.com/@nxdevtools)
 - [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
+## Estructura proyecto
+tree /F apps > estructura_app.txt
+
 ## Star server
 npx nx serve fronthouse

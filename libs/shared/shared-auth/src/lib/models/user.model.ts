@@ -1,4 +1,10 @@
-// src/app/core/models/user.model.ts
+// libs/shared/shared-auth/src/lib/models/user.model.ts
+import { Role } from './role.model';
+
+/**
+ * Modelo de Usuario
+ * Representa un usuario del sistema con sus datos personales y roles
+ */
 export interface User {
   id: number;
   username: string;
@@ -9,6 +15,10 @@ export interface User {
   updated_at?: string;
 }
 
+/**
+ * Datos de Persona Natural
+ * Información personal del usuario
+ */
 export interface PersonaNatural {
   id: number;
   tipo_documento_id: number;
@@ -21,17 +31,4 @@ export interface PersonaNatural {
   telefono?: string;
   direccion?: string;
   ciudad_id?: number;
-}
-
-export interface Role {
-  id: number;
-  nombre: string;
-  descripcion?: string;
-  permisos?: Permission[];
-}
-
-export interface Permission {
-  id: number;
-  nombre: string;
-  descripcion?: string;
 }

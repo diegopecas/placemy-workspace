@@ -18,41 +18,50 @@
     </div>
     }
 
-    <!-- Grid de tarjetas del menú principal -->
-    <div class="menu-grid">
-      @for (card of menuCards; track card.title) {
-      <mat-card
-        class="menu-card"
-        (click)="navigateTo(card.route)"
-        [class]="'card-' + card.color"
-      >
-        <div
-          class="card-header"
-          [style.background]="
-            'linear-gradient(135deg, ' +
-            card.colorLight +
-            ', ' +
-            card.colorDark +
-            ')'
-          "
+    <!-- Grid de tarjetas del menú principal (filtradas por permisos) -->
+    @if (menuCards().length > 0) {
+      <div class="menu-grid">
+        @for (card of menuCards(); track card.title) {
+        <mat-card
+          class="menu-card"
+          (click)="navigateTo(card.route)"
+          [class]="'card-' + card.color"
         >
-          <mat-icon class="card-icon">{{ card.icon }}</mat-icon>
-        </div>
-
-        <mat-card-content>
-          <h3>{{ card.title }}</h3>
-          <p>{{ card.description }}</p>
-
-          <div class="card-stats">
-            <span class="stats-label">{{ card.stats.label }}</span>
-            <span class="stats-value">{{ card.stats.value }}</span>
+          <div
+            class="card-header"
+            [style.background]="
+              'linear-gradient(135deg, ' +
+              card.colorLight +
+              ', ' +
+              card.colorDark +
+              ')'
+            "
+          >
+            <mat-icon class="card-icon">{{ card.icon }}</mat-icon>
           </div>
-        </mat-card-content>
 
-        <div class="card-overlay"></div>
-      </mat-card>
-      }
-    </div>
+          <mat-card-content>
+            <h3>{{ card.title }}</h3>
+            <p>{{ card.description }}</p>
+
+            <div class="card-stats">
+              <span class="stats-label">{{ card.stats.label }}</span>
+              <span class="stats-value">{{ card.stats.value }}</span>
+            </div>
+          </mat-card-content>
+
+          <div class="card-overlay"></div>
+        </mat-card>
+        }
+      </div>
+    } @else {
+      <!-- Mensaje cuando no hay opciones disponibles -->
+      <div class="no-permissions-message">
+        <mat-icon class="warning-icon">lock</mat-icon>
+        <h3>No tienes acceso a ningún módulo</h3>
+        <p>Contacta al administrador para que te asigne los permisos necesarios.</p>
+      </div>
+    }
 
     <!-- Panel de información adicional -->
     <div class="info-grid">

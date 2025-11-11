@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
+import { User } from '@placemy/shared/auth';
 import { AuthResponse, LoginRequest, TokenData } from '../models/auth.model';
-import { User } from '../models/user.model';
 import { environment } from '../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
