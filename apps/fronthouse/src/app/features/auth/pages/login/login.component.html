@@ -1,6 +1,7 @@
 <!-- src/app/features/auth/pages/login/login.component.html -->
-<div class="login-container">
-  <div class="login-backdrop"></div>
+<div class="login-container" [attr.data-theme]="currentTheme().name">
+  <!-- Fondo animado temático -->
+  <app-themed-background></app-themed-background>
 
   <div class="login-content">
     <!-- Logo y título -->
@@ -8,8 +9,8 @@
       <div class="logo-container">
         <img src="/favicon-96x96.png" alt="PlaceMy Logo" class="logo-image" />
       </div>
-      <h1 class="app-title">{{ appInfo.name }}</h1>
-      <p class="app-tagline">{{ appInfo.tagline }}</p>
+      <h1 class="app-title">{{ currentTheme().title }}</h1>
+      <p class="app-tagline">{{ currentTheme().subtitle }}</p>
     </div>
 
     <!-- Card del formulario -->
@@ -79,13 +80,14 @@
             <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
           </div>
 
-          <!-- Botón de submit -->
+          <!-- Botón de submit con explosión de iconos -->
           <button
             mat-raised-button
             color="primary"
             type="submit"
             class="full-width submit-button"
             [disabled]="isLoading()"
+            appButtonBurst
           >
             @if (isLoading()) {
             <ng-container>

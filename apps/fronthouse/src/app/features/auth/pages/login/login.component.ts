@@ -16,6 +16,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
+// Imports de librerías compartidas
+import { ThemeService, ThemedBackgroundComponent, ButtonBurstDirective } from '@placemy/shared/ui-components';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -29,7 +32,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatIconModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    ThemedBackgroundComponent,
+    ButtonBurstDirective
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -40,11 +45,15 @@ export class LoginComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private snackBar = inject(MatSnackBar);
+  private themeService = inject(ThemeService);
   
   loginForm!: FormGroup;
   isLoading = signal(false);
   hidePassword = signal(true);
   returnUrl = '/dashboard';
+  
+  // Tema actual
+  currentTheme = this.themeService.currentTheme;
   
   // Información de la aplicación
   appInfo = {
@@ -62,6 +71,9 @@ export class LoginComponent implements OnInit {
     if (this.authService.checkAuthStatus()) {
       this.router.navigate([this.returnUrl]);
     }
+
+    // Log del tema activo
+    console.log('🎨 Login - Tema activo:', this.currentTheme().name);
   }
 
   private initializeForm(): void {

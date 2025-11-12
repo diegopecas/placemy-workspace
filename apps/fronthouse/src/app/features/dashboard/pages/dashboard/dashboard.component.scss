@@ -2,7 +2,9 @@
 
 .dashboard-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+  // Usar el background del tema activo
+  background: var(--background, #0a0a0a);
+  transition: background 0.8s ease;
 }
 
 // ============================================
@@ -21,14 +23,23 @@
   h2 {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--gray-900);
+    color: white;
     margin: 0 0 0.5rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   }
 
   p {
     font-size: 1rem;
-    color: var(--gray-600);
+    color: rgba(255, 255, 255, 0.9);
     margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .theme-indicator {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
   }
 }
 
@@ -49,16 +60,18 @@
   justify-content: center;
   padding: 4rem 2rem;
   margin-bottom: 2.5rem;
-  background: white;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   animation: fadeInUp 0.6s ease-out;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 
   .warning-icon {
     font-size: 96px;
     width: 96px;
     height: 96px;
-    color: var(--warning);
+    color: #ff9800;
     margin-bottom: 1.5rem;
     animation: pulse 2s ease-in-out infinite;
   }
@@ -66,14 +79,14 @@
   h3 {
     font-size: 1.75rem;
     font-weight: 700;
-    color: var(--gray-900);
+    color: white;
     margin: 0 0 0.75rem 0;
     text-align: center;
   }
 
   p {
     font-size: 1rem;
-    color: var(--gray-600);
+    color: rgba(255, 255, 255, 0.8);
     margin: 0;
     text-align: center;
     max-width: 500px;
@@ -108,10 +121,11 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 16px !important;
   animation: fadeInUp 0.6s ease-out;
+  background: rgba(255, 255, 255, 0.95);
 
   &:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
 
     .card-icon {
       transform: scale(1.1) rotate(5deg);
@@ -156,13 +170,13 @@
       font-size: 1.5rem;
       font-weight: 700;
       margin: 0 0 0.5rem 0;
-      color: var(--gray-900);
+      color: #1f2937;
       transition: color 0.3s ease;
     }
 
     p {
       font-size: 0.95rem;
-      color: var(--gray-600);
+      color: #6b7280;
       margin: 0 0 1.5rem 0;
       line-height: 1.5;
     }
@@ -172,11 +186,11 @@
       justify-content: space-between;
       align-items: center;
       padding-top: 1rem;
-      border-top: 2px solid var(--gray-100);
+      border-top: 2px solid #f3f4f6;
 
       .stats-label {
         font-size: 0.85rem;
-        color: var(--gray-500);
+        color: #9ca3af;
         font-weight: 500;
       }
 
@@ -194,35 +208,10 @@
   .card-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(139, 38, 53, 0.05), rgba(255, 107, 107, 0.05));
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1));
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
-  }
-}
-
-// Colores específicos por tarjeta
-.card-primary {
-  .card-stats .stats-value {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-}
-
-.card-secondary {
-  .card-stats .stats-value {
-    background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-}
-
-.card-accent {
-  .card-stats .stats-value {
-    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
 }
 
@@ -239,6 +228,8 @@
 .info-card {
   border-radius: 16px !important;
   animation: fadeInUp 0.8s ease-out;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
 
   mat-card-header {
     margin-bottom: 1rem;
@@ -246,7 +237,7 @@
     mat-card-title {
       font-size: 1.25rem;
       font-weight: 600;
-      color: var(--gray-900);
+      color: #1f2937;
     }
 
     .info-icon {
@@ -279,14 +270,14 @@
 
       .label {
         font-size: 0.9rem;
-        color: var(--gray-600);
+        color: #6b7280;
         font-weight: 500;
       }
 
       .value {
         font-size: 0.95rem;
         font-weight: 600;
-        color: var(--gray-900);
+        color: #1f2937;
       }
     }
 
@@ -321,7 +312,7 @@
 
       p {
         margin: 0;
-        color: var(--gray-600);
+        color: #6b7280;
       }
     }
   }
@@ -333,13 +324,13 @@
 .dashboard-footer {
   text-align: center;
   padding: 2rem 0 1rem;
-  border-top: 1px solid var(--gray-200);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   margin-top: 3rem;
 
   p {
     margin: 0;
     font-size: 0.9rem;
-    color: var(--gray-500);
+    color: rgba(255, 255, 255, 0.7);
   }
 }
 

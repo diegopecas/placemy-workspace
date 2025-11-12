@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 // Imports de las librerías compartidas
 import { PermissionService } from '@placemy/shared/auth';
-import { HeaderComponent, ThemeService } from '@placemy/shared/ui-components';
+import { HeaderComponent, ThemeService, ButtonBurstDirective } from '@placemy/shared/ui-components';
 
 /**
  * Interfaz para las tarjetas del menú
@@ -40,7 +40,8 @@ interface MenuCard {
     MatChipsModule,
     MatDividerModule,
     MatProgressSpinnerModule,
-    MatIconModule
+    MatIconModule,
+    ButtonBurstDirective
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -181,11 +182,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loadUserData();
     
-    // 🎄 Forzar tema de navidad para testing
-    this.themeService.setTheme('christmas');
-    
     // Debug del tema
-    console.log('🎨 Tema actual:', this.currentTheme().name);
+    console.log('🎨 Dashboard - Tema actual:', this.currentTheme().name);
     console.log('🎨 Título:', this.currentTheme().title);
   }
 

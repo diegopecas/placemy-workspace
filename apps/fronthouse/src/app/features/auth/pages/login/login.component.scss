@@ -11,46 +11,15 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-}
-
-// Fondo con gradiente animado - COLORES VIBRANTES
-.login-backdrop {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, #8b2635 0%, #ff6b6b 50%, #17bebb 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.2);
-  }
-}
-
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  
+  // Los colores se heredan automáticamente del data-theme
+  // No necesitamos definir colores hardcodeados aquí
 }
 
 // Contenido del login
 .login-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   width: 100%;
   max-width: 450px;
   padding: 20px;
@@ -83,7 +52,7 @@
     align-items: center;
     justify-content: center;
     margin: 0 auto 1.5rem;
-    box-shadow: 0 8px 32px rgba(139, 38, 53, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     padding: 20px;
 
     .logo-image {
@@ -108,30 +77,18 @@
   }
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-  }
-}
-
-// Card del login - MEJORADO ESPACIADO Y CENTRADO
+// Card del login - USANDO VARIABLES CSS DEL TEMA
 .login-card {
   border-radius: 16px !important;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
 
-  // Forzar centrado del header con más especificidad
+  // Header con gradiente del tema
   ::ng-deep mat-card-header {
     background: linear-gradient(
       135deg,
-      var(--color-primary),
-      var(--color-accent)
+      var(--primary),
+      var(--accent)
     );
     color: white;
     padding: 36px 28px !important;
@@ -193,13 +150,13 @@
       margin: 20px 0 28px;
 
       .forgot-link {
-        color: var(--color-primary);
+        color: var(--primary);
         text-decoration: none;
         font-size: 0.9rem;
         transition: all 0.3s;
 
         &:hover {
-          color: var(--color-accent);
+          color: var(--accent);
           text-decoration: underline;
         }
       }
@@ -210,7 +167,7 @@
       font-size: 1.1rem;
       font-weight: 500;
       letter-spacing: 0.5px;
-      box-shadow: 0 4px 8px rgba(139, 38, 53, 0.3);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
@@ -220,7 +177,7 @@
 
       &:not(:disabled):hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(139, 38, 53, 0.4);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
       }
 
       &:disabled {
@@ -238,7 +195,7 @@
     }
   }
 
-  // Forzar centrado del footer con más especificidad
+  // Footer
   ::ng-deep mat-card-footer {
     background: #f9f9f9 !important;
     padding: 24px 28px !important;
@@ -261,11 +218,11 @@
 // Estilos globales para Material Card
 ::ng-deep {
   .mat-mdc-card-header {
-    padding: 0 !important; // Reset padding de Material
+    padding: 0 !important;
   }
 
   .mat-mdc-card-footer {
-    padding: 0 !important; // Reset padding de Material
+    padding: 0 !important;
   }
 }
 
@@ -287,7 +244,7 @@
   }
 }
 
-// Responsivo - MEJORADO PARA MÓVILES
+// Responsivo
 @media (max-width: 480px) {
   .login-container {
     padding: 10px;
@@ -308,12 +265,6 @@
       width: 70px;
       height: 70px;
       margin-bottom: 15px;
-
-      .logo-icon {
-        font-size: 35px;
-        width: 35px;
-        height: 35px;
-      }
     }
 
     .app-title {
@@ -388,7 +339,7 @@
   }
 }
 
-// Para pantallas muy pequeñas (menos de 380px)
+// Para pantallas muy pequeñas
 @media (max-width: 380px) {
   .login-header {
     .app-title {
@@ -435,7 +386,7 @@
 // Estilos para los snackbars personalizados
 ::ng-deep {
   .success-snackbar {
-    background: var(--color-success) !important;
+    background: var(--success, #4caf50) !important;
     color: white !important;
 
     .mat-mdc-snack-bar-label {
@@ -444,7 +395,7 @@
   }
 
   .error-snackbar {
-    background: var(--color-danger) !important;
+    background: var(--danger, #f44336) !important;
     color: white !important;
 
     .mat-mdc-snack-bar-label {
