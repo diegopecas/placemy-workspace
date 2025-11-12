@@ -1,0 +1,14 @@
+// libs/shared/ui-components/src/styles/themes/_love-friendship.scss
+
+// ============================================
+// TEMA: AMOR Y AMISTAD (Septiembre)
+// Colores: Rojo intenso, Rosa fucsia
+// Elementos: ❤️ 💕 🌹 💝 💘 💖 🎈
+// ============================================
+
+[data-theme="love-friendship"] {
+  --primary: #C41E3A;
+  --accent: #FF1493;
+  --background: #1a0a0f;
+  background: radial-gradient(ellipse, rgba(196, 30, 58, 0.3), #000);
+}

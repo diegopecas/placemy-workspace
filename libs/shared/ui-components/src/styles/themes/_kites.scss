@@ -1,0 +1,14 @@
+// libs/shared/ui-components/src/styles/themes/_kites.scss
+
+// ============================================
+// TEMA: FESTIVAL DE COMETAS (Agosto)
+// Colores: Turquesa, Naranja
+// Elementos: 🪁 ☁️ 🌈 ☀️ 💨 🎨 🦋
+// ============================================
+
+[data-theme="kites"] {
+  --primary: #00BCD4;
+  --accent: #FF9800;
+  --background: #0a1420;
+  background: radial-gradient(ellipse, rgba(0, 188, 212, 0.3), #000);
+}

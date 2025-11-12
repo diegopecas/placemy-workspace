@@ -1,0 +1,14 @@
+// libs/shared/ui-components/src/styles/themes/_colombia-independence.scss
+
+// ============================================
+// TEMA: INDEPENDENCIA DE COLOMBIA (Julio)
+// Colores: Amarillo, Azul, Rojo (Bandera de Colombia)
+// Elementos: 🇨🇴 ☕ 🌺 🎺 🎉 🎊 🏛️
+// ============================================
+
+[data-theme="colombia-independence"] {
+  --primary: #FCD116;
+  --accent: #003893;
+  --background: #0a0a0a;
+  background: radial-gradient(ellipse, rgba(252, 209, 22, 0.2), #000);
+}

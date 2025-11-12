@@ -11,8 +11,13 @@
 // Importar partículas
 @use './particles';
 
-// Importar SOLO los temas que existen
+// Importar TODOS los temas
 @use './themes/base';
+@use './themes/mothers-day';
+@use './themes/fathers-day';
+@use './themes/colombia-independence';
+@use './themes/kites';
+@use './themes/love-friendship';
 @use './themes/halloween';
 @use './themes/christmas';
 
@@ -181,20 +186,3 @@ body {
 [data-theme] {
   transition: background 0.8s ease, color 0.3s ease;
 }
-
-// ============================================
-// NOTAS PARA DESARROLLO
-// ============================================
-
-// TODO: Crear estos temas cuando se necesiten:
-// - mothers-day (Mayo)
-// - fathers-day (Junio)
-// - colombia-independence (Julio)
-// - kites (Agosto)
-// - love-friendship (Septiembre)
-//
-// Para crear un nuevo tema:
-// 1. Crear archivo en themes/_nombre-tema.scss
-// 2. Definir [data-theme="nombre-tema"] con variables CSS
-// 3. Agregar @use './themes/nombre-tema'; aquí arriba
-// 4. Agregar tema al ThemeService en TypeScript

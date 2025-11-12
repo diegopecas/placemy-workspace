@@ -1,0 +1,14 @@
+// libs/shared/ui-components/src/styles/themes/_mothers-day.scss
+
+// ============================================
+// TEMA: DÍA DE LA MADRE (Mayo)
+// Colores: Rosa, Fucsia
+// Elementos: 💐 🌸 🌺 💝 🎀 🌹 💕
+// ============================================
+
+[data-theme="mothers-day"] {
+  --primary: #E91E63;
+  --accent: #FF4081;
+  --background: #1a0a14;
+  background: radial-gradient(ellipse, rgba(233, 30, 99, 0.3), #000);
+}

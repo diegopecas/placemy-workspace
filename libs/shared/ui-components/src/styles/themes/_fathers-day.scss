@@ -1,0 +1,14 @@
+// libs/shared/ui-components/src/styles/themes/_fathers-day.scss
+
+// ============================================
+// TEMA: DÍA DEL PADRE (Junio)
+// Colores: Azul marino, Celeste
+// Elementos: 👔 🎩 ⚽ 🏆 🎁 🎯 💼
+// ============================================
+
+[data-theme="fathers-day"] {
+  --primary: #1565C0;
+  --accent: #42A5F5;
+  --background: #0a0f1a;
+  background: radial-gradient(ellipse, rgba(21, 101, 192, 0.3), #000);
+}
