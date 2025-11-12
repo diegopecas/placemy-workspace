@@ -1,6 +1,47 @@
+// libs/shared/ui-components/src/styles/themes/_base.scss
+
+// ============================================
+// TEMA: BASE (Enero, Febrero, Marzo, Abril, Noviembre)
+// Colores: Rojo vino, Coral, Turquesa
+// Elementos: 🍴 🍽️ 🥘 🍷 🍕 🍔
+// ============================================
+
 [data-theme="base"] {
+  // Variables CSS del tema
   --primary: #8B2635;
   --accent: #FF6B6B;
+  --secondary: #17BEBB;
   --background: #0a0a0a;
-  background: radial-gradient(ellipse, rgba(139, 38, 53, 0.2), #000);
+  
+  // Fondo con gradiente animado (como el login)
+  background: linear-gradient(135deg, #8b2635 0%, #ff6b6b 50%, #17bebb 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  
+  // Capa de overlay oscuro para legibilidad
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

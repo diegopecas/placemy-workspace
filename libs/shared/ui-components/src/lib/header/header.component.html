@@ -1,5 +1,8 @@
 <!-- libs/shared/ui-components/src/lib/header/header.component.html -->
-<mat-toolbar class="header-toolbar">
+<mat-toolbar 
+  class="header-toolbar"
+  [style.background]="headerBackground()">
+  
   <!-- Logo y nombre de la app -->
   <div class="header-logo" (click)="goToDashboard()">
     <img src="/favicon-96x96.png" alt="PlaceMy Logo" class="logo-img" />
@@ -25,7 +28,7 @@
       mat-icon-button 
       [matMenuTriggerFor]="userMenu"
       class="user-avatar">
-      <div class="avatar-circle">
+      <div class="avatar-circle" [style.background]="'linear-gradient(135deg, ' + avatarColors().accent + ', ' + avatarColors().primary + ')'">
         {{ getUserInitials() }}
       </div>
     </button>
@@ -34,7 +37,9 @@
     <mat-menu #userMenu="matMenu" class="user-menu">
       <!-- Info del usuario en el menú (visible en móvil) -->
       <div class="menu-user-info">
-        <div class="menu-avatar">{{ getUserInitials() }}</div>
+        <div class="menu-avatar" [style.background]="'linear-gradient(135deg, ' + avatarColors().accent + ', ' + avatarColors().primary + ')'">
+          {{ getUserInitials() }}
+        </div>
         <div class="menu-user-details">
           <p class="menu-user-name">{{ getUserDisplayName() }}</p>
           <p class="menu-user-role">{{ getUserRole() }}</p>

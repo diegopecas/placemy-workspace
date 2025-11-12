@@ -1,6 +1,47 @@
+// libs/shared/ui-components/src/styles/themes/_halloween.scss
+
+// ============================================
+// TEMA: HALLOWEEN (Octubre)
+// Colores: Morado, Naranja
+// Elementos: 🎃 👻 🦇 🕷️ 🕸️ 💀 🌙
+// ============================================
+
 [data-theme="halloween"] {
+  // Variables CSS del tema
   --primary: #8B008B;
   --accent: #FF8C00;
+  --secondary: #4B0082;
   --background: #0a0014;
-  background: radial-gradient(ellipse, rgba(139, 0, 139, 0.3), #000);
+  
+  // Fondo con gradiente animado
+  background: linear-gradient(135deg, #8B008B 0%, #FF8C00 50%, #4B0082 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  
+  // Capa de overlay oscuro
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

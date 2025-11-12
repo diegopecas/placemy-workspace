@@ -7,8 +7,41 @@
 // ============================================
 
 [data-theme="kites"] {
+  // Variables CSS del tema
   --primary: #00BCD4;
   --accent: #FF9800;
+  --secondary: #90CAF9;
   --background: #0a1420;
-  background: radial-gradient(ellipse, rgba(0, 188, 212, 0.3), #000);
+  
+  // Fondo con gradiente animado
+  background: linear-gradient(135deg, #00BCD4 0%, #FF9800 50%, #90CAF9 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  
+  // Capa de overlay oscuro
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

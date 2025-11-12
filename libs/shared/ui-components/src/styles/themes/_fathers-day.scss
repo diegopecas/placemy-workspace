@@ -7,8 +7,41 @@
 // ============================================
 
 [data-theme="fathers-day"] {
+  // Variables CSS del tema
   --primary: #1565C0;
   --accent: #42A5F5;
+  --secondary: #64B5F6;
   --background: #0a0f1a;
-  background: radial-gradient(ellipse, rgba(21, 101, 192, 0.3), #000);
+  
+  // Fondo con gradiente animado
+  background: linear-gradient(135deg, #1565C0 0%, #42A5F5 50%, #64B5F6 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  
+  // Capa de overlay oscuro
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

@@ -7,8 +7,41 @@
 // ============================================
 
 [data-theme="colombia-independence"] {
+  // Variables CSS del tema
   --primary: #FCD116;
   --accent: #003893;
+  --secondary: #CE1126;
   --background: #0a0a0a;
-  background: radial-gradient(ellipse, rgba(252, 209, 22, 0.2), #000);
+  
+  // Fondo con gradiente animado (colores de la bandera)
+  background: linear-gradient(135deg, #FCD116 0%, #003893 50%, #CE1126 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  
+  // Capa de overlay oscuro
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

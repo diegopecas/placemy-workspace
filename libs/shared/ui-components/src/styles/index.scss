@@ -11,6 +11,9 @@
 // Importar partículas
 @use './particles';
 
+// Importar estilos comunes (mixins, utilidades)
+@use './common';
+
 // Importar TODOS los temas
 @use './themes/base';
 @use './themes/mothers-day';

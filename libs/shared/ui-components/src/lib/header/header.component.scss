@@ -1,59 +1,26 @@
 // libs/shared/ui-components/src/lib/header/header.component.scss
 
-// ============================================
-// VARIABLES CSS DE PLACEMY
-// ============================================
-// NOTA: Estas variables están duplicadas aquí porque el componente está en una librería
-// y no tiene acceso automático a las variables globales de las apps.
-// Para una solución más limpia, crear libs/shared/ui-components/src/styles/theme.scss
-:host {
-  --primary: #8B2635;
-  --primary-light: #aa4759;
-  --primary-dark: #6e1721;
-  
-  --accent: #FF6B6B;
-  --accent-light: #ff7f7f;
-  --accent-dark: #cc3d3d;
-  
-  --secondary: #17BEBB;
-  --secondary-light: #4dd8d5;
-  --secondary-dark: #0e8f8c;
-  
-  --success: #4caf50;
-  --warning: #ff9800;
-  --danger: #f44336;
-  
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-300: #d1d5db;
-  --gray-400: #9ca3af;
-  --gray-500: #6b7280;
-  --gray-600: #4b5563;
-  --gray-700: #374151;
-  --gray-800: #1f2937;
-  --gray-900: #111827;
-  
-  --brand-gold: #C9975B;
-}
-
-// ============================================
-// ESTILOS DEL HEADER
-// ============================================
 .header-toolbar {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   padding: 0 1.5rem;
   min-height: 70px;
+  
+  // Animación del gradiente (igual que dashboard)
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  transition: background 0.5s ease;
 }
 
-// ============================================
-// LOGO Y BRANDING
-// ============================================
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .header-logo {
   display: flex;
   align-items: center;
@@ -83,7 +50,7 @@
     .brand-name {
       font-size: 1.5rem;
       font-weight: 700;
-      color: var(--brand-gold);
+      color: #C9975B;
       letter-spacing: 0.5px;
       line-height: 1;
     }
@@ -102,9 +69,6 @@
   flex: 1 1 auto;
 }
 
-// ============================================
-// USER INFO
-// ============================================
 .header-user {
   display: flex;
   align-items: center;
@@ -135,27 +99,23 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--secondary));
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
       font-size: 1rem;
       color: white;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       transition: all 0.3s ease;
     }
 
     &:hover .avatar-circle {
       transform: scale(1.1);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
     }
   }
 }
 
-// ============================================
-// USER MENU
-// ============================================
 ::ng-deep .user-menu {
   margin-top: 8px;
   border-radius: 12px;
@@ -176,7 +136,6 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--secondary));
       display: flex;
       align-items: center;
       justify-content: center;
@@ -193,14 +152,14 @@
         margin: 0;
         font-size: 1rem;
         font-weight: 600;
-        color: var(--gray-900);
+        color: #111827;
         line-height: 1.2;
       }
 
       .menu-user-role {
         margin: 0;
         font-size: 0.85rem;
-        color: var(--gray-600);
+        color: #6b7280;
         font-weight: 400;
       }
     }
@@ -215,37 +174,26 @@
     transition: all 0.2s ease;
 
     mat-icon {
-      color: var(--gray-600);
+      color: #6b7280;
       transition: color 0.2s ease;
     }
 
     span {
       font-size: 0.95rem;
-      color: var(--gray-800);
+      color: #1f2937;
     }
 
     &:hover {
       background: rgba(139, 38, 53, 0.08);
 
-      mat-icon {
-        color: var(--primary);
-      }
-
-      span {
-        color: var(--primary);
-      }
+      mat-icon { color: #8B2635; }
+      span { color: #8B2635; }
     }
 
     &.logout-button {
-      color: var(--danger);
-
-      mat-icon {
-        color: var(--danger);
-      }
-
-      span {
-        color: var(--danger);
-      }
+      color: #f44336;
+      mat-icon { color: #f44336; }
+      span { color: #f44336; }
 
       &:hover {
         background: rgba(244, 67, 54, 0.08);
@@ -254,9 +202,6 @@
   }
 }
 
-// ============================================
-// RESPONSIVE
-// ============================================
 @media (max-width: 768px) {
   .header-toolbar {
     padding: 0 1rem;
@@ -280,7 +225,6 @@
     }
   }
 
-  // Ocultar info del usuario en móvil (solo mostrar avatar)
   .header-user .user-info {
     display: none;
   }

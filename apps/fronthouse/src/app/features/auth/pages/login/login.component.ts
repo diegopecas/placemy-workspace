@@ -17,7 +17,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Imports de librerías compartidas
-import { ThemeService, ThemedBackgroundComponent, ButtonBurstDirective } from '@placemy/shared/ui-components';
+import { ThemeService, ButtonBurstDirective } from '@placemy/shared/ui-components';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +33,6 @@ import { ThemeService, ThemedBackgroundComponent, ButtonBurstDirective } from '@
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    ThemedBackgroundComponent,
     ButtonBurstDirective
   ],
   templateUrl: './login.component.html',

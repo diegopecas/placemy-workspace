@@ -1,4 +1,6 @@
 // src/app/features/auth/pages/login/login.component.scss
+@use 'common' as common;
+
 :host {
   display: block;
   height: 100vh;
@@ -11,12 +13,8 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  
-  // Los colores se heredan automáticamente del data-theme
-  // No necesitamos definir colores hardcodeados aquí
 }
 
-// Contenido del login
 .login-content {
   position: relative;
   z-index: 2;
@@ -37,7 +35,6 @@
   }
 }
 
-// Header con logo
 .login-header {
   text-align: center;
   margin-bottom: 30px;
@@ -52,7 +49,7 @@
     align-items: center;
     justify-content: center;
     margin: 0 auto 1.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    @include common.shadow-xl;
     padding: 20px;
 
     .logo-image {
@@ -66,7 +63,7 @@
     font-size: 2.5rem;
     font-weight: 700;
     margin: 0 0 5px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    @include common.text-shadow-strong;
   }
 
   .app-tagline {
@@ -77,19 +74,13 @@
   }
 }
 
-// Card del login - USANDO VARIABLES CSS DEL TEMA
 .login-card {
   border-radius: 16px !important;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3) !important;
+  @include common.shadow-xl;
 
-  // Header con gradiente del tema
   ::ng-deep mat-card-header {
-    background: linear-gradient(
-      135deg,
-      var(--primary),
-      var(--accent)
-    );
+    background: linear-gradient(135deg, var(--primary), var(--accent));
     color: white;
     padding: 36px 28px !important;
     margin: -16px -16px 24px -16px;
@@ -105,8 +96,7 @@
       text-align: center !important;
     }
 
-    mat-card-title,
-    .mat-mdc-card-title {
+    mat-card-title, .mat-mdc-card-title {
       font-size: 1.75rem !important;
       margin-bottom: 8px !important;
       font-weight: 500 !important;
@@ -115,8 +105,7 @@
       width: 100% !important;
     }
 
-    mat-card-subtitle,
-    .mat-mdc-card-subtitle {
+    mat-card-subtitle, .mat-mdc-card-subtitle {
       color: rgba(255, 255, 255, 0.95) !important;
       margin-top: 4px !important;
       font-size: 1rem !important;
@@ -153,7 +142,7 @@
         color: var(--primary);
         text-decoration: none;
         font-size: 0.9rem;
-        transition: all 0.3s;
+        @include common.smooth-transition;
 
         &:hover {
           color: var(--accent);
@@ -167,8 +156,8 @@
       font-size: 1.1rem;
       font-weight: 500;
       letter-spacing: 0.5px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
+      @include common.shadow-md;
+      @include common.smooth-transition;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -177,7 +166,7 @@
 
       &:not(:disabled):hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        @include common.shadow-lg;
       }
 
       &:disabled {
@@ -195,7 +184,6 @@
     }
   }
 
-  // Footer
   ::ng-deep mat-card-footer {
     background: #f9f9f9 !important;
     padding: 24px 28px !important;
@@ -215,18 +203,6 @@
   }
 }
 
-// Estilos globales para Material Card
-::ng-deep {
-  .mat-mdc-card-header {
-    padding: 0 !important;
-  }
-
-  .mat-mdc-card-footer {
-    padding: 0 !important;
-  }
-}
-
-// Footer del login
 .login-footer {
   margin-top: 30px;
   text-align: center;
@@ -235,7 +211,7 @@
   p {
     margin: 5px 0;
     font-size: 0.9rem;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    @include common.text-shadow-light;
   }
 
   .version {
@@ -244,7 +220,6 @@
   }
 }
 
-// Responsivo
 @media (max-width: 480px) {
   .login-container {
     padding: 10px;
@@ -283,13 +258,11 @@
       padding: 28px 20px !important;
       margin: -16px -16px 16px -16px !important;
 
-      mat-card-title,
-      .mat-mdc-card-title {
+      mat-card-title, .mat-mdc-card-title {
         font-size: 1.4rem !important;
       }
 
-      mat-card-subtitle,
-      .mat-mdc-card-subtitle {
+      mat-card-subtitle, .mat-mdc-card-subtitle {
         font-size: 0.9rem !important;
       }
     }
@@ -339,24 +312,16 @@
   }
 }
 
-// Para pantallas muy pequeñas
 @media (max-width: 380px) {
-  .login-header {
-    .app-title {
-      font-size: 1.75rem;
-    }
+  .login-header .app-title {
+    font-size: 1.75rem;
   }
 
-  .login-card {
-    mat-card-header {
-      mat-card-title {
-        font-size: 1.25rem;
-      }
-    }
+  .login-card mat-card-header mat-card-title {
+    font-size: 1.25rem;
   }
 }
 
-// Para pantallas en landscape muy bajas
 @media (max-height: 700px) and (orientation: landscape) {
   .login-header {
     margin-bottom: 15px;
@@ -383,10 +348,9 @@
   }
 }
 
-// Estilos para los snackbars personalizados
 ::ng-deep {
   .success-snackbar {
-    background: var(--success, #4caf50) !important;
+    background: #4caf50 !important;
     color: white !important;
 
     .mat-mdc-snack-bar-label {
@@ -395,7 +359,7 @@
   }
 
   .error-snackbar {
-    background: var(--danger, #f44336) !important;
+    background: #f44336 !important;
     color: white !important;
 
     .mat-mdc-snack-bar-label {

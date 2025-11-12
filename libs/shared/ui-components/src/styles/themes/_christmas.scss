@@ -1,6 +1,47 @@
+// libs/shared/ui-components/src/styles/themes/_christmas.scss
+
+// ============================================
+// TEMA: NAVIDAD (Diciembre)
+// Colores: Verde, Rojo, Dorado
+// Elementos: 🎄 ⛄ 🎅 🎁 ❄️ ⭐ 🔔
+// ============================================
+
 [data-theme="christmas"] {
+  // Variables CSS del tema
   --primary: #165B33;
   --accent: #BB2528;
+  --secondary: #FFD700;
   --background: #0a0f14;
-  background: radial-gradient(ellipse, rgba(22, 91, 51, 0.3), #000);
+  
+  // Fondo con gradiente animado
+  background: linear-gradient(135deg, #165B33 0%, #BB2528 50%, #FFD700 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  
+  // Capa de overlay oscuro
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

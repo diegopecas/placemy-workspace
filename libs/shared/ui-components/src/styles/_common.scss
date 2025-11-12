@@ -1,0 +1,140 @@
+// libs/shared/ui-components/src/styles/_common.scss
+// ============================================
+// ESTILOS COMUNES COMPARTIDOS
+// ============================================
+// Estos estilos se usan en múltiples componentes para evitar duplicación
+
+// ============================================
+// ANIMACIONES COMUNES
+// ============================================
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+// ============================================
+// MIXINS REUTILIZABLES
+// ============================================
+
+// Card glassmorphism
+@mixin glassmorphism-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// Shadow elevation
+@mixin shadow-sm {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@mixin shadow-md {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@mixin shadow-lg {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+@mixin shadow-xl {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+// Text shadow para texto sobre fondos oscuros
+@mixin text-shadow-light {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@mixin text-shadow-strong {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+// Transition suave
+@mixin smooth-transition {
+  transition: all 0.3s ease;
+}
+
+// Avatar circular
+@mixin avatar-circle($size: 44px) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  @include smooth-transition;
+}
+
+// ============================================
+// CLASES UTILITARIAS
+// ============================================
+
+// Animación de entrada
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+// Texto sobre fondo oscuro
+.text-on-dark {
+  color: white;
+  @include text-shadow-light;
+}
+
+.text-on-dark-strong {
+  color: white;
+  @include text-shadow-strong;
+}
+
+// Glassmorphism
+.glass-card {
+  @include glassmorphism-card;
+}
+
+// Sombras
+.shadow-sm { @include shadow-sm; }
+.shadow-md { @include shadow-md; }
+.shadow-lg { @include shadow-lg; }
+.shadow-xl { @include shadow-xl; }
+
+// ============================================
+// RESPONSIVE BREAKPOINTS
+// ============================================
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+$breakpoint-wide: 1400px;
