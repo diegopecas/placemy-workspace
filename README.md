@@ -101,7 +101,8 @@ And join the Nx community:
 - [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
 ## Estructura proyecto
-tree /F apps > estructura_app.txt
+tree apps /F > estructura_apps.txt
+tree libs /F > estructura_libs.txt
 
 ## Star server
 npx nx serve fronthouse
