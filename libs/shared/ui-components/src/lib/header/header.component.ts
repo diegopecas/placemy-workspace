@@ -61,7 +61,16 @@ export class HeaderComponent {
 
   getUserRole(): string {
     const user = this.currentUser();
-    if (user?.roles && user.roles.length > 0) return user.roles[0].nombre;
+    if (!user) return 'Usuario';
+    
+    // Obtener el primer rol del primer establecimiento
+    if (user.establecimientos && user.establecimientos.length > 0) {
+      const primerEstablecimiento = user.establecimientos[0];
+      if (primerEstablecimiento.roles && primerEstablecimiento.roles.length > 0) {
+        return primerEstablecimiento.roles[0].nombre;
+      }
+    }
+    
     return 'Usuario';
   }
 

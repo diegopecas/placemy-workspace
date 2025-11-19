@@ -24,7 +24,7 @@
 
 ## 🏗️ CONTEXTO DEL PROYECTO
 
-**PlaceMy Workspace** es un monorepo Nx para el sistema de gestión de restaurantes PlaceMy. 
+**PlaceMy Workspace** es un monorepo Nx para el sistema de gestión de establecimientos PlaceMy. 
 
 ### **Arquitectura:**
 - Monorepo Nx con Module Federation

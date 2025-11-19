@@ -4,8 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { jwtDecode } from 'jwt-decode';
-import { User } from '@placemy/shared/auth';
+import { User, Establecimiento } from '@placemy/shared/auth';
 import { AuthResponse, LoginRequest, TokenData } from '../models/auth.model';
 import { environment } from '../../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -51,8 +50,8 @@ export class AuthService {
             // Guardar tokens
             this.saveTokenData(response.data);
             
-            // Normalizar usuario para que coincida con nuestro modelo
-            const normalizedUser = this.normalizeUser(response.data.user);
+            // Normalizar usuario incluyendo establecimientos
+            const normalizedUser = this.normalizeUser(response.data.user, response.data.establecimientos);
             this.saveUserData(normalizedUser);
             
             this.isAuthenticated.set(true);
@@ -154,9 +153,10 @@ export class AuthService {
         tap((response: any) => {
           console.log('Respuesta de /me:', response);
           if (response.success && response.data) {
-            const normalizedUser = this.normalizeUser(response.data);
+            const normalizedUser = this.normalizeUser(response.data, response.data.establecimientos);
             this.saveUserData(normalizedUser);
             this.currentUser.set(normalizedUser);
+            console.log('Usuario actualizado:', normalizedUser);
           }
         })
       );
@@ -266,7 +266,20 @@ export class AuthService {
   /**
    * Normalizar usuario del backend al modelo frontend
    */
-  private normalizeUser(backendUser: any): User {
+  private normalizeUser(backendUser: any, backendEstablecimientos?: any[]): User {
+    // Normalizar establecimientos con sus roles
+    const establecimientos: Establecimiento[] = (backendEstablecimientos || []).map((est: any) => ({
+      id: est.id,
+      nombre: est.nombre,
+      slug: est.slug,
+      logo_url: est.logo_url,
+      roles: (est.roles || []).map((rol: any) => ({
+        id: rol.id,
+        nombre: rol.nombre,
+        permisos: rol.permisos || []
+      }))
+    }));
+
     return {
       id: backendUser.id,
       username: backendUser.username,
@@ -282,8 +295,63 @@ export class AuthService {
         direccion: backendUser.persona.direccion,
         ciudad_id: backendUser.persona.ciudad_id
       } : undefined,
-      roles: backendUser.roles
+      establecimientos
     };
+  }
+
+  /**
+   * Obtener todos los permisos del usuario en todos los establecimientos
+   */
+  getAllPermissions(): string[] {
+    const user = this.currentUser();
+    if (!user) return [];
+    
+    const permisos = new Set<string>();
+    
+    user.establecimientos?.forEach(est => {
+      est.roles.forEach(rol => {
+        rol.permisos?.forEach(permiso => {
+          permisos.add(permiso);
+        });
+      });
+    });
+    
+    return Array.from(permisos);
+  }
+
+  /**
+   * Obtener permisos en un establecimiento específico
+   */
+  getPermissionsInEstablecimiento(establecimientoId: number): string[] {
+    const user = this.currentUser();
+    if (!user) return [];
+    
+    const establecimiento = user.establecimientos?.find(e => e.id === establecimientoId);
+    if (!establecimiento) return [];
+    
+    const permisos = new Set<string>();
+    
+    establecimiento.roles.forEach(rol => {
+      rol.permisos?.forEach(permiso => {
+        permisos.add(permiso);
+      });
+    });
+    
+    return Array.from(permisos);
+  }
+
+  /**
+   * Verificar si el usuario tiene un permiso específico
+   */
+  hasPermission(permiso: string): boolean {
+    return this.getAllPermissions().includes(permiso);
+  }
+
+  /**
+   * Verificar si el usuario tiene un permiso en un establecimiento específico
+   */
+  hasPermissionInEstablecimiento(permiso: string, establecimientoId: number): boolean {
+    return this.getPermissionsInEstablecimiento(establecimientoId).includes(permiso);
   }
 
   /**

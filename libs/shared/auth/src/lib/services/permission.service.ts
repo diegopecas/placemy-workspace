@@ -1,6 +1,7 @@
 // libs/shared/auth/src/lib/services/permission.service.ts
-import { Injectable, inject, computed, Signal } from '@angular/core';
+import { Injectable, computed, Signal } from '@angular/core';
 import { User } from '../models/user.model';
+import { Role } from '../models/role.model';
 import { PermissionName } from '../models/permission.model';
 
 /**
@@ -34,20 +35,22 @@ export class PermissionService {
   
   /**
    * Signal computado con todos los permisos del usuario actual
-   * Consolida permisos de todos los roles en un Set único
+   * Consolida permisos de todos los establecimientos y roles en un Set único
    */
   public readonly userPermissions: Signal<Set<string>> = computed(() => {
     const user = this._currentUserSignal?.();
-    if (!user || !user.roles) {
+    if (!user || !user.establecimientos) {
       return new Set<string>();
     }
     
-    // Consolidar permisos de todos los roles
+    // Consolidar permisos de todos los establecimientos y roles
     const allPermissions = new Set<string>();
-    user.roles.forEach(role => {
-      if (role.permisos) {
-        role.permisos.forEach(permiso => allPermissions.add(permiso));
-      }
+    user.establecimientos.forEach(establecimiento => {
+      establecimiento.roles.forEach((role: Role) => {
+        if (role.permisos) {
+          role.permisos.forEach((permiso: string) => allPermissions.add(permiso));
+        }
+      });
     });
     
     return allPermissions;
@@ -187,29 +190,78 @@ export class PermissionService {
    */
   isAdmin(): boolean {
     const user = this._currentUserSignal?.();
-    if (!user || !user.roles) {
+    if (!user || !user.establecimientos) {
       return false;
     }
     
-    // Verificar si tiene el rol "Super Administrador" o "Administrador"
-    return user.roles.some(role => 
-      role.nombre === 'Super Administrador' || 
-      role.nombre === 'Administrador'
+    // Verificar si tiene el rol "Super Administrador" o "Administrador" en algún establecimiento
+    return user.establecimientos.some(establecimiento =>
+      establecimiento.roles.some((role: Role) => 
+        role.nombre === 'Super Administrador' || 
+        role.nombre === 'Administrador' ||
+        role.nombre.toLowerCase().includes('admin')
+      )
     );
   }
 
   /**
-   * Obtiene los roles del usuario actual
+   * Obtiene los roles del usuario actual (de todos los establecimientos)
    * 
    * @returns Array de nombres de roles
    */
   getUserRoles(): string[] {
     const user = this._currentUserSignal?.();
-    if (!user || !user.roles) {
+    if (!user || !user.establecimientos) {
       return [];
     }
     
-    return user.roles.map(role => role.nombre);
+    const roles = new Set<string>();
+    user.establecimientos.forEach(establecimiento => {
+      establecimiento.roles.forEach((role: Role) => {
+        roles.add(role.nombre);
+      });
+    });
+    
+    return Array.from(roles);
+  }
+
+  /**
+   * Obtiene los permisos del usuario en un establecimiento específico
+   * 
+   * @param establecimientoId ID del establecimiento
+   * @returns Set con los permisos en ese establecimiento
+   */
+  getPermissionsInEstablecimiento(establecimientoId: number): Set<string> {
+    const user = this._currentUserSignal?.();
+    if (!user || !user.establecimientos) {
+      return new Set<string>();
+    }
+    
+    const establecimiento = user.establecimientos.find(e => e.id === establecimientoId);
+    if (!establecimiento) {
+      return new Set<string>();
+    }
+    
+    const permissions = new Set<string>();
+    establecimiento.roles.forEach((role: Role) => {
+      if (role.permisos) {
+        role.permisos.forEach((permiso: string) => permissions.add(permiso));
+      }
+    });
+    
+    return permissions;
+  }
+
+  /**
+   * Verifica si el usuario tiene un permiso en un establecimiento específico
+   * 
+   * @param permission Nombre del permiso
+   * @param establecimientoId ID del establecimiento
+   * @returns true si tiene el permiso en ese establecimiento
+   */
+  hasPermissionInEstablecimiento(permission: PermissionName, establecimientoId: number): boolean {
+    const permissions = this.getPermissionsInEstablecimiento(establecimientoId);
+    return permissions.has(permission);
   }
 
   /**
@@ -219,8 +271,10 @@ export class PermissionService {
   debugPermissions(): void {
     const permissions = this.getAllPermissions();
     const roles = this.getUserRoles();
+    const user = this._currentUserSignal?.();
     
     console.group('🔐 Permisos del Usuario');
+    console.log('Establecimientos:', user?.establecimientos?.length || 0);
     console.log('Roles:', roles);
     console.log('Total de permisos:', permissions.size);
     console.log('Permisos:', Array.from(permissions).sort());

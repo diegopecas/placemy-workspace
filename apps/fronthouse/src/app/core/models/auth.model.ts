@@ -1,6 +1,6 @@
 // src/app/core/models/auth.model.ts
 export interface LoginRequest {
-  identifier : string;
+  identifier: string;
   password: string;
 }
 
@@ -13,6 +13,7 @@ export interface AuthResponse {
     expires_in: number;
     refresh_token?: string;
     user: any;
+    establecimientos?: any[];
   };
 }
 
