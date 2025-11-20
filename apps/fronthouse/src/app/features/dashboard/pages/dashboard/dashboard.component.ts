@@ -221,7 +221,7 @@ export class DashboardComponent implements OnInit {
     this.permissionService.setActiveEstablecimiento(selectedEst.id);
 
     // 🎄 Forzar tema de navidad para probar
-    this.themeService.setTheme('christmas');
+    //this.themeService.setTheme('christmas');
 
     this.loadUserData();
 
