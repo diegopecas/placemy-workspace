@@ -505,6 +505,14 @@ export class MiComponente {
 
 ### **Sistema de Permisos:**
 
+# ACTUALIZAR EN prompt_ws.md (sección "🔐 AUTENTICACIÓN Y AUTORIZACIÓN")
+
+---
+
+## 🔐 AUTENTICACIÓN Y AUTORIZACIÓN
+
+
+
 **1. PermissionService:**
 ```typescript
 @Injectable({ providedIn: 'root' })
@@ -553,7 +561,62 @@ menuCards = computed(() => {
   );
 });
 ```
+### **Permisos Multi-Establecimiento**
 
+Un usuario puede tener diferentes roles en diferentes establecimientos. La estructura es:
+
+```typescript
+// User tiene establecimientos (NO roles directo)
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  persona_natural?: PersonaNatural;
+  establecimientos?: Establecimiento[];  // ← Aquí están los roles
+}
+
+// Cada establecimiento tiene sus roles con permisos
+interface Establecimiento {
+  id: number;
+  nombre: string;
+  slug: string;
+  roles: Role[];
+}
+
+interface Role {
+  id: number;
+  nombre: string;
+  permisos?: string[];
+}
+```
+
+### **PermissionService - Métodos Principales**
+
+```typescript
+// Permiso en CUALQUIER establecimiento
+hasPermission(permission: string): boolean
+
+// Permiso en UN establecimiento específico
+hasPermissionInEstablecimiento(permission: string, establecimientoId: number): boolean
+
+// Permisos de un establecimiento
+getPermissionsInEstablecimiento(establecimientoId: number): Set<string>
+
+// Roles del usuario (todos los establecimientos)
+getUserRoles(): string[]
+```
+
+### **Obtener Rol en Componentes**
+
+```typescript
+getUserRole(): string {
+  const user = this.currentUser();
+  if (!user?.establecimientos?.[0]?.roles?.[0]) return 'Sin rol';
+  return user.establecimientos[0].roles[0].nombre;
+}
+```
+
+---
 ---
 
 ## 🔧 COMPONENTES COMPARTIDOS
