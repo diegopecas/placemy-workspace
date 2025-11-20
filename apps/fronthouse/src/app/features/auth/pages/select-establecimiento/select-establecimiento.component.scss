@@ -1,0 +1,463 @@
+// apps/fronthouse/src/app/features/auth/pages/select-establecimiento/select-establecimiento.component.scss
+@use 'common' as common;
+
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.select-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 2rem 1rem;
+}
+
+.floating-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  
+  .theme-particle {
+    position: absolute;
+    font-size: 2rem;
+    animation: float 15s ease-in-out infinite;
+    opacity: 0.6;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(10deg);
+  }
+}
+
+.select-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 900px;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.select-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: white;
+
+  .logo-container {
+    width: 100px;
+    height: 100px;
+    background: white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    @include common.shadow-xl;
+    padding: 16px;
+
+    .logo-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .app-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 5px;
+    @include common.text-shadow-strong;
+  }
+
+  .app-tagline {
+    font-size: 1rem;
+    opacity: 0.95;
+    margin: 0;
+    font-weight: 300;
+  }
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.6s ease-out;
+
+  h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 0.5rem 0;
+    @include common.text-shadow-strong;
+  }
+
+  p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    @include common.text-shadow-light;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+  gap: 1.5rem;
+
+  p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    margin: 0;
+    @include common.text-shadow-light;
+  }
+}
+
+.establecimientos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.establecimiento-card {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  @include common.smooth-transition;
+  border-radius: 16px !important;
+  animation: fadeInUp 0.6s ease-out;
+  background: rgba(255, 255, 255, 0.95);
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    @include common.shadow-xl;
+
+    .card-avatar {
+      transform: scale(1.1);
+    }
+
+    .card-overlay {
+      opacity: 1;
+    }
+
+    .select-button {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+  }
+
+  .card-avatar {
+    width: 80px;
+    height: 80px;
+    margin: 1.5rem auto 1rem;
+    border-radius: 16px;
+    overflow: hidden;
+    @include common.shadow-lg;
+    @include common.smooth-transition;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .est-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .est-initials {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+  }
+
+  mat-card-content {
+    padding: 0 1.5rem 1.5rem;
+    text-align: center;
+
+    .est-nombre {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 1rem 0;
+      color: #1f2937;
+    }
+
+    .est-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+
+      .info-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        color: #6b7280;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          color: var(--primary);
+        }
+      }
+    }
+
+    .select-button {
+      width: 100%;
+      height: 44px;
+      font-weight: 500;
+      @include common.smooth-transition;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(139, 38, 53, 0.05), rgba(255, 107, 107, 0.05));
+    opacity: 0;
+    @include common.smooth-transition;
+    pointer-events: none;
+  }
+}
+
+.no-establecimientos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  margin-bottom: 2rem;
+  @include common.glassmorphism-card;
+  @include common.shadow-lg;
+  animation: fadeInUp 0.6s ease-out;
+
+  .warning-icon {
+    font-size: 96px;
+    width: 96px;
+    height: 96px;
+    color: #ff9800;
+    margin-bottom: 1.5rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 0.75rem 0;
+    text-align: center;
+  }
+
+  p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+    max-width: 400px;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.select-footer {
+  text-align: center;
+  padding: 1.5rem 0;
+  color: rgba(255, 255, 255, 0.8);
+  @include common.text-shadow-light;
+
+  p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+  }
+
+  .version {
+    font-size: 0.8rem;
+    opacity: 0.8;
+  }
+}
+
+// Responsive
+@media (max-width: common.$breakpoint-tablet) {
+  .select-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .select-header {
+    .logo-container {
+      width: 80px;
+      height: 80px;
+    }
+
+    .app-title {
+      font-size: 1.75rem;
+    }
+  }
+
+  .welcome-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .establecimientos-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: common.$breakpoint-mobile) {
+  .select-header {
+    margin-bottom: 1.5rem;
+
+    .logo-container {
+      width: 70px;
+      height: 70px;
+      padding: 12px;
+    }
+
+    .app-title {
+      font-size: 1.5rem;
+    }
+
+    .app-tagline {
+      font-size: 0.9rem;
+    }
+  }
+
+  .welcome-section {
+    margin-bottom: 1.5rem;
+
+    h2 {
+      font-size: 1.25rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+
+  .establecimiento-card {
+    .card-avatar {
+      width: 64px;
+      height: 64px;
+      margin: 1rem auto 0.75rem;
+
+      .est-initials {
+        font-size: 1.5rem;
+      }
+    }
+
+    mat-card-content {
+      padding: 0 1rem 1rem;
+
+      .est-nombre {
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  .no-establecimientos {
+    padding: 2rem 1rem;
+
+    .warning-icon {
+      font-size: 72px;
+      width: 72px;
+      height: 72px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+// Snackbar styles
+::ng-deep {
+  .success-snackbar {
+    background: #4caf50 !important;
+    color: white !important;
+
+    .mat-mdc-snack-bar-label {
+      color: white !important;
+    }
+  }
+
+  .error-snackbar {
+    background: #f44336 !important;
+    color: white !important;
+
+    .mat-mdc-snack-bar-label {
+      color: white !important;
+    }
+
+    button {
+      color: white !important;
+    }
+  }
+}

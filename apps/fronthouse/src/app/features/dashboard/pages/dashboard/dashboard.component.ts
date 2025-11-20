@@ -68,6 +68,7 @@ export class DashboardComponent implements OnInit {
 
   // Signals para estado reactivo
   currentUser = this.authService.currentUser;
+  selectedEstablecimiento = this.authService.selectedEstablecimiento;
   isLoading = signal(false);
   currentTheme = this.themeService.currentTheme;
 
@@ -165,6 +166,7 @@ export class DashboardComponent implements OnInit {
 
   /**
    * Signal computado que filtra las tarjetas según los permisos del usuario
+   * en el establecimiento seleccionado
    */
   menuCards = computed(() => {
     return this.allMenuCards.filter((card) =>
@@ -180,20 +182,44 @@ export class DashboardComponent implements OnInit {
   };
 
   constructor() {
-    // Configurar el usuario en el header reactivamente
+    // Configurar el usuario y establecimiento en el header reactivamente
     effect(() => {
-      if (this.header) {
-        this.header.setCurrentUser(this.currentUser());
-      }
+      const user = this.currentUser();
+      const establecimiento = this.selectedEstablecimiento();
+
+      setTimeout(() => {
+        if (this.header) {
+          this.header.setCurrentUser(user);
+          this.header.setSelectedEstablecimiento(establecimiento);
+        }
+      }, 0);
     });
 
     // Escuchar el evento de logout del header
     window.addEventListener('header-logout', () => {
       this.authService.logout().subscribe();
     });
+
+    // Escuchar evento de cambio de establecimiento
+    window.addEventListener('header-change-establecimiento', () => {
+      this.authService.clearSelectedEstablecimiento();
+      this.permissionService.clearActiveEstablecimiento();
+      this.router.navigate(['/select-establecimiento']);
+    });
   }
 
   ngOnInit(): void {
+    // Verificar que hay establecimiento seleccionado
+    const selectedEst = this.selectedEstablecimiento();
+    console.log('🏢 Establecimiento seleccionado:', selectedEst);
+    if (!selectedEst) {
+      this.router.navigate(['/select-establecimiento']);
+      return;
+    }
+
+    // Configurar el establecimiento activo en el PermissionService
+    this.permissionService.setActiveEstablecimiento(selectedEst.id);
+
     // 🎄 Forzar tema de navidad para probar
     this.themeService.setTheme('christmas');
 
@@ -202,6 +228,7 @@ export class DashboardComponent implements OnInit {
     // Debug
     console.log('🎨 Dashboard - Tema actual:', this.currentTheme().name);
     console.log('🎨 Título:', this.currentTheme().title);
+    console.log('🏢 Establecimiento activo:', selectedEst.nombre);
   }
 
   private loadUserData(): void {
@@ -219,6 +246,9 @@ export class DashboardComponent implements OnInit {
           'de',
           this.allMenuCards.length
         );
+
+        // Debug de permisos
+        this.permissionService.debugPermissions();
       },
       error: (error) => {
         console.error('Error obteniendo información del usuario:', error);
@@ -242,17 +272,22 @@ export class DashboardComponent implements OnInit {
   }
 
   getUserRole(): string {
-    const user = this.currentUser();
-    if (!user) return 'Sin rol asignado';
-    
-    // Obtener el primer rol del primer establecimiento
-    if (user.establecimientos && user.establecimientos.length > 0) {
-      const primerEstablecimiento = user.establecimientos[0];
-      if (primerEstablecimiento.roles && primerEstablecimiento.roles.length > 0) {
-        return primerEstablecimiento.roles[0].nombre;
-      }
+    const selectedEst = this.selectedEstablecimiento();
+    if (!selectedEst) return 'Sin rol asignado';
+
+    // Obtener el primer rol del establecimiento seleccionado
+    if (selectedEst.roles && selectedEst.roles.length > 0) {
+      return selectedEst.roles[0].nombre;
     }
-    
+
     return 'Sin rol asignado';
+  }
+
+  /**
+   * Obtener el nombre del establecimiento activo
+   */
+  getEstablecimientoName(): string {
+    const selectedEst = this.selectedEstablecimiento();
+    return selectedEst?.nombre || 'Sin establecimiento';
   }
 }

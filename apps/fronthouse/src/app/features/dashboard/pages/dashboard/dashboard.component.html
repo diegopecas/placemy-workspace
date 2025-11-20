@@ -32,7 +32,7 @@
     <!-- Header de bienvenida -->
     <div class="welcome-section fade-in-up">
       <h2>Bienvenido, {{ getUserDisplayName() }}</h2>
-      <p>Selecciona una opción para comenzar a gestionar tu restaurante</p>
+      <p>Selecciona una opción para comenzar a gestionar <strong>{{ getEstablecimientoName() }}</strong></p>
       <p class="theme-indicator">🎨 Tema activo: {{ currentTheme().title }}</p>
     </div>
 
@@ -85,7 +85,7 @@
       <div class="no-permissions-message">
         <mat-icon class="warning-icon">lock</mat-icon>
         <h3>No tienes acceso a ningún módulo</h3>
-        <p>Contacta al administrador para que te asigne los permisos necesarios.</p>
+        <p>Contacta al administrador para que te asigne los permisos necesarios en <strong>{{ getEstablecimientoName() }}</strong>.</p>
       </div>
     }
 
@@ -140,6 +140,11 @@
           <div class="info-item">
             <span class="label">Rol</span>
             <mat-chip class="role-chip">{{ getUserRole() }}</mat-chip>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="info-item">
+            <span class="label">Establecimiento</span>
+            <span class="value">{{ getEstablecimientoName() }}</span>
           </div>
           } @else {
           <div class="loading-message">

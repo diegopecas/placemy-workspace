@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   isLoading = signal(false);
   hidePassword = signal(true);
-  returnUrl = '/dashboard';
+  returnUrl = '/select-establecimiento'; // Cambiado de /dashboard
   
   // Tema actual
   currentTheme = this.themeService.currentTheme;
@@ -64,11 +64,21 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+    
+    // Obtener returnUrl o usar el default
+    const queryReturnUrl = this.route.snapshot.queryParams['returnUrl'];
+    if (queryReturnUrl && queryReturnUrl !== '/login') {
+      this.returnUrl = queryReturnUrl;
+    }
     
     // Si ya está autenticado, redirigir
     if (this.authService.checkAuthStatus()) {
-      this.router.navigate([this.returnUrl]);
+      const selectedEst = this.authService.getSelectedEstablecimiento();
+      if (selectedEst) {
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.router.navigate(['/select-establecimiento']);
+      }
     }
 
     // Log del tema activo
@@ -107,7 +117,8 @@ export class LoginComponent implements OnInit {
           });
           
           setTimeout(() => {
-            this.router.navigate([this.returnUrl]);
+            // Siempre ir primero a selección de establecimiento
+            this.router.navigate(['/select-establecimiento']);
           }, 1000);
         }
         this.isLoading.set(false);

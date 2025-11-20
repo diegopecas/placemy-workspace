@@ -20,12 +20,14 @@ export class AuthService {
   private readonly TOKEN_KEY = 'placemy_token';
   private readonly REFRESH_TOKEN_KEY = 'placemy_refresh_token';
   private readonly USER_KEY = 'placemy_user';
+  private readonly SELECTED_ESTABLECIMIENTO_KEY = 'placemy_selected_establecimiento';
   
   private apiUrl = `${environment.apiUrl}/auth`;
   
   // Signals para estado reactivo
   isAuthenticated = signal<boolean>(false);
   currentUser = signal<User | null>(null);
+  selectedEstablecimiento = signal<Establecimiento | null>(null);
   
   // BehaviorSubject para compatibilidad
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
@@ -57,6 +59,9 @@ export class AuthService {
             this.isAuthenticated.set(true);
             this.isAuthenticatedSubject.next(true);
             this.currentUser.set(normalizedUser);
+            
+            // Limpiar establecimiento seleccionado anterior al hacer nuevo login
+            this.clearSelectedEstablecimiento();
             
             console.log('Token guardado:', this.getToken());
             console.log('Usuario guardado:', normalizedUser);
@@ -171,16 +176,61 @@ export class AuthService {
     
     if (token && this.isTokenValid(token)) {
       const user = this.getUserData();
+      const selectedEst = this.getSelectedEstablecimientoFromStorage();
+      
       this.isAuthenticated.set(true);
       this.isAuthenticatedSubject.next(true);
       this.currentUser.set(user);
+      this.selectedEstablecimiento.set(selectedEst);
+      
       console.log('Usuario autenticado:', user);
+      console.log('Establecimiento seleccionado:', selectedEst);
       return true;
     } else {
       console.log('No hay token válido');
       this.clearAuth();
       return false;
     }
+  }
+
+  /**
+   * Establecer el establecimiento seleccionado
+   */
+  setSelectedEstablecimiento(establecimiento: Establecimiento): void {
+    this.selectedEstablecimiento.set(establecimiento);
+    localStorage.setItem(this.SELECTED_ESTABLECIMIENTO_KEY, JSON.stringify(establecimiento));
+    console.log('Establecimiento seleccionado guardado:', establecimiento);
+  }
+
+  /**
+   * Obtener el establecimiento seleccionado
+   */
+  getSelectedEstablecimiento(): Establecimiento | null {
+    return this.selectedEstablecimiento();
+  }
+
+  /**
+   * Obtener establecimiento desde localStorage
+   */
+  private getSelectedEstablecimientoFromStorage(): Establecimiento | null {
+    const data = localStorage.getItem(this.SELECTED_ESTABLECIMIENTO_KEY);
+    if (data) {
+      try {
+        return JSON.parse(data);
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Limpiar establecimiento seleccionado
+   */
+  clearSelectedEstablecimiento(): void {
+    this.selectedEstablecimiento.set(null);
+    localStorage.removeItem(this.SELECTED_ESTABLECIMIENTO_KEY);
+    console.log('Establecimiento seleccionado limpiado');
   }
 
   /**
@@ -341,6 +391,16 @@ export class AuthService {
   }
 
   /**
+   * Obtener permisos del establecimiento actualmente seleccionado
+   */
+  getSelectedEstablecimientoPermissions(): string[] {
+    const selectedEst = this.selectedEstablecimiento();
+    if (!selectedEst) return [];
+    
+    return this.getPermissionsInEstablecimiento(selectedEst.id);
+  }
+
+  /**
    * Verificar si el usuario tiene un permiso específico
    */
   hasPermission(permiso: string): boolean {
@@ -355,15 +415,26 @@ export class AuthService {
   }
 
   /**
+   * Verificar si el usuario tiene un permiso en el establecimiento seleccionado
+   */
+  hasPermissionInSelected(permiso: string): boolean {
+    const selectedEst = this.selectedEstablecimiento();
+    if (!selectedEst) return false;
+    return this.hasPermissionInEstablecimiento(permiso, selectedEst.id);
+  }
+
+  /**
    * Limpiar datos de autenticación
    */
   private clearAuth(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
+    localStorage.removeItem(this.SELECTED_ESTABLECIMIENTO_KEY);
     this.isAuthenticated.set(false);
     this.isAuthenticatedSubject.next(false);
     this.currentUser.set(null);
+    this.selectedEstablecimiento.set(null);
     console.log('Autenticación limpiada');
   }
 }

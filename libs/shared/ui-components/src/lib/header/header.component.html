@@ -12,6 +12,31 @@
     </div>
   </div>
 
+  <!-- Selector de establecimiento (solo si hay múltiples) -->
+  @if (selectedEstablecimiento()) {
+    <div class="establecimiento-selector" 
+         [class.clickable]="hasMultipleEstablecimientos()"
+         (click)="hasMultipleEstablecimientos() ? onChangeEstablecimiento() : null"
+         [matTooltip]="hasMultipleEstablecimientos() ? 'Cambiar establecimiento' : ''">
+      <div class="est-avatar">
+        @if (selectedEstablecimiento()?.logo_url) {
+          <img [src]="selectedEstablecimiento()?.logo_url" [alt]="selectedEstablecimiento()?.nombre" />
+        } @else {
+          <span class="est-initials">{{ getEstablecimientoInitials(selectedEstablecimiento()?.nombre || '') }}</span>
+        }
+      </div>
+      <div class="est-info">
+        <span class="est-name">{{ getEstablecimientoName() }}</span>
+        @if (hasMultipleEstablecimientos()) {
+          <span class="est-change-hint">
+            <mat-icon>swap_horiz</mat-icon>
+            Cambiar
+          </span>
+        }
+      </div>
+    </div>
+  }
+
   <!-- Spacer -->
   <span class="header-spacer"></span>
 
@@ -46,6 +71,14 @@
         </div>
       </div>
 
+      <!-- Info del establecimiento en el menú -->
+      @if (selectedEstablecimiento()) {
+        <div class="menu-establecimiento-info">
+          <mat-icon>store</mat-icon>
+          <span>{{ getEstablecimientoName() }}</span>
+        </div>
+      }
+
       <mat-divider></mat-divider>
 
       <!-- Opciones del menú -->
@@ -58,6 +91,14 @@
         <mat-icon>dashboard</mat-icon>
         <span>Dashboard</span>
       </button>
+
+      <!-- Opción de cambiar establecimiento (solo si tiene múltiples) -->
+      @if (hasMultipleEstablecimientos()) {
+        <button mat-menu-item (click)="onChangeEstablecimiento()">
+          <mat-icon>swap_horiz</mat-icon>
+          <span>Cambiar Establecimiento</span>
+        </button>
+      }
 
       <mat-divider></mat-divider>
 
