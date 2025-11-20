@@ -1,0 +1,60 @@
+// floating-particles.component.scss
+
+.floating-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  
+  .theme-particle {
+    position: absolute;
+    font-size: 2rem;
+    animation: float 15s ease-in-out infinite;
+    opacity: 0.6;
+  }
+}
+
+.stars-background {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle ease-in-out infinite;
+    opacity: 0.7;
+  }
+}
+
+// ✨ ANIMACIÓN CON MOVIMIENTO AMPLIO
+@keyframes float {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-100px) translateX(50px) rotate(90deg);
+  }
+  50% {
+    transform: translateY(-200px) translateX(-30px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(-100px) translateX(-50px) rotate(270deg);
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(360deg);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}

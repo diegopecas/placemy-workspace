@@ -13,7 +13,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Imports de librerías compartidas
 import { Establecimiento, PermissionService } from '@placemy/shared/auth';
-import { ThemeService, ButtonBurstDirective } from '@placemy/shared/ui-components';
+import { ThemeService, ButtonBurstDirective, FloatingParticlesComponent } from '@placemy/shared/ui-components';
 
 @Component({
   selector: 'app-select-establecimiento',
@@ -25,7 +25,8 @@ import { ThemeService, ButtonBurstDirective } from '@placemy/shared/ui-component
     MatIconModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    ButtonBurstDirective
+    ButtonBurstDirective,
+    FloatingParticlesComponent
   ],
   templateUrl: './select-establecimiento.component.html',
   styleUrl: './select-establecimiento.component.scss'
@@ -44,19 +45,6 @@ export class SelectEstablecimientoComponent implements OnInit {
   // Tema actual
   currentTheme = this.themeService.currentTheme;
   
-  // Partículas flotantes basadas en el tema
-  floatingParticles = computed(() => {
-    const theme = this.currentTheme();
-    return Array.from({ length: 15 }, () => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      delay: Math.random() * 10,
-      duration: 15 + Math.random() * 10,
-      icon: theme.decorativeElements[
-        Math.floor(Math.random() * theme.decorativeElements.length)
-      ]
-    }));
-  });
   
   // Establecimientos del usuario
   establecimientos = computed(() => {

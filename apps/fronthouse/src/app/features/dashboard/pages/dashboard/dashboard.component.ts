@@ -25,6 +25,7 @@ import {
   HeaderComponent,
   ThemeService,
   ButtonBurstDirective,
+  FloatingParticlesComponent,
 } from '@placemy/shared/ui-components';
 
 /**
@@ -54,6 +55,7 @@ interface MenuCard {
     MatProgressSpinnerModule,
     MatIconModule,
     ButtonBurstDirective,
+    FloatingParticlesComponent
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -72,28 +74,7 @@ export class DashboardComponent implements OnInit {
   isLoading = signal(false);
   currentTheme = this.themeService.currentTheme;
 
-  // ✨ Partículas flotantes basadas en el tema actual
-  floatingParticles = computed(() => {
-    const theme = this.currentTheme();
-    return Array.from({ length: 20 }, () => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      delay: Math.random() * 10,
-      duration: 15 + Math.random() * 10,
-      icon: theme.decorativeElements[
-        Math.floor(Math.random() * theme.decorativeElements.length)
-      ],
-    }));
-  });
-
-  // ✨ Estrellas de fondo
-  stars = Array.from({ length: 80 }, () => ({
-    top: Math.random() * 100,
-    left: Math.random() * 100,
-    size: Math.random() * 2 + 1,
-    duration: Math.random() * 3 + 2,
-  }));
-
+  
   // Todas las tarjetas del menú (con permisos requeridos)
   private allMenuCards: MenuCard[] = [
     {

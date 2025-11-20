@@ -1,16 +1,7 @@
 <!-- apps/fronthouse/src/app/features/auth/pages/select-establecimiento/select-establecimiento.component.html -->
 <div class="select-container" [attr.data-theme]="currentTheme().name">
   <!-- Partículas flotantes temáticas -->
-  <div class="floating-particles">
-    <div *ngFor="let p of floatingParticles()" 
-         class="theme-particle"
-         [style.left.%]="p.x"
-         [style.top.%]="p.y"
-         [style.animation-delay.s]="p.delay"
-         [style.animation-duration.s]="p.duration">
-      {{ p.icon }}
-    </div>
-  </div>
+  <app-floating-particles [particleCount]="20"></app-floating-particles>
 
   <div class="select-content">
     <!-- Header con logo y título -->
@@ -30,75 +21,81 @@
 
     <!-- Loading spinner -->
     @if (isLoading()) {
-      <div class="loading-container">
-        <mat-spinner diameter="60"></mat-spinner>
-        <p>Cargando establecimiento...</p>
-      </div>
+    <div class="loading-container">
+      <mat-spinner diameter="60"></mat-spinner>
+      <p>Cargando establecimiento...</p>
+    </div>
     }
 
     <!-- Grid de establecimientos -->
     @if (!isLoading() && establecimientos().length > 0) {
-      <div class="establecimientos-grid">
-        @for (est of establecimientos(); track est.id) {
-          <mat-card 
-            class="establecimiento-card"
-            (click)="selectEstablecimiento(est)"
-            appButtonBurst>
-            
-            <!-- Avatar/Logo del establecimiento -->
-            <div class="card-avatar">
-              @if (est.logo_url) {
-                <img [src]="est.logo_url" [alt]="est.nombre" class="est-logo" />
-              } @else {
-                <div class="est-initials">
-                  {{ getEstablecimientoInitials(est.nombre) }}
-                </div>
-              }
+    <div class="establecimientos-grid">
+      @for (est of establecimientos(); track est.id) {
+      <mat-card
+        class="establecimiento-card"
+        (click)="selectEstablecimiento(est)"
+        appButtonBurst
+      >
+        <!-- Avatar/Logo del establecimiento -->
+        <div class="card-avatar">
+          @if (est.logo_url) {
+          <img [src]="est.logo_url" [alt]="est.nombre" class="est-logo" />
+          } @else {
+          <div class="est-initials">
+            {{ getEstablecimientoInitials(est.nombre) }}
+          </div>
+          }
+        </div>
+
+        <mat-card-content>
+          <h3 class="est-nombre">{{ est.nombre }}</h3>
+
+          <div class="est-info">
+            <div class="info-item">
+              <mat-icon>badge</mat-icon>
+              <span>{{ getRolesInEstablecimiento(est) }}</span>
             </div>
 
-            <mat-card-content>
-              <h3 class="est-nombre">{{ est.nombre }}</h3>
-              
-              <div class="est-info">
-                <div class="info-item">
-                  <mat-icon>badge</mat-icon>
-                  <span>{{ getRolesInEstablecimiento(est) }}</span>
-                </div>
-                
-                <div class="info-item">
-                  <mat-icon>security</mat-icon>
-                  <span>{{ getPermissionCount(est) }} permisos</span>
-                </div>
-              </div>
+            <div class="info-item">
+              <mat-icon>security</mat-icon>
+              <span>{{ getPermissionCount(est) }} permisos</span>
+            </div>
+          </div>
 
-              <button mat-stroked-button color="primary" class="select-button">
-                <mat-icon>login</mat-icon>
-                Ingresar
-              </button>
-            </mat-card-content>
+          <button mat-stroked-button color="primary" class="select-button">
+            <mat-icon>login</mat-icon>
+            Ingresar
+          </button>
+        </mat-card-content>
 
-            <div class="card-overlay"></div>
-          </mat-card>
-        }
-      </div>
+        <div class="card-overlay"></div>
+      </mat-card>
+      }
+    </div>
     }
 
     <!-- Mensaje cuando no hay establecimientos -->
     @if (!isLoading() && establecimientos().length === 0) {
-      <div class="no-establecimientos">
-        <mat-icon class="warning-icon">store_mall_directory</mat-icon>
-        <h3>Sin establecimientos asignados</h3>
-        <p>No tienes acceso a ningún establecimiento. Contacta al administrador para que te asigne uno.</p>
-        <button mat-raised-button color="warn" (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          Cerrar Sesión
-        </button>
-      </div>
+    <div class="no-establecimientos">
+      <mat-icon class="warning-icon">store_mall_directory</mat-icon>
+      <h3>Sin establecimientos asignados</h3>
+      <p>
+        No tienes acceso a ningún establecimiento. Contacta al administrador
+        para que te asigne uno.
+      </p>
+      <button mat-raised-button color="warn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Cerrar Sesión
+      </button>
+    </div>
     }
 
     <!-- Footer -->
     <div class="select-footer">
-      <p>&copy; {{ appInfo.year }} {{ appInfo.name }}. Todos los derechos reservados.</p>
+      <p>
+        &copy; {{ appInfo.year }} {{ appInfo.name }}. Todos los derechos
+        reservados.
+      </p>
       <p class="version">Versión {{ appInfo.version }}</p>
     </div>
   </div>
