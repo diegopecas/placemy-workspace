@@ -16,9 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@placemy/shared/auth": ["libs/shared/auth/src/index.ts"],
-      "@placemy/shared/ui-components": [
-        "libs/shared/ui-components/src/index.ts"
-      ]
+      "@placemy/shared/ui-components": ["libs/shared/ui-components/src/index.ts"],
+      "@env/*": ["apps/fronthouse/src/environments/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

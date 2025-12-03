@@ -55,7 +55,7 @@ interface MenuCard {
     MatProgressSpinnerModule,
     MatIconModule,
     ButtonBurstDirective,
-    FloatingParticlesComponent
+    FloatingParticlesComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -74,7 +74,6 @@ export class DashboardComponent implements OnInit {
   isLoading = signal(false);
   currentTheme = this.themeService.currentTheme;
 
-  
   // Todas las tarjetas del menú (con permisos requeridos)
   private allMenuCards: MenuCard[] = [
     {
@@ -142,6 +141,17 @@ export class DashboardComponent implements OnInit {
       colorDark: '#cc3d3d',
       stats: { label: 'Sistema', value: 1 },
       requiredPermission: 'core.configuraciones.ver',
+    },
+    {
+      title: 'Tomar Pedido',
+      description: 'Atención de mesas y pedidos',
+      icon: 'restaurant',
+      route: '/mesero',
+      color: 'accent',
+      colorLight: '#22c55e',
+      colorDark: '#16a34a',
+      stats: { label: 'Mesas', value: 0 },
+      requiredPermission: 'cuentas.crear',
     },
   ];
 

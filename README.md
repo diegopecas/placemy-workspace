@@ -101,8 +101,12 @@ And join the Nx community:
 - [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
 ## Estructura proyecto
-tree apps /F > estructura_apps.txt
-tree libs /F > estructura_libs.txt
+tree apps /F > estructura_front_apps.txt
+tree libs /F > estructura_front_libs.txt
 
 ## Star server
 npx nx serve fronthouse
+
+## Usuario
+    "identifier": "42132501",
+    "password": "admin123"
