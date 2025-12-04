@@ -1,0 +1,69 @@
+<!-- apps/fronthouse/src/app/features/mesero/components/mesa-card/mesa-card.component.html -->
+<div 
+  class="mesa-card" 
+  [class.cuenta-activa]="mesa.tieneCuentaActiva"
+  [class.disponible]="isDisponible()" 
+  [attr.data-estado]="mesa.estado?.nombre?.toLowerCase()"
+  (click)="onSeleccionar()">
+  
+  <!-- Header con gradiente -->
+  <div class="mesa-header" [style.background]="'linear-gradient(135deg, ' + mesa.colorEstado + ', ' + mesa.colorEstado + 'dd)'">
+    <div class="mesa-icon">
+      {{ getEstadoIcon() }}
+    </div>
+    <span class="mesa-numero-grande">{{ mesa.numero_mesa }}</span>
+  </div>
+
+  <!-- Contenido de la tarjeta -->
+  <div class="mesa-body">
+    <!-- Capacidad -->
+    <div class="mesa-info-row">
+      <span class="info-icon">👥</span>
+      <span class="info-text">{{ mesa.capacidad }} personas</span>
+    </div>
+
+    <!-- Zona -->
+    <div class="mesa-info-row" *ngIf="mesa.zona">
+      <span class="info-icon">📍</span>
+      <span class="info-text">{{ mesa.zona.nombre }}</span>
+    </div>
+
+    <!-- Estado badge -->
+    <div class="mesa-estado">
+      <span class="estado-badge" [style.background-color]="mesa.colorEstado">
+        {{ getEstadoLabel() }}
+      </span>
+    </div>
+
+    <!-- Cuenta info -->
+    <div class="cuenta-info-box" *ngIf="mesa.tieneCuentaActiva && mesa.numeroCuenta">
+      <div class="cuenta-label">Cuenta Activa</div>
+      <div class="cuenta-numero">{{ mesa.numeroCuenta }}</div>
+    </div>
+  </div>
+
+  <!-- Footer con acciones -->
+  <div class="mesa-footer">
+    <button 
+      *ngIf="!mesa.tieneCuentaActiva && isDisponible()" 
+      class="btn-accion btn-nueva" 
+      (click)="onNuevaCuenta($event)">
+      <span class="btn-icon">➕</span>
+      <span>Nueva Cuenta</span>
+    </button>
+    <button 
+      *ngIf="mesa.tieneCuentaActiva" 
+      class="btn-accion btn-ver" 
+      (click)="onVerCuenta($event)">
+      <span class="btn-icon">👁️</span>
+      <span>Ver Cuenta</span>
+    </button>
+    <button 
+      *ngIf="!mesa.tieneCuentaActiva && !isDisponible()" 
+      class="btn-accion btn-disabled" 
+      disabled>
+      <span class="btn-icon">🚫</span>
+      <span>No disponible</span>
+    </button>
+  </div>
+</div>

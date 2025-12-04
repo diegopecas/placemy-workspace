@@ -1,0 +1,87 @@
+<!-- apps/fronthouse/src/app/features/mesero/components/resumen-cuenta/resumen-cuenta.component.html -->
+<div class="resumen-cuenta" [attr.data-theme]="currentTheme().name">
+  
+  <!-- Contenedor de totales -->
+  <div class="totales-container">
+    
+    <!-- Subtotal -->
+    <div class="linea-total">
+      <div class="total-icono">💰</div>
+      <div class="total-info">
+        <span class="total-label">Subtotal</span>
+        <span class="total-valor">{{ subtotal | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+      </div>
+    </div>
+
+    <!-- Impuestos -->
+    <div class="linea-total" *ngIf="impuestos > 0">
+      <div class="total-icono">📊</div>
+      <div class="total-info">
+        <span class="total-label">Impuestos ({{ porcentajeImpuestos | number:'1.0-1' }}%)</span>
+        <span class="total-valor">{{ impuestos | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+      </div>
+    </div>
+
+    <!-- Descuentos -->
+    <div class="linea-total descuento" *ngIf="descuentos > 0">
+      <div class="total-icono">🏷️</div>
+      <div class="total-info">
+        <span class="total-label">Descuentos</span>
+        <span class="total-valor descuento-valor">-{{ descuentos | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+      </div>
+    </div>
+
+    <!-- Propina -->
+    <div class="linea-total propina" *ngIf="propina > 0">
+      <div class="total-icono">⭐</div>
+      <div class="total-info">
+        <span class="total-label">Propina</span>
+        <span class="total-valor">{{ propina | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+      </div>
+    </div>
+
+    <!-- Separador -->
+    <div class="separador" *ngIf="subtotal > 0"></div>
+
+    <!-- Total Final -->
+    <div class="linea-total total-final">
+      <div class="total-icono total-icon-grande">💳</div>
+      <div class="total-info">
+        <span class="total-label-grande">TOTAL A PAGAR</span>
+        <span class="total-valor-grande">{{ total | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Acciones -->
+  <div class="acciones-container">
+    
+    <!-- Botón Crear Cuenta -->
+    <button 
+      *ngIf="!cuentaCreada" 
+      class="btn-principal btn-crear" 
+      [disabled]="guardando || subtotal === 0" 
+      (click)="onCrearCuenta()">
+      <span class="btn-icono" *ngIf="!guardando">✨</span>
+      <span class="btn-spinner" *ngIf="guardando">⏳</span>
+      <span class="btn-texto">{{ guardando ? 'Creando...' : 'Crear Cuenta' }}</span>
+    </button>
+
+    <!-- Botón Guardar Cambios -->
+    <button 
+      *ngIf="cuentaCreada" 
+      class="btn-principal btn-guardar" 
+      [disabled]="guardando" 
+      (click)="onGuardarCambios()">
+      <span class="btn-icono" *ngIf="!guardando">💾</span>
+      <span class="btn-spinner" *ngIf="guardando">⏳</span>
+      <span class="btn-texto">{{ guardando ? 'Guardando...' : 'Guardar Cambios' }}</span>
+    </button>
+
+    <!-- Mensaje de ayuda -->
+    <div class="ayuda-texto" *ngIf="subtotal === 0 && !cuentaCreada">
+      <span class="ayuda-icono">ℹ️</span>
+      <span>Agrega items para crear la cuenta</span>
+    </div>
+  </div>
+</div>

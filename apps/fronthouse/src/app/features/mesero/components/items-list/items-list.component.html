@@ -1,0 +1,107 @@
+<!-- apps/fronthouse/src/app/features/mesero/components/items-list/items-list.component.html -->
+<div class="items-list">
+  
+  <!-- Sin items - Estado vacío -->
+  <div class="sin-items" *ngIf="items.length === 0">
+    <div class="sin-items-icon">🍽️</div>
+    <h3>Lista vacía</h3>
+    <p>Agrega platos o productos del menú para comenzar</p>
+  </div>
+
+  <!-- Lista de items -->
+  <div class="items-container" *ngIf="items.length > 0">
+    <div 
+      class="item" 
+      *ngFor="let item of items; let i = index" 
+      [class.con-alergia]="item.tieneConflictoAlergia" 
+      [class.guardado]="item.id"
+      [class.editando]="editando && !item.id">
+      
+      <!-- Header del item -->
+      <div class="item-header">
+        <div class="item-tipo-icon">
+          {{ item.tipo === 'plato' ? '🍽️' : '🥤' }}
+        </div>
+        <div class="item-info">
+          <h4 class="item-nombre">
+            {{ getNombreItem(item) }}
+            <span class="alergia-badge" *ngIf="item.tieneConflictoAlergia" title="Contiene alérgenos">⚠️</span>
+          </h4>
+          <div class="item-detalles">
+            <span class="precio-unitario">{{ item.precioUnitario | currency:'COP':'symbol-narrow':'1.0-0' }} c/u</span>
+          </div>
+        </div>
+        
+        <!-- Estado (si existe) -->
+        <div 
+          class="item-estado" 
+          *ngIf="item.estado" 
+          [style.background-color]="item.estado.color || '#6b7280'">
+          {{ item.estado.nombre }}
+        </div>
+      </div>
+
+      <!-- Controles de cantidad (solo si está editando y no guardado) -->
+      <div class="item-cantidad-control" *ngIf="editando && !item.id">
+        <button class="btn-cantidad" (click)="decrementar(i)" title="Disminuir">
+          <span>−</span>
+        </button>
+        <div class="cantidad-display">
+          <span class="cantidad-numero">{{ item.cantidad }}</span>
+          <span class="cantidad-label">unidades</span>
+        </div>
+        <button class="btn-cantidad" (click)="incrementar(i)" title="Aumentar">
+          <span>+</span>
+        </button>
+      </div>
+      
+      <!-- Cantidad fija (si no está editando o ya está guardado) -->
+      <div class="item-cantidad-fija" *ngIf="!editando || item.id">
+        <span class="cantidad-badge">x{{ item.cantidad }}</span>
+      </div>
+
+      <!-- Subtotal -->
+      <div class="item-subtotal">
+        <span class="subtotal-label">Subtotal</span>
+        <span class="subtotal-valor">{{ getSubtotal(item) | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+      </div>
+
+      <!-- Notas especiales (editable) -->
+      <div class="item-notas-editable" *ngIf="editando && !item.id">
+        <label>
+          <span class="notas-icon">📝</span>
+          Notas especiales
+        </label>
+        <input
+          type="text"
+          [(ngModel)]="item.notasEspeciales"
+          (ngModelChange)="onNotasChange(i, $event)"
+          placeholder="Ej: sin cebolla, término medio, poco picante..."
+          class="input-notas">
+      </div>
+      
+      <!-- Notas especiales (solo lectura) -->
+      <div class="item-notas-texto" *ngIf="item.notasEspeciales && (item.id || !editando)">
+        <span class="notas-icon">📝</span>
+        <span>{{ item.notasEspeciales }}</span>
+      </div>
+
+      <!-- Botón eliminar -->
+      <button 
+        class="btn-eliminar" 
+        *ngIf="editando && !item.id" 
+        (click)="onEliminar(i)" 
+        title="Eliminar item">
+        <span>🗑️</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Resumen rápido -->
+  <div class="items-resumen" *ngIf="items.length > 0">
+    <div class="resumen-info">
+      <span class="resumen-icon">📋</span>
+      <span class="resumen-texto">{{ items.length }} {{ items.length === 1 ? 'item' : 'items' }} en el pedido</span>
+    </div>
+  </div>
+</div>

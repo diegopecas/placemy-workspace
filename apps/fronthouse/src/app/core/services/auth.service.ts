@@ -204,9 +204,29 @@ export class AuthService {
 
   /**
    * Obtener el establecimiento seleccionado
+   * ✅ ACTUALIZADO: Ahora lee del localStorage si el signal está vacío
    */
   getSelectedEstablecimiento(): Establecimiento | null {
-    return this.selectedEstablecimiento();
+    // Primero intentar obtener del signal
+    let establecimiento = this.selectedEstablecimiento();
+    
+    // Si el signal está vacío, leer del localStorage
+    if (!establecimiento) {
+      console.log('⚠️ Signal vacío, leyendo establecimiento del localStorage...');
+      establecimiento = this.getSelectedEstablecimientoFromStorage();
+      
+      // Si se encontró en localStorage, actualizar el signal
+      if (establecimiento) {
+        console.log('✅ Establecimiento recuperado del localStorage:', establecimiento.nombre);
+        this.selectedEstablecimiento.set(establecimiento);
+      } else {
+        console.warn('❌ No hay establecimiento en localStorage');
+      }
+    } else {
+      console.log('✅ Establecimiento del signal:', establecimiento.nombre);
+    }
+    
+    return establecimiento;
   }
 
   /**

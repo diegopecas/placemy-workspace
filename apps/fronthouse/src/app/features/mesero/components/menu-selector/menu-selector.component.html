@@ -1,0 +1,197 @@
+<!-- apps/fronthouse/src/app/features/mesero/components/menu-selector/menu-selector.component.html -->
+<div class="menu-selector" [attr.data-theme]="currentTheme().name">
+  
+  <!-- Header del selector -->
+  <div class="selector-header">
+    <h3 class="selector-titulo">
+      <span class="titulo-icon">📋</span>
+      Menú del Establecimiento
+    </h3>
+  </div>
+
+  <!-- Buscador -->
+  <div class="buscador-container">
+    <div class="buscador-input-wrapper">
+      <span class="buscador-icon">🔍</span>
+      <input
+        type="text"
+        [(ngModel)]="terminoBusqueda"
+        (ngModelChange)="onBuscar($event)"
+        placeholder="Buscar platos o productos..."
+        class="input-busqueda">
+      <button 
+        *ngIf="terminoBusqueda" 
+        class="btn-limpiar" 
+        (click)="terminoBusqueda = ''; onBuscar('')"
+        title="Limpiar búsqueda">
+        ✕
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabs de vista -->
+  <div class="tabs-container">
+    <button 
+      class="tab" 
+      [class.active]="vista === 'platos'" 
+      (click)="cambiarVista('platos')">
+      <span class="tab-icon">🍽️</span>
+      <span class="tab-texto">Platos</span>
+      <span class="tab-badge">{{ platos.length }}</span>
+    </button>
+    <button 
+      class="tab" 
+      [class.active]="vista === 'productos'" 
+      (click)="cambiarVista('productos')">
+      <span class="tab-icon">🥤</span>
+      <span class="tab-texto">Productos</span>
+      <span class="tab-badge">{{ productos.length }}</span>
+    </button>
+  </div>
+
+  <!-- Categorías (solo para platos) -->
+  <div class="categorias-container" *ngIf="vista === 'platos' && categorias.length > 0">
+    <div class="categorias-scroll">
+      <button 
+        class="categoria-chip" 
+        [class.active]="categoriaSeleccionada === null" 
+        (click)="onSeleccionarCategoria(null)">
+        <span class="chip-icon">🌟</span>
+        <span>Todas</span>
+      </button>
+      <button 
+        *ngFor="let cat of categorias" 
+        class="categoria-chip" 
+        [class.active]="categoriaSeleccionada === cat.id" 
+        (click)="onSeleccionarCategoria(cat.id)">
+        <span class="chip-icon">📂</span>
+        <span>{{ cat.nombre }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Grid de Platos -->
+  <div class="items-grid-container" *ngIf="vista === 'platos'">
+    <div class="items-grid" *ngIf="platos.length > 0">
+      <div 
+        class="item-card plato-card" 
+        *ngFor="let plato of platos" 
+        [class.tiene-alergia]="tieneAlergiaConflicto(plato)" 
+        (click)="onAgregarPlato(plato)">
+        
+        <!-- Imagen -->
+        <div class="card-imagen">
+          <img *ngIf="plato.foto_url" [src]="plato.foto_url" [alt]="plato.nombre">
+          <div *ngIf="!plato.foto_url" class="imagen-placeholder">
+            <span>🍽️</span>
+          </div>
+          
+          <!-- Warning de alergia -->
+          <div class="alergia-overlay" *ngIf="tieneAlergiaConflicto(plato)">
+            <span class="alergia-icon">⚠️</span>
+            <span class="alergia-texto">Alérgenos</span>
+          </div>
+        </div>
+
+        <!-- Contenido -->
+        <div class="card-contenido">
+          <h4 class="card-nombre">{{ plato.nombre }}</h4>
+          
+          <p class="card-descripcion" *ngIf="plato.descripcion">
+            {{ plato.descripcion.length > 60 ? (plato.descripcion | slice:0:60) + '...' : plato.descripcion }}
+          </p>
+
+          <!-- Alérgenos -->
+          <div class="card-alergenos" *ngIf="plato.alergenos?.length">
+            <span 
+              class="alergeno-badge" 
+              *ngFor="let a of plato.alergenos | slice:0:4" 
+              [class.conflicto]="clienteEsAlergicoA(a.id)" 
+              [title]="a.nombre">
+              {{ a.icono || '⚠️' }}
+            </span>
+            <span class="alergeno-mas" *ngIf="plato.alergenos.length > 4">
+              +{{ plato.alergenos.length - 4 }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer">
+          <div class="card-precio">
+            <span class="precio-valor">{{ plato.precio | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+          </div>
+          <div class="card-tiempo" *ngIf="plato.tiempo_preparacion_min">
+            <span class="tiempo-icon">⏱️</span>
+            <span>{{ plato.tiempo_preparacion_min }} min</span>
+          </div>
+        </div>
+
+        <!-- Botón agregar -->
+        <div class="card-accion">
+          <button class="btn-agregar">
+            <span>+</span>
+            Agregar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sin resultados -->
+    <div class="sin-items" *ngIf="platos.length === 0">
+      <div class="sin-items-icon">🍽️</div>
+      <h4>No se encontraron platos</h4>
+      <p>Intenta con otra búsqueda o categoría</p>
+    </div>
+  </div>
+
+  <!-- Grid de Productos -->
+  <div class="items-grid-container" *ngIf="vista === 'productos'">
+    <div class="items-grid" *ngIf="productos.length > 0">
+      <div 
+        class="item-card producto-card" 
+        *ngFor="let producto of productos" 
+        (click)="onAgregarProducto(producto)">
+        
+        <!-- Imagen -->
+        <div class="card-imagen">
+          <img *ngIf="producto.foto_url" [src]="producto.foto_url" [alt]="producto.nombre">
+          <div *ngIf="!producto.foto_url" class="imagen-placeholder">
+            <span>🥤</span>
+          </div>
+        </div>
+
+        <!-- Contenido -->
+        <div class="card-contenido">
+          <h4 class="card-nombre">{{ producto.nombre }}</h4>
+          
+          <p class="card-descripcion" *ngIf="producto.descripcion">
+            {{ producto.descripcion.length > 60 ? (producto.descripcion | slice:0:60) + '...' : producto.descripcion }}
+          </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer">
+          <div class="card-precio">
+            <span class="precio-valor">{{ producto.precio_individual | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+          </div>
+        </div>
+
+        <!-- Botón agregar -->
+        <div class="card-accion">
+          <button class="btn-agregar">
+            <span>+</span>
+            Agregar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sin resultados -->
+    <div class="sin-items" *ngIf="productos.length === 0">
+      <div class="sin-items-icon">🥤</div>
+      <h4>No se encontraron productos</h4>
+      <p>Intenta con otra búsqueda</p>
+    </div>
+  </div>
+</div>

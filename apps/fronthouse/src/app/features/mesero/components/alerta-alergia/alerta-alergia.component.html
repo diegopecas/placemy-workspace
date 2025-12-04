@@ -1,0 +1,45 @@
+<!-- apps/fronthouse/src/app/features/mesero/components/alerta-alergia/alerta-alergia.component.html -->
+<div class="modal-overlay" (click)="onCancelar()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    
+    <!-- Icono animado -->
+    <div class="modal-icon-container">
+      <div class="modal-icon">⚠️</div>
+      <div class="icon-pulse"></div>
+    </div>
+
+    <h2 class="modal-titulo">Advertencia de Alergia</h2>
+
+    <p class="modal-mensaje">
+      El cliente tiene alergia a ingredientes de <strong>{{ nombreItem }}</strong>:
+    </p>
+
+    <!-- Lista de alérgenos con iconos -->
+    <div class="alergenos-lista">
+      <div class="alergeno-tag" *ngFor="let alergeno of alergenos">
+        <span class="alergeno-icon">{{ alergeno.icono || '⚠️' }}</span>
+        <span class="alergeno-nombre">{{ alergeno.nombre }}</span>
+      </div>
+    </div>
+
+    <p class="modal-pregunta">¿Desea agregar este plato de todas formas?</p>
+
+    <!-- Botones de acción -->
+    <div class="modal-acciones">
+      <button class="btn-cancelar" (click)="onCancelar()">
+        <span class="btn-icon">❌</span>
+        <span>No, cancelar</span>
+      </button>
+      <button class="btn-continuar" (click)="onContinuar()">
+        <span class="btn-icon">✅</span>
+        <span>Sí, agregar</span>
+      </button>
+    </div>
+
+    <!-- Nota informativa -->
+    <div class="modal-nota">
+      <span class="nota-icon">💡</span>
+      <span>El mesero debe informar al cliente sobre los alérgenos antes de confirmar el pedido.</span>
+    </div>
+  </div>
+</div>

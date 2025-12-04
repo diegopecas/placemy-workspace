@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+// apps/fronthouse/src/app/features/mesero/pages/mesero-dashboard/mesero-dashboard.component.ts
+import { Component, OnInit, inject, signal, computed, ViewChild, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
@@ -7,6 +8,10 @@ import { CuentaService } from '../../../../common/services/cuenta.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Mesa, ZonaEstablecimiento } from '../../../../common/models/establecimiento/mesa.model';
 import { MesaCardComponent } from '../../components/mesa-card/mesa-card.component';
+
+// Imports del header
+import { HeaderComponent, ThemeService } from '@placemy/shared/ui-components';
+import { PermissionService } from '@placemy/shared/auth';
 
 interface MesaVisual extends Mesa {
   tieneCuentaActiva: boolean;
@@ -18,206 +23,34 @@ interface MesaVisual extends Mesa {
 @Component({
   selector: 'app-mesero-dashboard',
   standalone: true,
-  imports: [CommonModule, MesaCardComponent],
-  template: `
-    <div class="mesero-dashboard">
-      <!-- Header -->
-      <header class="dashboard-header">
-        <h1>Mis Mesas</h1>
-        <div class="header-actions">
-          <span class="establecimiento-nombre">{{ establecimientoNombre() }}</span>
-        </div>
-      </header>
-
-      <!-- Filtros por zona -->
-      <div class="zonas-filter" *ngIf="zonasComputed().length > 0">
-        <button 
-          class="zona-btn" 
-          [class.active]="zonaSeleccionadaComputed() === null" 
-          (click)="filtrarPorZona(null)">
-          Todas
-        </button>
-        <button 
-          *ngFor="let zona of zonasComputed()" 
-          class="zona-btn" 
-          [class.active]="zonaSeleccionadaComputed() === zona.id" 
-          (click)="filtrarPorZona(zona.id)">
-          {{ zona.nombre }}
-        </button>
-      </div>
-
-      <!-- Loading -->
-      <div class="loading" *ngIf="cargando()">
-        <span class="loading-spinner"></span>
-        <p>Cargando mesas...</p>
-      </div>
-
-      <!-- Grid de mesas -->
-      <div class="mesas-grid" *ngIf="!cargando()">
-        <app-mesa-card 
-          *ngFor="let mesa of mesasVisuales()" 
-          [mesa]="mesa" 
-          (seleccionar)="onSeleccionarMesa($event)" 
-          (verCuenta)="onVerCuenta($event)" 
-          (nuevaCuenta)="onNuevaCuenta($event)">
-        </app-mesa-card>
-      </div>
-
-      <!-- Sin mesas -->
-      <div class="sin-mesas" *ngIf="!cargando() && mesasVisuales().length === 0">
-        <p>No hay mesas asignadas</p>
-      </div>
-
-      <!-- Leyenda de estados -->
-      <footer class="estados-leyenda">
-        <div class="leyenda-item">
-          <span class="color-dot disponible"></span>
-          <span>Disponible</span>
-        </div>
-        <div class="leyenda-item">
-          <span class="color-dot ocupada"></span>
-          <span>Ocupada</span>
-        </div>
-        <div class="leyenda-item">
-          <span class="color-dot cuenta-activa"></span>
-          <span>Con cuenta activa</span>
-        </div>
-        <div class="leyenda-item">
-          <span class="color-dot reservada"></span>
-          <span>Reservada</span>
-        </div>
-      </footer>
-    </div>
-  `,
-  styles: [`
-    .mesero-dashboard {
-      padding: 1rem;
-      min-height: 100vh;
-      background: var(--surface-ground, #f5f5f5);
-    }
-
-    .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--surface-border, #ddd);
-    }
-
-    .dashboard-header h1 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--text-color, #333);
-      margin: 0;
-    }
-
-    .establecimiento-nombre {
-      font-size: 0.9rem;
-      color: var(--text-color-secondary, #666);
-    }
-
-    .zonas-filter {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .zona-btn {
-      padding: 0.5rem 1rem;
-      border: 1px solid var(--surface-border, #ddd);
-      background: var(--surface-card, #fff);
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.2s ease;
-    }
-
-    .zona-btn:hover {
-      background: var(--surface-hover, #f0f0f0);
-    }
-
-    .zona-btn.active {
-      background: var(--primary-color, #3b82f6);
-      color: white;
-      border-color: var(--primary-color, #3b82f6);
-    }
-
-    .loading {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 3rem;
-    }
-
-    .loading-spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid var(--surface-border, #ddd);
-      border-top-color: var(--primary-color, #3b82f6);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .mesas-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1rem;
-    }
-
-    .sin-mesas {
-      text-align: center;
-      padding: 3rem;
-      color: var(--text-color-secondary, #666);
-    }
-
-    .estados-leyenda {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-top: 2rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--surface-border, #ddd);
-      flex-wrap: wrap;
-    }
-
-    .leyenda-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      color: var(--text-color-secondary, #666);
-    }
-
-    .color-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-
-    .color-dot.disponible { background: #22c55e; }
-    .color-dot.ocupada { background: #3b82f6; }
-    .color-dot.cuenta-activa { background: #f59e0b; }
-    .color-dot.reservada { background: #a855f7; }
-  `]
+  imports: [
+    CommonModule, 
+    MesaCardComponent,
+    HeaderComponent
+  ],
+  templateUrl: './mesero-dashboard.component.html',
+  styleUrl: './mesero-dashboard.component.scss'
 })
 export class MeseroDashboardComponent implements OnInit {
+  @ViewChild(HeaderComponent) header!: HeaderComponent;
+
   private readonly mesaService = inject(MesaService);
   private readonly cuentaService = inject(CuentaService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly permissionService = inject(PermissionService);
+  private readonly themeService = inject(ThemeService);
 
   // Estado
   cargando = signal(true);
   private cuentasActivas = signal<Map<number, { cuentaId: number; numeroCuenta: string }>>(new Map());
 
-  // Computed desde servicios (wrapeados para evitar unknown)
+  // Signals para header
+  currentUser = this.authService.currentUser;
+  selectedEstablecimiento = this.authService.selectedEstablecimiento;
+  currentTheme = this.themeService.currentTheme;
+
+  // Computed desde servicios
   zonasComputed = computed((): ZonaEstablecimiento[] => this.mesaService.zonas());
   zonaSeleccionadaComputed = computed((): number | null => this.mesaService.zonaSeleccionada());
 
@@ -244,6 +77,33 @@ export class MeseroDashboardComponent implements OnInit {
       };
     });
   });
+
+  constructor() {
+    // Configurar el usuario y establecimiento en el header reactivamente
+    effect(() => {
+      const user = this.currentUser();
+      const establecimiento = this.selectedEstablecimiento();
+
+      setTimeout(() => {
+        if (this.header) {
+          this.header.setCurrentUser(user);
+          this.header.setSelectedEstablecimiento(establecimiento);
+        }
+      }, 0);
+    });
+
+    // Escuchar el evento de logout del header
+    window.addEventListener('header-logout', () => {
+      this.authService.logout().subscribe();
+    });
+
+    // Escuchar evento de cambio de establecimiento
+    window.addEventListener('header-change-establecimiento', () => {
+      this.authService.clearSelectedEstablecimiento();
+      this.permissionService.clearActiveEstablecimiento();
+      this.router.navigate(['/select-establecimiento']);
+    });
+  }
 
   ngOnInit(): void {
     this.cargarDatos();

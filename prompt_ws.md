@@ -619,6 +619,299 @@ getUserRole(): string {
 ---
 ---
 
+## 🔐 PATRÓN: INTERCEPTOR X-ESTABLECIMIENTO-ID
+
+### **Contexto:**
+El sistema es **multi-establecimiento**. Un usuario puede tener permisos diferentes en cada establecimiento, por lo que TODA petición protegida debe incluir el header `X-Establecimiento-Id`.
+
+---
+
+### **📦 IMPLEMENTACIÓN FRONTEND**
+
+#### **1. AuthService - Manejo del Establecimiento Actual**
+
+```typescript
+// apps/fronthouse/src/app/core/services/auth.service.ts
+
+import { Injectable, signal, computed } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  // Usuario autenticado
+  private currentUser = signal<User | null>(null);
+  
+  // ⭐ NUEVO: Establecimiento seleccionado
+  establecimientoActual = signal<Establecimiento | null>(null);
+  
+  // Computed: Permisos del establecimiento actual
+  permisosActuales = computed(() => {
+    const estab = this.establecimientoActual();
+    if (!estab?.roles) return new Set<string>();
+    
+    const permisos = new Set<string>();
+    estab.roles.forEach(rol => {
+      rol.permisos?.forEach(p => permisos.add(p));
+    });
+    return permisos;
+  });
+  
+  /**
+   * Seleccionar establecimiento activo
+   * Se ejecuta después del login o al cambiar de establecimiento
+   */
+  seleccionarEstablecimiento(establecimiento: Establecimiento): void {
+    this.establecimientoActual.set(establecimiento);
+    
+    // Persistir en localStorage
+    localStorage.setItem('establecimiento_actual', JSON.stringify(establecimiento));
+    
+    console.log('✅ Establecimiento seleccionado:', establecimiento.nombre);
+  }
+  
+  /**
+   * Recuperar establecimiento del localStorage al recargar
+   */
+  cargarEstablecimientoGuardado(): void {
+    const guardado = localStorage.getItem('establecimiento_actual');
+    if (guardado) {
+      this.establecimientoActual.set(JSON.parse(guardado));
+    }
+  }
+  
+  /**
+   * Limpiar establecimiento al hacer logout
+   */
+  logout(): void {
+    this.establecimientoActual.set(null);
+    localStorage.removeItem('establecimiento_actual');
+    // ... resto del logout
+  }
+}
+```
+
+---
+
+#### **2. Interceptor HTTP - Agregar Header Automáticamente**
+
+```typescript
+// apps/fronthouse/src/app/core/interceptors/establecimiento.interceptor.ts
+
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+
+/**
+ * Interceptor que agrega automáticamente X-Establecimiento-Id a todas las peticiones
+ */
+export const establecimientoInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+  const establecimientoId = authService.establecimientoActual()?.id;
+  
+  // Solo agregar header si:
+  // 1. Hay establecimiento seleccionado
+  // 2. La petición NO es de login/logout
+  if (establecimientoId && !req.url.includes('/auth/login') && !req.url.includes('/auth/logout')) {
+    console.log('🏢 Interceptor: establecimiento_id:', establecimientoId);
+    
+    req = req.clone({
+      setHeaders: {
+        'X-Establecimiento-Id': establecimientoId.toString()
+      }
+    });
+  }
+  
+  return next(req);
+};
+```
+
+---
+
+#### **3. Registrar Interceptor en app.config.ts**
+
+```typescript
+// apps/fronthouse/src/app/app.config.ts
+
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+
+import { routes } from './app.routes';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { establecimientoInterceptor } from './core/interceptors/establecimiento.interceptor';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideHttpClient(
+      withInterceptors([
+        authInterceptor,           // 1. Agrega Authorization header
+        establecimientoInterceptor // 2. Agrega X-Establecimiento-Id header
+      ])
+    ),
+  ]
+};
+```
+
+---
+
+### **📱 USO EN COMPONENTES**
+
+#### **Ejemplo: Seleccionar Establecimiento al Login**
+
+```typescript
+// login.component.ts
+
+export class LoginComponent {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  
+  onLogin(): void {
+    this.authService.login(this.form.value).subscribe({
+      next: (response) => {
+        console.log('✅ Login exitoso:', response);
+        
+        // Usuario tiene lista de establecimientos
+        const establecimientos = response.user.establecimientos;
+        
+        if (establecimientos && establecimientos.length > 0) {
+          // Seleccionar el primero por defecto
+          this.authService.seleccionarEstablecimiento(establecimientos[0]);
+          
+          // O mostrar selector si tiene múltiples
+          if (establecimientos.length > 1) {
+            this.mostrarSelectorEstablecimientos(establecimientos);
+          }
+        }
+        
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => console.error('❌ Error login:', err)
+    });
+  }
+}
+```
+
+---
+
+#### **Ejemplo: Cambiar de Establecimiento**
+
+```typescript
+// header.component.ts
+
+export class HeaderComponent {
+  private authService = inject(AuthService);
+  
+  establecimientos = signal<Establecimiento[]>([]);
+  establecimientoActual = this.authService.establecimientoActual;
+  
+  cambiarEstablecimiento(establecimiento: Establecimiento): void {
+    this.authService.seleccionarEstablecimiento(establecimiento);
+    
+    // Opcional: Recargar datos del dashboard
+    window.location.reload();
+  }
+}
+```
+
+**HTML:**
+```html
+<mat-select 
+  [value]="establecimientoActual()?.id"
+  (selectionChange)="cambiarEstablecimiento($event.value)">
+  
+  <mat-option *ngFor="let est of establecimientos()" [value]="est">
+    {{ est.nombre }}
+  </mat-option>
+</mat-select>
+```
+
+---
+
+### **🔄 FLUJO COMPLETO**
+
+```
+1. Usuario hace login
+   ↓
+2. Backend retorna user con establecimientos[]
+   ↓
+3. Frontend: authService.seleccionarEstablecimiento(establecimientos[0])
+   ↓
+4. Signal establecimientoActual se actualiza
+   ↓
+5. localStorage guarda el establecimiento
+   ↓
+6. Usuario navega a /mesas
+   ↓
+7. Interceptor intercepta la petición GET /api/establecimiento/mesas
+   ↓
+8. Interceptor lee establecimientoActual().id → 1
+   ↓
+9. Interceptor agrega header: X-Establecimiento-Id: 1
+   ↓
+10. Backend recibe la petición con header
+    ↓
+11. CheckPermission middleware valida:
+    - ¿Usuario tiene acceso a establecimiento 1? ✅
+    - ¿Usuario tiene permiso "mesas.ver" en establecimiento 1? ✅
+    ↓
+12. Controller recibe request con establecimiento_id = 1
+    ↓
+13. Service filtra mesas del establecimiento 1
+    ↓
+14. Respuesta: 200 OK con mesas del establecimiento 1
+```
+
+---
+
+### **⚠️ IMPORTANTE: MANEJO DE ERRORES**
+
+```typescript
+// Manejar error 400: Falta header X-Establecimiento-Id
+if (error.status === 400 && error.error.message?.includes('X-Establecimiento-Id')) {
+  // Usuario no tiene establecimiento seleccionado
+  this.router.navigate(['/seleccionar-establecimiento']);
+}
+
+// Manejar error 403: Sin permiso en establecimiento
+if (error.status === 403) {
+  Swal.fire({
+    icon: 'error',
+    title: 'Acceso Denegado',
+    text: 'No tienes permiso para esta acción en este establecimiento'
+  });
+}
+```
+
+---
+
+### **✅ BENEFICIOS DEL PATRÓN**
+
+1. 🔐 **Seguridad**: Permisos validados por establecimiento
+2. 🎯 **Automático**: No hay que agregar header manualmente
+3. 🚀 **Escalable**: Fácil agregar nuevos establecimientos
+4. 🐛 **Debugging**: Console logs claros
+5. 💾 **Persistencia**: Se guarda en localStorage
+6. 🔄 **Reactivo**: Signals actualizan UI automáticamente
+
+---
+
+### **📋 CHECKLIST DE IMPLEMENTACIÓN**
+
+- [ ] AuthService tiene signal `establecimientoActual`
+- [ ] Método `seleccionarEstablecimiento()` implementado
+- [ ] Interceptor `establecimientoInterceptor` creado
+- [ ] Interceptor registrado en `app.config.ts` DESPUÉS de authInterceptor
+- [ ] Login selecciona establecimiento por defecto
+- [ ] Header permite cambiar de establecimiento
+- [ ] Manejo de errores 400/403 implementado
+- [ ] Console logs para debugging
+
+---
+---
+
 ## 🔧 COMPONENTES COMPARTIDOS
 
 ### **HeaderComponent:**

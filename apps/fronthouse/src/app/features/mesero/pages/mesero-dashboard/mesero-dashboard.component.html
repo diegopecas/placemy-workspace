@@ -1,0 +1,77 @@
+<!-- apps/fronthouse/src/app/features/mesero/pages/mesero-dashboard/mesero-dashboard.component.html -->
+<div class="mesero-dashboard-container" [attr.data-theme]="currentTheme().name">
+  
+  <!-- Header -->
+  <app-header></app-header>
+
+  <!-- Contenido principal -->
+  <div class="mesero-dashboard">
+    
+    <!-- Header de bienvenida -->
+    <header class="dashboard-header fade-in-up">
+      <div class="header-content">
+        <h1>Mis Mesas</h1>
+        <p class="establecimiento-nombre">{{ establecimientoNombre() }}</p>
+      </div>
+    </header>
+
+    <!-- Filtros por zona -->
+    <div class="zonas-filter fade-in-up" *ngIf="zonasComputed().length > 0">
+      <button 
+        class="zona-btn" 
+        [class.active]="zonaSeleccionadaComputed() === null" 
+        (click)="filtrarPorZona(null)">
+        Todas
+      </button>
+      <button 
+        *ngFor="let zona of zonasComputed()" 
+        class="zona-btn" 
+        [class.active]="zonaSeleccionadaComputed() === zona.id" 
+        (click)="filtrarPorZona(zona.id)">
+        {{ zona.nombre }}
+      </button>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading fade-in" *ngIf="cargando()">
+      <span class="loading-spinner"></span>
+      <p>Cargando mesas...</p>
+    </div>
+
+    <!-- Grid de mesas -->
+    <div class="mesas-grid fade-in-up" *ngIf="!cargando()">
+      <app-mesa-card 
+        *ngFor="let mesa of mesasVisuales()" 
+        [mesa]="mesa" 
+        (seleccionar)="onSeleccionarMesa($event)" 
+        (verCuenta)="onVerCuenta($event)" 
+        (nuevaCuenta)="onNuevaCuenta($event)">
+      </app-mesa-card>
+    </div>
+
+    <!-- Sin mesas -->
+    <div class="sin-mesas fade-in" *ngIf="!cargando() && mesasVisuales().length === 0">
+      <p>No hay mesas asignadas</p>
+    </div>
+
+    <!-- Leyenda de estados -->
+    <footer class="estados-leyenda">
+      <div class="leyenda-item">
+        <span class="color-dot disponible"></span>
+        <span>Disponible</span>
+      </div>
+      <div class="leyenda-item">
+        <span class="color-dot ocupada"></span>
+        <span>Ocupada</span>
+      </div>
+      <div class="leyenda-item">
+        <span class="color-dot cuenta-activa"></span>
+        <span>Con cuenta activa</span>
+      </div>
+      <div class="leyenda-item">
+        <span class="color-dot reservada"></span>
+        <span>Reservada</span>
+      </div>
+    </footer>
+  </div>
+</div>

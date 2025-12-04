@@ -1,0 +1,254 @@
+<!-- apps/fronthouse/src/app/features/mesero/components/buscar-cliente/buscar-cliente.component.html -->
+<div class="buscar-cliente">
+  
+  <!-- Header -->
+  <div class="buscar-header">
+    <h3 class="header-titulo">
+      <span class="titulo-icon">👤</span>
+      Cliente
+    </h3>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs-container">
+    <button 
+      class="tab" 
+      [class.active]="modo() === 'buscar'" 
+      (click)="cambiarModo('buscar')">
+      <span class="tab-icon">🔍</span>
+      <span>Buscar</span>
+    </button>
+    <button 
+      class="tab" 
+      [class.active]="modo() === 'crear'" 
+      (click)="cambiarModo('crear')">
+      <span class="tab-icon">➕</span>
+      <span>Crear Nuevo</span>
+    </button>
+  </div>
+
+  <!-- MODO BUSCAR -->
+  <div class="buscar-content" *ngIf="modo() === 'buscar'">
+    <div class="campo-busqueda">
+      <label>
+        <span class="label-icon">🔍</span>
+        Buscar por teléfono o documento
+      </label>
+      <div class="input-wrapper">
+        <input
+          type="text"
+          [(ngModel)]="terminoBusqueda"
+          (ngModelChange)="onBuscar($event)"
+          placeholder="Ingrese teléfono o documento..."
+          class="input-busqueda">
+        <button 
+          *ngIf="terminoBusqueda" 
+          class="btn-limpiar" 
+          (click)="terminoBusqueda = ''; onBuscar('')"
+          title="Limpiar">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="resultados-container" *ngIf="buscando() || resultados().length > 0 || (terminoBusqueda.length >= 3 && !buscando())">
+      
+      <!-- Buscando -->
+      <div class="estado-busqueda" *ngIf="buscando()">
+        <div class="spinner"></div>
+        <p>Buscando clientes...</p>
+      </div>
+
+      <!-- Lista de resultados -->
+      <div class="resultados-lista" *ngIf="!buscando() && resultados().length > 0">
+        <div 
+          class="resultado-card" 
+          *ngFor="let cliente of resultados()" 
+          (click)="seleccionar(cliente)">
+          
+          <div class="card-avatar">
+            <span>👤</span>
+          </div>
+          
+          <div class="card-info">
+            <h4 class="card-nombre">
+              {{ cliente.persona?.nombre_completo ?? cliente.sobrenombre ?? 'Sin nombre' }}
+            </h4>
+            <div class="card-detalles">
+              <span class="detalle-item" *ngIf="cliente.persona?.telefono">
+                <span class="detalle-icon">📱</span>
+                {{ cliente.persona?.telefono }}
+              </span>
+              <span class="detalle-item" *ngIf="cliente.persona?.numero_documento">
+                <span class="detalle-icon">🆔</span>
+                {{ cliente.persona?.numero_documento }}
+              </span>
+            </div>
+          </div>
+
+          <div class="card-accion">
+            <span class="btn-seleccionar">Seleccionar →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sin resultados -->
+      <div class="sin-resultados" *ngIf="!buscando() && resultados().length === 0 && terminoBusqueda.length >= 3">
+        <div class="sin-resultados-icon">😕</div>
+        <h4>No se encontraron clientes</h4>
+        <p>Intenta con otro término de búsqueda o crea un nuevo cliente</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODO CREAR -->
+  <div class="crear-content" *ngIf="modo() === 'crear'">
+    <form class="crear-form">
+      
+      <!-- Nombres -->
+      <div class="form-section">
+        <h4 class="section-titulo">📝 Información Personal</h4>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>
+              Primer Nombre <span class="required">*</span>
+            </label>
+            <input 
+              type="text" 
+              [(ngModel)]="nuevoCliente.primer_nombre" 
+              name="primer_nombre"
+              placeholder="Ej: Juan"
+              required>
+          </div>
+          <div class="form-group">
+            <label>Segundo Nombre</label>
+            <input 
+              type="text" 
+              [(ngModel)]="nuevoCliente.segundo_nombre"
+              name="segundo_nombre"
+              placeholder="Ej: Carlos">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>
+              Primer Apellido <span class="required">*</span>
+            </label>
+            <input 
+              type="text" 
+              [(ngModel)]="nuevoCliente.primer_apellido"
+              name="primer_apellido"
+              placeholder="Ej: Pérez"
+              required>
+          </div>
+          <div class="form-group">
+            <label>Segundo Apellido</label>
+            <input 
+              type="text" 
+              [(ngModel)]="nuevoCliente.segundo_apellido"
+              name="segundo_apellido"
+              placeholder="Ej: Gómez">
+          </div>
+        </div>
+      </div>
+
+      <!-- Contacto y Documento -->
+      <div class="form-section">
+        <h4 class="section-titulo">📞 Contacto y Documento</h4>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>
+              Teléfono <span class="required">*</span>
+            </label>
+            <input 
+              type="tel" 
+              [(ngModel)]="nuevoCliente.telefono"
+              name="telefono"
+              placeholder="Ej: 3001234567"
+              required>
+          </div>
+          <div class="form-group">
+            <label>Tipo Documento</label>
+            <select [(ngModel)]="nuevoCliente.tipo_documento_id" name="tipo_documento">
+              <option [value]="1">Cédula</option>
+              <option [value]="2">Pasaporte</option>
+              <option [value]="3">Otro</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group full">
+            <label>
+              Número Documento <span class="required">*</span>
+            </label>
+            <input 
+              type="text" 
+              [(ngModel)]="nuevoCliente.numero_documento"
+              name="numero_documento"
+              placeholder="Ej: 1234567890"
+              required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group full">
+            <label>Email</label>
+            <input 
+              type="email" 
+              [(ngModel)]="nuevoCliente.email"
+              name="email"
+              placeholder="Ej: cliente@ejemplo.com">
+          </div>
+        </div>
+      </div>
+
+      <!-- Información Adicional -->
+      <div class="form-section">
+        <h4 class="section-titulo">⭐ Información Adicional</h4>
+        
+        <div class="form-row">
+          <div class="form-group full">
+            <label>Sobrenombre (cómo le gusta que lo llamen)</label>
+            <input 
+              type="text" 
+              [(ngModel)]="nuevoCliente.sobrenombre"
+              name="sobrenombre"
+              placeholder="Ej: Juancho">
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón Crear -->
+      <div class="form-actions">
+        <button 
+          type="button"
+          class="btn-crear" 
+          [disabled]="!formularioValido() || creando()" 
+          (click)="crearCliente()">
+          <span class="btn-icon" *ngIf="!creando()">✨</span>
+          <span class="btn-spinner" *ngIf="creando()">⏳</span>
+          <span>{{ creando() ? 'Creando cliente...' : 'Crear Cliente' }}</span>
+        </button>
+      </div>
+
+      <!-- Mensaje de error -->
+      <div class="error-mensaje" *ngIf="errorCrear()">
+        <span class="error-icon">⚠️</span>
+        <span>{{ errorCrear() }}</span>
+      </div>
+    </form>
+  </div>
+
+  <!-- Footer con botón cancelar -->
+  <div class="buscar-footer">
+    <button class="btn-cancelar" (click)="onCancelar()">
+      <span class="btn-icon">✕</span>
+      <span>Cancelar</span>
+    </button>
+  </div>
+</div>

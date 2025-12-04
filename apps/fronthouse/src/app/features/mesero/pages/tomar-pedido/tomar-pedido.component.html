@@ -1,0 +1,155 @@
+<!-- apps/fronthouse/src/app/features/mesero/pages/tomar-pedido/tomar-pedido.component.html -->
+<div class="tomar-pedido-container" [attr.data-theme]="currentTheme().name">
+  
+  <!-- Header -->
+  <header class="pedido-header">
+    <button class="btn-volver" (click)="volver()">
+      <span class="btn-icon">←</span>
+      <span>Volver</span>
+    </button>
+    
+    <div class="header-info">
+      <h1>Mesa {{ mesa()?.numero_mesa }}</h1>
+      <span class="cuenta-numero" *ngIf="cuenta()">{{ cuenta()?.numero_cuenta }}</span>
+    </div>
+    
+    <div class="header-estado">
+      <span 
+        class="estado-badge" 
+        *ngIf="cuenta()" 
+        [style.background-color]="cuenta()?.estado?.color ?? '#3b82f6'">
+        {{ cuenta()?.estado?.nombre ?? 'ABIERTA' }}
+      </span>
+    </div>
+  </header>
+
+  <!-- Loading -->
+  <div class="loading-overlay" *ngIf="cargando()">
+    <div class="loading-content">
+      <span class="loading-spinner"></span>
+      <p>Cargando...</p>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="pedido-content" *ngIf="!cargando()">
+    
+    <!-- Panel izquierdo -->
+    <div class="panel-izquierdo">
+      
+      <!-- Sección Cliente -->
+      <section class="seccion-cliente">
+        <div class="seccion-header">
+          <h2>Cliente</h2>
+          <button 
+            class="btn-link" 
+            *ngIf="!clienteSeleccionado()" 
+            (click)="toggleBuscarCliente()">
+            {{ mostrarBuscarCliente() ? 'Cancelar' : 'Buscar/Agregar' }}
+          </button>
+          <button 
+            class="btn-link" 
+            *ngIf="clienteSeleccionado()" 
+            (click)="quitarCliente()">
+            Cambiar
+          </button>
+        </div>
+
+        <!-- Cliente seleccionado -->
+        <div class="cliente-info" *ngIf="clienteSeleccionado()">
+          <div class="cliente-nombre">
+            {{ clienteSeleccionado()?.persona?.nombre_completo ?? clienteSeleccionado()?.sobrenombre ?? 'Cliente' }}
+          </div>
+          <div class="cliente-telefono" *ngIf="clienteSeleccionado()?.persona?.telefono">
+            📱 {{ clienteSeleccionado()?.persona?.telefono }}
+          </div>
+          <div class="cliente-alergenos" *ngIf="clienteSeleccionado()?.alergenos?.length">
+            <span class="alergenos-label">⚠️ Alergias:</span>
+            <span class="alergeno-tag" *ngFor="let alergeno of clienteSeleccionado()?.alergenos">
+              {{ alergeno.nombre }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Sin cliente -->
+        <div class="sin-cliente" *ngIf="!clienteSeleccionado() && !mostrarBuscarCliente()">
+          <p>Cuenta anónima</p>
+        </div>
+
+        <!-- Buscar cliente -->
+        <app-buscar-cliente 
+          *ngIf="mostrarBuscarCliente()" 
+          (clienteSeleccionado)="onClienteSeleccionado($event)" 
+          (cancelar)="toggleBuscarCliente()">
+        </app-buscar-cliente>
+      </section>
+
+      <!-- Palabra secreta -->
+      <section class="seccion-palabra" *ngIf="!cuenta()">
+        <label for="palabraSecreta">Palabra Secreta</label>
+        <input 
+          type="text" 
+          id="palabraSecreta" 
+          [(ngModel)]="palabraSecreta" 
+          placeholder="Ej: mesa123" 
+          class="input-palabra">
+        <small>El cliente usará esta palabra para acceder a su cuenta online</small>
+      </section>
+
+      <!-- Items del pedido -->
+      <section class="seccion-items">
+        <div class="seccion-header">
+          <h2>Pedido</h2>
+          <span class="items-count">{{ itemsPedido().length }} items</span>
+        </div>
+
+        <app-items-list 
+          [items]="itemsPedidoDisplay()" 
+          [editando]="!cuenta() || cuentaEsModificable()" 
+          (eliminarItem)="onEliminarItem($event)" 
+          (actualizarCantidad)="onActualizarCantidad($event)" 
+          (actualizarNotas)="onActualizarNotas($event)">
+        </app-items-list>
+      </section>
+    </div>
+
+    <!-- Panel derecho -->
+    <div class="panel-derecho">
+      <app-menu-selector 
+        [categorias]="categoriasComputed()" 
+        [platos]="platosFiltradosComputed()" 
+        [productos]="productosFiltradosComputed()" 
+        [categoriaSeleccionada]="categoriaSeleccionadaComputed()" 
+        [clienteAlergenos]="clienteSeleccionado()?.alergenos ?? []" 
+        (seleccionarCategoria)="onSeleccionarCategoria($event)" 
+        (buscar)="onBuscarMenu($event)" 
+        (agregarPlato)="onAgregarPlato($event)" 
+        (agregarProducto)="onAgregarProducto($event)">
+      </app-menu-selector>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="pedido-footer" *ngIf="!cargando()">
+    <app-resumen-cuenta 
+      [subtotal]="subtotal()" 
+      [impuestos]="impuestos()" 
+      [descuentos]="descuentos()" 
+      [propina]="propina()" 
+      [total]="total()" 
+      [cuentaCreada]="!!cuenta()" 
+      [guardando]="guardando()" 
+      (crearCuenta)="onCrearCuenta()" 
+      (guardarCambios)="onGuardarCambios()">
+    </app-resumen-cuenta>
+  </footer>
+
+  <!-- Modal alerta alergia -->
+  <app-alerta-alergia 
+    *ngIf="mostrarAlertaAlergia()" 
+    [alergenos]="alergenosEnConflicto()" 
+    [nombreItem]="itemConflictoNombre()" 
+    (continuar)="onConfirmarAgregarConAlergia()" 
+    (cancelar)="onCancelarAgregarConAlergia()">
+  </app-alerta-alergia>
+</div>

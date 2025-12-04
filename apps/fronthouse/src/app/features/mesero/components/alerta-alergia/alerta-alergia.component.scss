@@ -1,0 +1,352 @@
+// apps/fronthouse/src/app/features/mesero/components/alerta-alergia/alerta-alergia.component.scss
+
+// ============================================
+// MODAL DE ALERTA DE ALERGIA
+// ============================================
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// ============================================
+// CONTENIDO DEL MODAL
+// ============================================
+
+.modal-content {
+  background: white;
+  border-radius: 24px;
+  padding: 2.5rem;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+
+  // Gradiente decorativo superior
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #f59e0b, #d97706, #f59e0b);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// ============================================
+// ICONO CON ANIMACIÓN
+// ============================================
+
+.modal-icon-container {
+  position: relative;
+  margin: 0 auto 1.5rem;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-icon {
+  font-size: 4.5rem;
+  animation: bounce 0.6s ease infinite alternate;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+.icon-pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.2);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+// ============================================
+// TÍTULO Y TEXTO
+// ============================================
+
+.modal-titulo {
+  margin: 0 0 1.5rem;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #b45309;
+  text-shadow: 0 2px 4px rgba(180, 83, 9, 0.1);
+}
+
+.modal-mensaje {
+  margin: 0 0 1.5rem;
+  color: #374151;
+  line-height: 1.6;
+  font-size: 1.05rem;
+
+  strong {
+    color: #f59e0b;
+    font-weight: 700;
+  }
+}
+
+.modal-pregunta {
+  margin: 0 0 2rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #1f2937;
+}
+
+// ============================================
+// LISTA DE ALÉRGENOS
+// ============================================
+
+.alergenos-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(254, 243, 199, 0.3);
+  border-radius: 12px;
+}
+
+.alergeno-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 2px solid #fbbf24;
+  border-radius: 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #92400e;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+  }
+
+  .alergeno-icon {
+    font-size: 1.5rem;
+    animation: wiggle 2s ease-in-out infinite;
+  }
+
+  .alergeno-nombre {
+    font-weight: 700;
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+// ============================================
+// BOTONES DE ACCIÓN
+// ============================================
+
+.modal-acciones {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-cancelar,
+.btn-continuar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  .btn-icon {
+    font-size: 1.2rem;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-cancelar {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  color: #374151;
+  border: 2px solid #d1d5db;
+
+  &:hover {
+    background: linear-gradient(135deg, #e5e7eb, #d1d5db);
+    border-color: #9ca3af;
+  }
+}
+
+.btn-continuar {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: white;
+  border: 2px solid #d97706;
+
+  &:hover {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border-color: #b45309;
+  }
+}
+
+// ============================================
+// NOTA INFORMATIVA
+// ============================================
+
+.modal-nota {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border-left: 4px solid #22c55e;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: #166534;
+  line-height: 1.5;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.1);
+
+  .nota-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+}
+
+// ============================================
+// RESPONSIVE
+// ============================================
+
+@media (max-width: 640px) {
+  .modal-content {
+    padding: 2rem 1.5rem;
+    border-radius: 20px;
+  }
+
+  .modal-icon {
+    font-size: 3.5rem;
+  }
+
+  .modal-titulo {
+    font-size: 1.5rem;
+  }
+
+  .modal-mensaje,
+  .modal-pregunta {
+    font-size: 1rem;
+  }
+
+  .modal-acciones {
+    flex-direction: column;
+  }
+
+  .btn-cancelar,
+  .btn-continuar {
+    width: 100%;
+  }
+
+  .alergenos-lista {
+    gap: 0.5rem;
+  }
+
+  .alergeno-tag {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+// ============================================
+// ACCESIBILIDAD
+// ============================================
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-content,
+  .modal-icon,
+  .icon-pulse,
+  .alergeno-tag .alergeno-icon {
+    animation: none !important;
+  }
+
+  .modal-overlay {
+    animation: none;
+  }
+}
