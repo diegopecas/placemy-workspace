@@ -39,7 +39,8 @@ export class MesaCardComponent {
   }
 
   isDisponible(): boolean {
-    return this.mesa.estado?.nombre?.toUpperCase() === 'DISPONIBLE';
+    // ID 1 = Libre (estado disponible)
+    return this.mesa.estado?.id === 1;
   }
 
   getEstadoLabel(): string {
@@ -50,13 +51,15 @@ export class MesaCardComponent {
   getEstadoIcon(): string {
     if (this.mesa.tieneCuentaActiva) return '🍽️';
     
-    const estado = this.mesa.estado?.nombre?.toUpperCase() ?? '';
-    switch (estado) {
-      case 'DISPONIBLE': return '✅';
-      case 'OCUPADA': return '🔵';
-      case 'RESERVADA': return '📅';
-      case 'MANTENIMIENTO': return '🔧';
-      default: return '❓';
+    const estadoId = this.mesa.estado?.id;
+    
+    switch (estadoId) {
+      case 1: return '✅';  // Libre
+      case 2: return '👥';  // Ocupada
+      case 3: return '📅';  // Reservada
+      case 4: return '🧹';  // En Limpieza
+      case 5: return '🚫';  // Fuera de Servicio
+      default: return '❓'; // Sin estado
     }
   }
 }

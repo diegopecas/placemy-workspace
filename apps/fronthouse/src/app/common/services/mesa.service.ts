@@ -62,13 +62,13 @@ export class MesaService {
 
   readonly mesasDisponibles = computed((): Mesa[] => {
     return this._mesas().filter(m => 
-      m.estado?.nombre?.toUpperCase() === 'DISPONIBLE'
+      m.estado?.id === 1  // ID 1 = Libre
     );
   });
 
   readonly mesasOcupadas = computed((): Mesa[] => {
     return this._mesas().filter(m => 
-      m.estado?.nombre?.toUpperCase() === 'OCUPADA'
+      m.estado?.id === 2  // ID 2 = Ocupada
     );
   });
 
@@ -160,7 +160,7 @@ export class MesaService {
 
   mesaEstaDisponible(mesaId: number): boolean {
     const mesa = this.getMesaByIdLocal(mesaId);
-    return mesa?.estado?.nombre?.toUpperCase() === 'DISPONIBLE';
+    return mesa?.estado?.id === 1;  // ID 1 = Libre
   }
 
   private actualizarMesaEnLista(mesaActualizada: Mesa): void {
@@ -180,6 +180,7 @@ export class MesaService {
       
       return {
         id: mesa.id,
+        identificacion_mesa: mesa.identificacion_mesa,  // ← AGREGADO
         numero_mesa: mesa.numero_mesa,
         capacidad: mesa.capacidad,
         estado: mesa.estado!,

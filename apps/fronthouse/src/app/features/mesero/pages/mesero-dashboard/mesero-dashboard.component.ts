@@ -66,14 +66,14 @@ export class MeseroDashboardComponent implements OnInit {
 
     return mesas.map((mesa: Mesa) => {
       const cuentaInfo = cuentas.get(mesa.id);
-      const estadoNombre = mesa.estado?.nombre?.toUpperCase() ?? '';
+      const estadoId = mesa.estado?.id;
 
       return {
         ...mesa,
         tieneCuentaActiva: !!cuentaInfo,
         cuentaId: cuentaInfo?.cuentaId,
         numeroCuenta: cuentaInfo?.numeroCuenta,
-        colorEstado: this.getColorEstado(estadoNombre, !!cuentaInfo)
+        colorEstado: this.getColorEstado(estadoId, !!cuentaInfo)
       };
     });
   });
@@ -154,15 +154,18 @@ export class MeseroDashboardComponent implements OnInit {
     this.router.navigate(['/mesero/cuenta', mesa.id]);
   }
 
-  private getColorEstado(estadoNombre: string, tieneCuenta: boolean): string {
-    if (tieneCuenta) return '#f59e0b';
+  private getColorEstado(estadoId: number | undefined, tieneCuenta: boolean): string {
+    // Si tiene cuenta activa, usar color amarillo pastel
+    if (tieneCuenta) return '#FFEAA7';
 
-    switch (estadoNombre) {
-      case 'DISPONIBLE': return '#22c55e';
-      case 'OCUPADA': return '#3b82f6';
-      case 'RESERVADA': return '#a855f7';
-      case 'MANTENIMIENTO': return '#ef4444';
-      default: return '#6b7280';
+    // Usar colores pastel hermosos según el ID del estado
+    switch (estadoId) {
+      case 1: return '#A8E6CF';  // Libre - Verde menta suave
+      case 2: return '#FFB3BA';  // Ocupada - Rosa coral suave
+      case 3: return '#FFD8B1';  // Reservada - Melocotón suave
+      case 4: return '#BAE1FF';  // En Limpieza - Azul cielo suave
+      case 5: return '#D5D5D5';  // Fuera de Servicio - Gris perla
+      default: return '#E8E8E8'; // Sin estado - Gris muy claro
     }
   }
 }
