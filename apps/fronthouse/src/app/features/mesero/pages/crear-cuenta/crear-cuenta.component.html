@@ -1,0 +1,28 @@
+<!-- apps/fronthouse/src/app/features/mesero/pages/crear-cuenta/crear-cuenta.component.html -->
+<div class="crear-cuenta-container" [attr.data-theme]="currentTheme().name">
+  
+  <!-- Header -->
+  <header class="cuenta-header">
+    <button type="button" class="btn-volver" (click)="volver()">
+      <span class="btn-icon">←</span>
+      <span>Volver</span>
+    </button>
+    
+    <div class="header-info">
+      <h1>Crear Cuenta</h1>
+      <span class="mesa-numero" *ngIf="mesaId()">Mesa {{ mesaId() }}</span>
+    </div>
+    
+    <div class="header-spacer"></div>
+  </header>
+
+  <!-- Contenido -->
+  <div class="cuenta-content">
+    <div class="success-message">
+      <h2>✅ Componente Base Funcionando</h2>
+      <p>Tema activo: <strong>{{ currentTheme().name }}</strong></p>
+      <p>Mesa ID: <strong>{{ mesaId() || 'No especificado' }}</strong></p>
+    </div>
+  </div>
+
+</div>

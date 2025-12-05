@@ -1,0 +1,8 @@
+// apps/fronthouse/src/app/features/mesero/layout/mesero-layout/mesero-layout.component.scss
+
+.mesero-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background 0.8s ease;
+}

@@ -1,8 +1,5 @@
 <!-- apps/fronthouse/src/app/features/mesero/pages/mesero-dashboard/mesero-dashboard.component.html -->
 <div class="mesero-dashboard-container" [attr.data-theme]="currentTheme().name">
-  
-  <!-- Header -->
-  <app-header></app-header>
 
   <!-- Contenido principal -->
   <div class="mesero-dashboard">
@@ -18,12 +15,14 @@
     <!-- Filtros por zona -->
     <div class="zonas-filter fade-in-up" *ngIf="zonasComputed().length > 0">
       <button 
+        type="button"
         class="zona-btn" 
         [class.active]="zonaSeleccionadaComputed() === null" 
         (click)="filtrarPorZona(null)">
         Todas
       </button>
       <button 
+        type="button"
         *ngFor="let zona of zonasComputed()" 
         class="zona-btn" 
         [class.active]="zonaSeleccionadaComputed() === zona.id" 

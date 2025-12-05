@@ -1,0 +1,136 @@
+// apps/fronthouse/src/app/features/mesero/pages/crear-cuenta/crear-cuenta.component.scss
+@use 'common' as common;
+
+.crear-cuenta-container {
+  min-height: 100vh;
+  transition: background 0.8s ease;
+}
+
+// Header
+.cuenta-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  @include common.shadow-md;
+
+  .btn-volver {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    @include common.smooth-transition;
+    @include common.text-shadow-light;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateX(-3px);
+    }
+
+    .btn-icon {
+      font-size: 1.5rem;
+    }
+  }
+
+  .header-info {
+    flex: 1;
+    text-align: center;
+
+    h1 {
+      margin: 0;
+      font-size: 1.75rem;
+      color: white;
+      @include common.text-shadow-strong;
+    }
+
+    .mesa-numero {
+      display: inline-block;
+      margin-top: 0.25rem;
+      padding: 0.25rem 0.75rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      font-size: 0.875rem;
+      color: white;
+      font-weight: 600;
+    }
+  }
+
+  .header-spacer {
+    width: 150px; // Mismo ancho que el botón volver para centrar el título
+  }
+}
+
+// Contenido
+.cuenta-content {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  .success-message {
+    @include common.glassmorphism-card;
+    @include common.shadow-lg;
+    padding: 3rem;
+    text-align: center;
+
+    h2 {
+      margin: 0 0 1rem 0;
+      color: #22c55e;
+      font-size: 2rem;
+    }
+
+    p {
+      margin: 0.5rem 0;
+      font-size: 1.125rem;
+      color: rgba(255, 255, 255, 0.9);
+
+      strong {
+        color: white;
+        @include common.text-shadow-light;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: common.$breakpoint-tablet) {
+  .cuenta-header {
+    padding: 1rem;
+
+    .btn-volver span:not(.btn-icon) {
+      display: none;
+    }
+
+    .header-info h1 {
+      font-size: 1.25rem;
+    }
+
+    .header-spacer {
+      width: 60px;
+    }
+  }
+
+  .cuenta-content {
+    padding: 1rem;
+
+    .success-message {
+      padding: 2rem 1rem;
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+  }
+}
