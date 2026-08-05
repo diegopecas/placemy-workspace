@@ -1,0 +1,247 @@
+<!-- apps/fronthouse/src/app/features/mesero/pages/buscar-cliente/buscar-cliente.component.html -->
+<div class="buscar-cliente" [attr.data-theme]="currentTheme().name">
+  
+  <!-- Header -->
+  <header class="page-header">
+    <button type="button" class="btn-volver" (click)="volver()">
+      <span class="btn-icon">←</span>
+      <span>Volver</span>
+    </button>
+    
+    <div class="header-info">
+      <h1>Cliente</h1>
+    </div>
+    
+    <div class="header-spacer"></div>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tabs-container">
+    <button 
+      type="button"
+      class="tab" 
+      [class.active]="modo() === 'buscar'" 
+      (click)="cambiarModo('buscar')">
+      <span class="tab-icon">🔍</span>
+      <span>Buscar</span>
+    </button>
+    <button 
+      type="button"
+      class="tab" 
+      [class.active]="modo() === 'crear'" 
+      (click)="cambiarModo('crear')">
+      <span class="tab-icon">➕</span>
+      <span>Crear Nuevo</span>
+    </button>
+  </div>
+
+  <!-- Contenido -->
+  <div class="page-content">
+
+    <!-- ========================================
+         MODO: BUSCAR
+         ======================================== -->
+    <div class="buscar-section" *ngIf="modo() === 'buscar'">
+      
+      <!-- Campo de búsqueda -->
+      <div class="search-box">
+        <label>
+          <span class="label-icon">🔍</span>
+          Buscar por teléfono o documento
+        </label>
+        <div class="input-wrapper">
+          <input
+            type="text"
+            [(ngModel)]="terminoBusqueda"
+            (ngModelChange)="onBuscar($event)"
+            placeholder="Ingrese teléfono o documento..."
+            class="input-search">
+          <button 
+            type="button"
+            *ngIf="terminoBusqueda" 
+            class="btn-clear" 
+            (click)="limpiarBusqueda()">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Estado: Buscando -->
+      <div class="searching-state" *ngIf="buscando()">
+        <div class="spinner"></div>
+        <p>Buscando clientes...</p>
+      </div>
+
+      <!-- Resultados -->
+      <div class="results-list" *ngIf="!buscando() && resultados().length > 0">
+        <div 
+          class="result-card" 
+          *ngFor="let cliente of resultados()" 
+          (click)="seleccionarCliente(cliente)">
+          
+          <div class="card-avatar">
+            <span>👤</span>
+          </div>
+          
+          <div class="card-info">
+            <h4 class="card-nombre">{{ getClienteNombre(cliente) }}</h4>
+            <div class="card-detalles">
+              <span class="detalle" *ngIf="getClienteTelefono(cliente)">
+                <span class="icon">📱</span>
+                {{ getClienteTelefono(cliente) }}
+              </span>
+              <span class="detalle" *ngIf="getClienteDocumento(cliente)">
+                <span class="icon">🆔</span>
+                {{ getClienteDocumento(cliente) }}
+              </span>
+            </div>
+          </div>
+
+          <div class="card-action">
+            <span class="btn-select">Seleccionar →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sin resultados -->
+      <div class="empty-state" *ngIf="!buscando() && resultados().length === 0 && terminoBusqueda.length >= 3">
+        <div class="empty-icon">😕</div>
+        <h3>No se encontraron clientes</h3>
+        <p>Intenta con otro término de búsqueda o crea un nuevo cliente</p>
+        <button type="button" class="btn-crear-desde-busqueda" (click)="cambiarModo('crear')">
+          ➕ Crear Nuevo Cliente
+        </button>
+      </div>
+
+      <!-- Mensaje inicial -->
+      <div class="initial-state" *ngIf="!buscando() && resultados().length === 0 && terminoBusqueda.length < 3">
+        <div class="initial-icon">🔍</div>
+        <p>Ingresa al menos 3 caracteres para buscar</p>
+      </div>
+
+      <!-- Botón continuar sin cliente -->
+      <div class="bottom-action">
+        <button type="button" class="btn-sin-cliente" (click)="usarSinCliente()">
+          Continuar sin cliente
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================
+         MODO: CREAR
+         ======================================== -->
+    <div class="crear-section" *ngIf="modo() === 'crear'">
+      
+      <form class="crear-form">
+        
+        <!-- Información Personal -->
+        <div class="form-section">
+          <h3 class="section-title">📋 Información Personal</h3>
+          
+          <div class="form-group">
+            <label>
+              Nombre Completo <span class="required">*</span>
+            </label>
+            <input 
+              type="text" 
+              [(ngModel)]="nuevoCliente.nombre" 
+              name="nombre"
+              placeholder="Ej: Juan Pérez García"
+              required>
+          </div>
+
+          <div class="form-group">
+            <label>Sobrenombre (cómo le gusta que lo llamen)</label>
+            <input 
+              type="text" 
+              [(ngModel)]="nuevoCliente.sobrenombre"
+              name="sobrenombre"
+              placeholder="Ej: Juancho">
+          </div>
+        </div>
+
+        <!-- Contacto -->
+        <div class="form-section">
+          <h3 class="section-title">📞 Contacto</h3>
+          
+          <div class="form-group">
+            <label>
+              Teléfono <span class="required">*</span>
+            </label>
+            <input 
+              type="tel" 
+              [(ngModel)]="nuevoCliente.telefono"
+              name="telefono"
+              placeholder="Ej: 3001234567"
+              required>
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input 
+              type="email" 
+              [(ngModel)]="nuevoCliente.email"
+              name="email"
+              placeholder="Ej: cliente@ejemplo.com">
+          </div>
+        </div>
+
+        <!-- Documento (Opcional) -->
+        <div class="form-section">
+          <h3 class="section-title">🆔 Documento (Opcional)</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tipo Documento</label>
+              <select [(ngModel)]="nuevoCliente.tipo_documento_id" name="tipo_documento">
+                <option [value]="1">Cédula</option>
+                <option [value]="2">Pasaporte</option>
+                <option [value]="3">Otro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Número</label>
+              <input 
+                type="text" 
+                [(ngModel)]="nuevoCliente.numero_documento"
+                name="numero_documento"
+                placeholder="Ej: 1234567890">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Sexo</label>
+            <select [(ngModel)]="nuevoCliente.sexo" name="sexo">
+              <option [value]="undefined">No especificar</option>
+              <option value="M">Masculino</option>
+              <option value="F">Femenino</option>
+              <option value="O">Otro</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Botón Crear -->
+        <div class="form-actions">
+          <button 
+            type="button"
+            class="btn-crear" 
+            [disabled]="!formularioValido() || creando()" 
+            (click)="crearCliente()">
+            <span class="btn-icon" *ngIf="!creando()">✨</span>
+            <span class="btn-spinner" *ngIf="creando()">⏳</span>
+            <span>{{ creando() ? 'Creando...' : 'Crear Cliente' }}</span>
+          </button>
+        </div>
+
+        <!-- Error -->
+        <div class="error-message" *ngIf="errorCrear()">
+          <span class="error-icon">⚠️</span>
+          <span>{{ errorCrear() }}</span>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+</div>

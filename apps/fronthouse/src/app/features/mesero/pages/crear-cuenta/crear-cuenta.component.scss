@@ -4,9 +4,13 @@
 .crear-cuenta-container {
   min-height: 100vh;
   transition: background 0.8s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-// Header
+// ============================================
+// HEADER
+// ============================================
 .cuenta-header {
   display: flex;
   align-items: center;
@@ -17,7 +21,8 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   @include common.shadow-md;
 
-  .btn-volver {
+  .btn-volver,
+  .btn-guardar {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -33,11 +38,16 @@
 
     &:hover {
       background: rgba(255, 255, 255, 0.3);
-      transform: translateX(-3px);
+      transform: scale(1.05);
     }
+  }
 
-    .btn-icon {
-      font-size: 1.5rem;
+  .btn-guardar {
+    background: rgba(34, 197, 94, 0.3);
+    border-color: rgba(34, 197, 94, 0.5);
+
+    &:hover {
+      background: rgba(34, 197, 94, 0.5);
     }
   }
 
@@ -63,74 +73,470 @@
       font-weight: 600;
     }
   }
+}
 
-  .header-spacer {
-    width: 150px; // Mismo ancho que el botón volver para centrar el título
+// ============================================
+// CONTENIDO
+// ============================================
+.cuenta-content {
+  flex: 1;
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+// ============================================
+// SECCIONES
+// ============================================
+section {
+  @include common.glassmorphism-card;
+  @include common.shadow-lg;
+  padding: 1.5rem;
+
+  h2 {
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    color: white;
+    @include common.text-shadow-light;
   }
 }
 
-// Contenido
-.cuenta-content {
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+// ============================================
+// CLIENTE
+// ============================================
+.seccion-cliente {
+  // SIN CLIENTE
+  .sin-cliente {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem 1rem;
 
-  .success-message {
-    @include common.glassmorphism-card;
-    @include common.shadow-lg;
-    padding: 3rem;
-    text-align: center;
+    .mensaje-info {
+      text-align: center;
 
-    h2 {
-      margin: 0 0 1rem 0;
-      color: #22c55e;
-      font-size: 2rem;
+      .info-icon {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.7;
+      }
+
+      p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+      }
     }
 
-    p {
-      margin: 0.5rem 0;
+    .btn-buscar-cliente {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2rem;
+      background: rgba(59, 130, 246, 0.3);
+      border: 2px solid rgba(59, 130, 246, 0.5);
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
       font-size: 1.125rem;
-      color: rgba(255, 255, 255, 0.9);
+      cursor: pointer;
+      @include common.smooth-transition;
+      @include common.text-shadow-light;
 
-      strong {
+      .btn-icon {
+        font-size: 1.5rem;
+      }
+
+      &:hover {
+        background: rgba(59, 130, 246, 0.5);
+        transform: scale(1.05);
+      }
+    }
+
+    .mensaje-secundario {
+      text-align: center;
+
+      p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  // CON CLIENTE
+  .con-cliente {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(34, 197, 94, 0.2);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    border-radius: 12px;
+
+    .cliente-avatar {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .cliente-info {
+      flex: 1;
+
+      .cliente-nombre {
+        display: block;
+        margin: 0 0 0.5rem 0;
+        font-size: 1.25rem;
+        font-weight: 600;
         color: white;
         @include common.text-shadow-light;
+      }
+
+      .cliente-detalles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        .detalle {
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          font-size: 0.875rem;
+          color: rgba(255, 255, 255, 0.8);
+
+          .icon {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+
+    .cliente-acciones {
+      display: flex;
+      gap: 0.5rem;
+      flex-shrink: 0;
+
+      button {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        font-size: 1.25rem;
+        cursor: pointer;
+        @include common.smooth-transition;
+      }
+
+      .btn-cambiar {
+        background: rgba(59, 130, 246, 0.3);
+        border: 1px solid rgba(59, 130, 246, 0.5);
+
+        &:hover {
+          background: rgba(59, 130, 246, 0.5);
+          transform: scale(1.1);
+        }
+      }
+
+      .btn-quitar {
+        background: rgba(239, 68, 68, 0.3);
+        border: 1px solid rgba(239, 68, 68, 0.5);
+
+        &:hover {
+          background: rgba(239, 68, 68, 0.5);
+          transform: scale(1.1);
+        }
       }
     }
   }
 }
 
-// Responsive
+// ============================================
+// ITEMS
+// ============================================
+.seccion-items {
+  .items-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+
+    h2 {
+      margin: 0;
+    }
+
+    .btn-agregar-item {
+      padding: 0.5rem 1rem;
+      background: rgba(34, 197, 94, 0.3);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      @include common.smooth-transition;
+
+      &:hover {
+        background: rgba(34, 197, 94, 0.5);
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .items-vacio {
+    text-align: center;
+    padding: 3rem 1rem;
+
+    .vacio-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-agregar-primero {
+      padding: 0.75rem 1.5rem;
+      background: rgba(34, 197, 94, 0.3);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      @include common.smooth-transition;
+
+      &:hover {
+        background: rgba(34, 197, 94, 0.5);
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .items-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .item-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      @include common.smooth-transition;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .item-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .item-nombre {
+          font-weight: 600;
+          color: white;
+        }
+
+        .item-cantidad {
+          padding: 0.25rem 0.5rem;
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 4px;
+          font-size: 0.875rem;
+          color: white;
+        }
+      }
+
+      .item-acciones {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .item-precio {
+          font-weight: 600;
+          font-size: 1.125rem;
+          color: white;
+        }
+
+        .btn-eliminar-item {
+          padding: 0.5rem;
+          background: rgba(239, 68, 68, 0.3);
+          border: 1px solid rgba(239, 68, 68, 0.5);
+          border-radius: 6px;
+          cursor: pointer;
+          @include common.smooth-transition;
+
+          &:hover {
+            background: rgba(239, 68, 68, 0.5);
+            transform: scale(1.1);
+          }
+        }
+      }
+    }
+  }
+}
+
+// ============================================
+// RESUMEN
+// ============================================
+.seccion-resumen {
+  .resumen-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .resumen-linea {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+
+      .resumen-label {
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+      }
+
+      .resumen-valor {
+        color: white;
+        font-weight: 600;
+        font-size: 1.125rem;
+      }
+
+      &.resumen-total {
+        background: rgba(34, 197, 94, 0.2);
+        border: 2px solid rgba(34, 197, 94, 0.4);
+        padding: 1rem;
+
+        .resumen-label {
+          font-size: 1.25rem;
+          color: white;
+          @include common.text-shadow-light;
+        }
+
+        .resumen-valor {
+          font-size: 1.5rem;
+          @include common.text-shadow-light;
+        }
+      }
+    }
+  }
+}
+
+// ============================================
+// FOOTER ACCIONES
+// ============================================
+.acciones-footer {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 1rem;
+
+  button {
+    flex: 1;
+    padding: 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.125rem;
+    cursor: pointer;
+    @include common.smooth-transition;
+  }
+
+  .btn-cancelar {
+    background: rgba(239, 68, 68, 0.3);
+    border: 2px solid rgba(239, 68, 68, 0.5);
+    color: white;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.5);
+      transform: scale(1.02);
+    }
+  }
+
+  .btn-guardar-cuenta {
+    background: rgba(34, 197, 94, 0.3);
+    border: 2px solid rgba(34, 197, 94, 0.5);
+    color: white;
+
+    &:hover {
+      background: rgba(34, 197, 94, 0.5);
+      transform: scale(1.02);
+    }
+  }
+}
+
+// ============================================
+// RESPONSIVE
+// ============================================
 @media (max-width: common.$breakpoint-tablet) {
   .cuenta-header {
-    padding: 1rem;
+    padding: 0.75rem;
 
-    .btn-volver span:not(.btn-icon) {
-      display: none;
+    .btn-volver,
+    .btn-guardar {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+
+      span:not(.btn-icon) {
+        display: none;
+      }
     }
 
     .header-info h1 {
       font-size: 1.25rem;
     }
-
-    .header-spacer {
-      width: 60px;
-    }
   }
 
   .cuenta-content {
     padding: 1rem;
+    gap: 1rem;
+  }
 
-    .success-message {
-      padding: 2rem 1rem;
+  section {
+    padding: 1rem;
+  }
 
-      h2 {
-        font-size: 1.5rem;
+  .seccion-cliente {
+    .con-cliente {
+      flex-direction: column;
+      text-align: center;
+
+      .cliente-info {
+        text-align: center;
+
+        .cliente-detalles {
+          justify-content: center;
+        }
       }
 
-      p {
-        font-size: 1rem;
+      .cliente-acciones {
+        width: 100%;
+        justify-content: center;
       }
+    }
+  }
+
+  .acciones-footer {
+    flex-direction: column;
+
+    button {
+      font-size: 1rem;
     }
   }
 }

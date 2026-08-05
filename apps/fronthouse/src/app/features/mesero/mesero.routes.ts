@@ -16,10 +16,10 @@ export const MESERO_ROUTES: Routes = [
           ),
       },
       {
-        path: 'test-simple',
+        path: 'buscar-cliente',
         loadComponent: () =>
-          import('./pages/test-simple/test-simple.component').then(
-            (m) => m.TestSimpleComponent
+          import('./pages/buscar-cliente/buscar-cliente.component').then(
+            (m) => m.BuscarClienteComponent
           ),
       },
       {

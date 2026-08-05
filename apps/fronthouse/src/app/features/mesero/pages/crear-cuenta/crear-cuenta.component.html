@@ -13,16 +13,135 @@
       <span class="mesa-numero" *ngIf="mesaId()">Mesa {{ mesaId() }}</span>
     </div>
     
-    <div class="header-spacer"></div>
+    <button type="button" class="btn-guardar" (click)="guardarCuenta()">
+      <span>💾</span>
+      <span>Guardar</span>
+    </button>
   </header>
 
   <!-- Contenido -->
   <div class="cuenta-content">
-    <div class="success-message">
-      <h2>✅ Componente Base Funcionando</h2>
-      <p>Tema activo: <strong>{{ currentTheme().name }}</strong></p>
-      <p>Mesa ID: <strong>{{ mesaId() || 'No especificado' }}</strong></p>
+    
+    <!-- Sección Cliente -->
+    <section class="seccion-cliente">
+      <h2>👤 Cliente</h2>
+      
+      <!-- SIN CLIENTE - Botón para buscar/crear -->
+      <div class="cliente-card sin-cliente" *ngIf="!clienteSeleccionado()">
+        <div class="mensaje-info">
+          <div class="info-icon">🔍</div>
+          <p>Busca un cliente existente o crea uno nuevo</p>
+        </div>
+        
+        <button type="button" class="btn-buscar-cliente" (click)="irABuscarCliente()">
+          <span class="btn-icon">👤</span>
+          <span>Buscar / Agregar Cliente</span>
+        </button>
+
+        <div class="mensaje-secundario">
+          <p>También puedes continuar sin cliente</p>
+        </div>
+      </div>
+
+      <!-- CON CLIENTE - Mostrar datos -->
+      <div class="cliente-card con-cliente" *ngIf="clienteSeleccionado()">
+        <div class="cliente-avatar">
+          <span>👤</span>
+        </div>
+        
+        <div class="cliente-info">
+          <h3 class="cliente-nombre">{{ getClienteNombre(clienteSeleccionado()!) }}</h3>
+          
+          <div class="cliente-detalles">
+            <span class="detalle" *ngIf="getClienteTelefono(clienteSeleccionado()!)">
+              <span class="icon">📱</span>
+              {{ getClienteTelefono(clienteSeleccionado()!) }}
+            </span>
+            <span class="detalle" *ngIf="getClienteDocumento(clienteSeleccionado()!)">
+              <span class="icon">🆔</span>
+              {{ getClienteDocumento(clienteSeleccionado()!) }}
+            </span>
+          </div>
+        </div>
+
+        <div class="cliente-acciones">
+          <button type="button" class="btn-cambiar" (click)="cambiarCliente()" title="Cambiar cliente">
+            🔄
+          </button>
+          <button type="button" class="btn-quitar" (click)="quitarCliente()" title="Quitar cliente">
+            ✕
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección Items del Pedido -->
+    <section class="seccion-items">
+      <div class="items-header">
+        <h2>🍽️ Items del Pedido</h2>
+        <button type="button" class="btn-agregar-item" (click)="agregarItem()">
+          ➕ Agregar Item
+        </button>
+      </div>
+
+      <!-- Lista vacía -->
+      <div class="items-vacio" *ngIf="items().length === 0">
+        <div class="vacio-icon">🍽️</div>
+        <p>No hay items en el pedido</p>
+        <button type="button" class="btn-agregar-primero" (click)="agregarItem()">
+          Agregar primer item
+        </button>
+      </div>
+
+      <!-- Lista con items -->
+      <div class="items-lista" *ngIf="items().length > 0">
+        <div class="item-card" *ngFor="let item of items(); let i = index">
+          <div class="item-info">
+            <span class="item-nombre">{{ item.nombre }}</span>
+            <span class="item-cantidad">x{{ item.cantidad }}</span>
+          </div>
+          <div class="item-acciones">
+            <span class="item-precio">${{ item.precio * item.cantidad | number:'1.0-0' }}</span>
+            <button type="button" class="btn-eliminar-item" (click)="eliminarItem(i)">
+              🗑️
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección Resumen -->
+    <section class="seccion-resumen">
+      <h2>💰 Resumen</h2>
+      
+      <div class="resumen-card">
+        <div class="resumen-linea">
+          <span class="resumen-label">Subtotal:</span>
+          <span class="resumen-valor">${{ subtotal() | number:'1.0-0' }}</span>
+        </div>
+        
+        <div class="resumen-linea">
+          <span class="resumen-label">Propina:</span>
+          <span class="resumen-valor">${{ propina() | number:'1.0-0' }}</span>
+        </div>
+        
+        <div class="resumen-linea resumen-total">
+          <span class="resumen-label">TOTAL:</span>
+          <span class="resumen-valor">${{ total() | number:'1.0-0' }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Botones de acción -->
+    <div class="acciones-footer">
+      <button type="button" class="btn-cancelar" (click)="cancelar()">
+        Cancelar
+      </button>
+      <button type="button" class="btn-guardar-cuenta" (click)="guardarCuenta()">
+        💾 Guardar Cuenta
+      </button>
     </div>
+
   </div>
 
 </div>
